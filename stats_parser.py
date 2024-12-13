@@ -58,12 +58,12 @@ def get_kicking_stats():
         player = [td.get_text().strip() for td in row.find_all("td")]
         player_data.append(player)
     df = pd.DataFrame(player_data, columns=headers)
-    print(df.columns)
     return df
 
 def find_best_kickers(df):
     """
-    Function to find the best kicker based on a kicker score that incorporates field goal percentage and distance ranges.
+    Function to find the best kicker based on a kicker score that incorporates field goal percentage,
+    distance ranges, and field goal attempts as a percentage of the top kicker's attempts.
     Args:
         df (DataFrame): A pandas DataFrame containing the kicking stats.
     Returns:
@@ -71,11 +71,11 @@ def find_best_kickers(df):
     """
     # List of distance ranges with corresponding weights
     distance_ranges = {
-        "20-29": 1.0,
-        "30-39": 0.75,
-        "40-49": 0.5,
-        "50-59": 0.3,
-        "60+": 0.25
+        "20-29": 3.0,
+        "30-39": 2.0,
+        "40-49": 1.0,
+        "50-59": 0.4,
+        "60+": 0.1,
     }
 
     # Initialize columns for total field goals made, attempts, and weighted score
@@ -88,20 +88,38 @@ def find_best_kickers(df):
         made_col = f"{distance} > A-M"
         att_col = f"{distance} > A-M"
 
-        # Convert FGM and Att columns to integers, ignoring rows where they're not available
-        df[made_col] = pd.to_numeric(df[made_col], errors='coerce').fillna(0).astype(int)
-        df[att_col] = pd.to_numeric(df[att_col], errors='coerce').fillna(0).astype(int)
+        # Split made/attempted values into separate columns for made and attempted
+        made_values = df[made_col].str.split('/', expand=True)[0].astype(float).fillna(0)
+        att_values = df[made_col].str.split('/', expand=True)[1].astype(float).fillna(0)
+
+        # Update the dataframe with the parsed made and attempted values
+        df[made_col] = made_values
+        df[att_col] = att_values
 
         # Update totals and weighted score
         df['Total FGM'] += df[made_col]
         df['Total Att'] += df[att_col]
-        df['Weighted Score'] += (df[made_col] / df[att_col].replace(0, 1)) * weight * df[made_col]
+
+        # Calculate the weighted score: made/attempted ratio * weight
+        df['Weighted Score'] += (df[made_col] / df[att_col].replace(0, 1)) * weight
 
     # Calculate overall field goal percentage
     df['FG%'] = df['Total FGM'] / df['Total Att'].replace(0, 1)
 
+    # Find the top kicker based on total field goal attempts
+    top_kicker_att = df['Total Att'].max()
+
+    # Calculate the field goal attempts percentage of the top kicker's attempts
+    df['FG Attempts % of Top'] = df['Total Att'] / top_kicker_att
+
+    # Adjust the weighted score to include the percentage of top kicker's attempts
+    df['Weighted Score'] *= df['FG Attempts % of Top']
+
     # Rank the top kickers by Weighted Score
     bestKickers = df.nlargest(10, 'Weighted Score')
+
+    # Save the top kickers to a new CSV file
+    bestKickers.to_csv('official_kicker_stats.csv', index=False)
 
     return bestKickers
 
