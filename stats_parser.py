@@ -43,7 +43,7 @@ def get_stats(url):
     
     return df
 
-def getKickingStats():
+def get_kicking_stats():
     """
     Function to scrape kicking stats from the NFL website.
     Returns: df (DataFrame): A pandas DataFrame containing the scraped kicking stats.
@@ -61,7 +61,7 @@ def getKickingStats():
     print(df.columns)
     return df
 
-def findBestKicker(df):
+def find_best_kickers(df):
     """
     Function to find the best kicker based on a kicker score that incorporates field goal percentage and distance ranges.
     Args:
@@ -129,8 +129,8 @@ for category, df in dataframes.items():
     df.to_csv(f"nfl_player_stats_{category.lower().replace(' ', '_')}.csv", index=False)
 
 # Scrape kicking stats
-kicking_df = getKickingStats()
-top_kickers = findBestKicker(kicking_df)
+kicking_df = get_kicking_stats()
+top_kickers = find_best_kickers(kicking_df)
 
 print(f"Kicking DataFrame:") 
 print(top_kickers)  # Print the top kickers
