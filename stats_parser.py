@@ -74,14 +74,14 @@ def find_best_kickers(df):
         "20-29": 3.0,
         "30-39": 2.0,
         "40-49": 1.0,
-        "50-59": 0.4,
-        "60+": 0.1,
+        "50-59": 0.5,
+        "60+": 0.25,
     }
 
-    # Initialize columns for total field goals made, attempts, and weighted score
-    df['Total FGM'] = 0
-    df['Total Att'] = 0
+    # Initialize the weighted score column and ensure FGM and Att are integers
     df['Weighted Score'] = 0
+    df['FGM'] = df['FGM'].astype(int)
+    df['Att'] = df['Att'].astype(int)
 
     # Iterate through the distance ranges and calculate weighted scores
     for distance, weight in distance_ranges.items():
@@ -92,25 +92,22 @@ def find_best_kickers(df):
         made_values = df[made_col].str.split('/', expand=True)[0].astype(float).fillna(0)
         att_values = df[made_col].str.split('/', expand=True)[1].astype(float).fillna(0)
 
-        # Update the dataframe with the parsed made and attempted values
-        df[made_col] = made_values
-        df[att_col] = att_values
-
-        # Update totals and weighted score
-        df['Total FGM'] += df[made_col]
-        df['Total Att'] += df[att_col]
-
         # Calculate the weighted score: made/attempted ratio * weight
-        df['Weighted Score'] += (df[made_col] / df[att_col].replace(0, 1)) * weight
-
-    # Calculate overall field goal percentage
-    df['FG%'] = df['Total FGM'] / df['Total Att'].replace(0, 1)
+        df['Weighted Score'] += (made_values / att_values.replace(0, 1)) * weight
+        
+    # Normalize the weighted score to a 0-100 scale
+    score_range = df['Weighted Score'].max() - df['Weighted Score'].min()
+    if score_range != 0:
+        df['Weighted Score'] = ((df['Weighted Score'] - df['Weighted Score'].min()) / score_range) * 100
+    else:
+        df['Weighted Score'] = 100  # Default value if all scores are the same
 
     # Find the top kicker based on total field goal attempts
-    top_kicker_att = df['Total Att'].max()
-
-    # Calculate the field goal attempts percentage of the top kicker's attempts
-    df['FG Attempts % of Top'] = df['Total Att'] / top_kicker_att
+    top_kicker_att = df['Att'].max()
+    if top_kicker_att != 0:
+        df['FG Attempts % of Top'] = df['Att'] / top_kicker_att
+    else:
+        df['FG Attempts % of Top'] = 0  # If no attempts, set to 0
 
     # Adjust the weighted score to include the percentage of top kicker's attempts
     df['Weighted Score'] *= df['FG Attempts % of Top']
@@ -119,7 +116,7 @@ def find_best_kickers(df):
     bestKickers = df.nlargest(10, 'Weighted Score')
 
     # Save the top kickers to a new CSV file
-    bestKickers.to_csv('official_kicker_stats.csv', index=False)
+    # bestKickers.to_csv('official_kicker_stats.csv', index=False)
 
     return bestKickers
 
@@ -159,10 +156,10 @@ def find_best_qbs(df):
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df['Score'] = (
         (df['Pass Yards'] * 0.45) + 
-        (df['TD'] * 0.35) + 
+        (df['TD'] * 0.4) + 
         (df['Yds/Att'] * 0.15) + 
-        (df['Cmp %'] * 0.15) +
-        (df['INT'] * 0.15)
+        (df['Cmp %'] * 0.15)+
+        (df['INT'] * 0.2)
     )
     
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
@@ -171,34 +168,119 @@ def find_best_qbs(df):
     bestQBs = df.sort_values(by='Weighted Score', ascending=False).head(10)
 
     # Print the top quarterbacks
-    print(bestQBs)
+    # print(bestQBs)
 
     # Optionally, save the top quarterbacks to a new CSV file
     # bestQBs.to_csv('official_qb_stats.csv', index=False)
 
     return bestQBs
 
+def get_rushing_stats():
+    """
+    Function to scrape rushing stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped rushing stats.
+    """
+    url = "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
 
-# URLs for different categories
-urls = {
-    "Rushing": "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc",
-    "Receiving": "https://www.nfl.com/stats/player-stats/category/receiving/2024/reg/all/receivingreceptions/desc",
-}
+def find_best_rbs(df):
+    """
+    Function to find the best running backs based on rushing yards, touchdowns, yards per carry, and fumbles.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the rushing stats.
+        Returns:
+        bestRBs (DataFrame): A pandas DataFrame containing the top running backs ranked by a composite score.
+    """
+    # Convert rushing yards and touchdowns to numeric values
+    df['Rush Yds'] = df['Rush Yds'].str.replace(',', '').astype(int)
+    df['TD'] = df['TD'].astype(int)
+    df['Att'] = df['Att'].astype(int)
+    df['Rush FUM'] = df['Rush FUM'].astype(int)
 
-dataframes = {}
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df['Score'] = (
+        (df['Rush Yds'] * 0.45) + 
+        (df['TD'] * 0.45) + 
+        (df['Att'] * 0.1) +
+        (df['Rush FUM'] * 0.2)
+    )
 
-for category, url in urls.items():
-    print(f"Scraping data from {category} category...")
-    df = get_stats(url)
-    if df is not None:
-        dataframes[category] = df
-        print(f"{category} DataFrame:")
-        print(df.head(10))  # Print the first 10 rows of each DataFrame
-        print("\n")
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
-# Save the dataframes to CSV files
-# for category, df in dataframes.items():
-#     df.to_csv(f"nfl_player_stats_{category.lower().replace(' ', '_')}.csv", index=False)
+    # Sort running backs by the composite score in descending order
+    bestRBs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+
+    # Print the top running backs
+    # print(bestRBs)
+
+    # Optionally, save the top running backs to a new CSV file
+    # bestRBs.to_csv('official_rb_stats.csv', index=False)
+
+    return bestRBs
+
+def get_receiving_stats():
+    """
+    Function to scrape receiving stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped receiving stats.
+    """
+    url = "https://www.nfl.com/stats/player-stats/category/receiving/2024/reg/all/receivingreceptions/desc"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
+
+def find_best_wrs(df):
+    """
+    Function to find the best wide receivers based on receiving yards, receptions, yards per reception, and touchdowns.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the receiving stats.
+    Returns:
+        bestWRs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
+    """
+    # Convert receiving yards, receptions, and touchdowns to numeric values
+    df['Tgts'] = df['Tgts'].astype(int)
+    df['Rec'] = df['Rec'].astype(int)
+    df['Yds'] = df['Yds'].astype(float)
+    df['TD'] = df['TD'].astype(int)
+
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df['Score'] = (
+        (df['Rec'] * 0.35) + 
+        (df['Yds'] * 0.15) + 
+        (df['TD'] * 0.15) + 
+        (df['Tgts'] * 0.1)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Sort wide receivers by the composite score in descending order
+    bestWRs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+
+    # Print the top wide receivers
+    # print(bestWRs)
+
+    # Optionally, save the top wide receivers to a new CSV file
+    # bestWRs.to_csv('official_wr_stats.csv', index=False)
+
+    return bestWRs
+
 
 # Scrape kicking stats
 kicking_df = get_kicking_stats()
@@ -213,4 +295,19 @@ passing_df = get_passing_stats()
 top_qbs = find_best_qbs(passing_df)
 print(f"Passing DataFrame:")
 print(top_qbs)  # Print the first 10 rows of the passing DataFrame
+print("\n")
+
+print("Scraping rushing stats...")
+rushing_df = get_rushing_stats()
+top_rbs = find_best_rbs(rushing_df)
+print(f"Rushing DataFrame:")
+print(top_rbs)  # Print the first 10 rows of the rushing DataFrame
+print("\n")
+
+print("Scraping receiving stats...")
+receiving_df = get_receiving_stats()
+top_wrs = find_best_wrs(receiving_df)
+print(f"Receiving DataFrame:")
+print(top_wrs)  # Print the first 10 rows of the receiving DataFrame
+
 
