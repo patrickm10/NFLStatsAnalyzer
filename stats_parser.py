@@ -123,11 +123,64 @@ def find_best_kickers(df):
 
     return bestKickers
 
+def get_passing_stats():
+    """
+    Function to scrape passing stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped passing stats.
+    """
+    url = "https://www.nfl.com/stats/player-stats/category/passing/2024/reg/all/passingyards/desc"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
+
+def find_best_qbs(df):
+    """
+    Function to find the best quarterbacks based on passing yards, touchdowns, yards per attempt, and completion percentage.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the passing stats.
+    Returns:
+        bestQBs (DataFrame): A pandas DataFrame containing the top quarterbacks ranked by a composite score.
+    """
+    # Convert passing yards and touchdowns to numeric values
+    df['Pass Yards'] = df['Pass Yds'].str.replace(',', '').astype(int)
+    df['TD'] = df['TD'].astype(int)
+    df['Yds/Att'] = df['Yds/Att'].astype(float)
+    df['Cmp %'] = df['Cmp %'].astype(float)
+    df['INT'] = df['INT'].astype(int)
+
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df['Score'] = (
+        (df['Pass Yards'] * 0.45) + 
+        (df['TD'] * 0.35) + 
+        (df['Yds/Att'] * 0.15) + 
+        (df['Cmp %'] * 0.15) +
+        (df['INT'] * 0.15)
+    )
+    
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Sort quarterbacks by the composite score in descending order
+    bestQBs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+
+    # Print the top quarterbacks
+    print(bestQBs)
+
+    # Optionally, save the top quarterbacks to a new CSV file
+    # bestQBs.to_csv('official_qb_stats.csv', index=False)
+
+    return bestQBs
 
 
 # URLs for different categories
 urls = {
-    "Passing": "https://www.nfl.com/stats/player-stats/category/passing/2024/reg/all/passingyards/desc",
     "Rushing": "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc",
     "Receiving": "https://www.nfl.com/stats/player-stats/category/receiving/2024/reg/all/receivingreceptions/desc",
 }
@@ -143,8 +196,9 @@ for category, url in urls.items():
         print(df.head(10))  # Print the first 10 rows of each DataFrame
         print("\n")
 
-for category, df in dataframes.items():
-    df.to_csv(f"nfl_player_stats_{category.lower().replace(' ', '_')}.csv", index=False)
+# Save the dataframes to CSV files
+# for category, df in dataframes.items():
+#     df.to_csv(f"nfl_player_stats_{category.lower().replace(' ', '_')}.csv", index=False)
 
 # Scrape kicking stats
 kicking_df = get_kicking_stats()
@@ -152,3 +206,11 @@ top_kickers = find_best_kickers(kicking_df)
 
 print(f"Kicking DataFrame:") 
 print(top_kickers)  # Print the top kickers
+print("\n")
+
+print("Scraping passing stats...")
+passing_df = get_passing_stats()
+top_qbs = find_best_qbs(passing_df)
+print(f"Passing DataFrame:")
+print(top_qbs)  # Print the first 10 rows of the passing DataFrame
+
