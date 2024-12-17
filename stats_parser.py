@@ -165,7 +165,7 @@ def find_best_qbs(df):
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
     # Sort quarterbacks by the composite score in descending order
-    bestQBs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+    bestQBs = df.sort_values(by='Weighted Score', ascending=False).head(25)
 
     # Print the top quarterbacks
     # print(bestQBs)
@@ -181,16 +181,53 @@ def get_rushing_stats():
     Returns:
         df (DataFrame): A pandas DataFrame containing the scraped rushing stats.
     """
-    url = "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find("table", class_="d3-o-table")
-    headers = [th.get_text().strip() for th in table.find_all("th")]
+    base_url = "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc"
     player_data = []
-    for row in table.find_all("tr")[1:]:  # Skip the header row
-        player = [td.get_text().strip() for td in row.find_all("td")]
-        player_data.append(player)
-    df = pd.DataFrame(player_data, columns=headers)
+    headers = []
+
+    aftercursor = None
+    pages_scraped = 0
+    max_pages = 3  # Limit to the first 3 pages
+
+    while pages_scraped < max_pages:
+        # Construct URL with aftercursor if it's available
+        url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
+
+        # Make the request
+        response = requests.get(url)
+        if response.status_code != 200:
+            print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
+            break
+
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate the table
+        table = soup.find("table", class_="d3-o-table")
+        if not table:
+            print(f"No table found on {url}.")
+            break
+
+        # Extract headers (only once)
+        if not headers:
+            headers = [th.get_text().strip() for th in table.find_all("th")]
+
+        # Extract player data
+        for row in table.find_all("tr")[1:]:  # Skip the header row
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            player_data.append(player)
+
+        # Find the aftercursor value for the next page
+        next_button = soup.find("a", class_="nfl-o-table-pagination__next")
+        if next_button:
+            aftercursor = next_button.get("href").split("aftercursor=")[-1]
+        else:
+            print("No more pages to scrape.")
+            break
+
+        pages_scraped += 1
+
+    # Create a DataFrame
+    df = pd.DataFrame(player_data, columns=headers) if headers else pd.DataFrame(player_data)
     return df
 
 def find_best_rbs(df):
@@ -209,8 +246,8 @@ def find_best_rbs(df):
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df['Score'] = (
-        (df['Rush Yds'] * 0.45) + 
-        (df['TD'] * 0.45) + 
+        (df['Rush Yds'] * 0.35) + 
+        (df['TD'] * 0.6) + 
         (df['Att'] * 0.1) +
         (df['Rush FUM'] * 0.2)
     )
@@ -218,7 +255,7 @@ def find_best_rbs(df):
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
     # Sort running backs by the composite score in descending order
-    bestRBs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+    bestRBs = df.sort_values(by='Weighted Score', ascending=False).head(100)
 
     # Print the top running backs
     # print(bestRBs)
@@ -230,21 +267,60 @@ def find_best_rbs(df):
 
 def get_receiving_stats():
     """
-    Function to scrape receiving stats from the NFL website.
+    Scrapes receiving stats from the NFL website, handling pagination with aftercursor.
+
     Returns:
-        df (DataFrame): A pandas DataFrame containing the scraped receiving stats.
+        pd.DataFrame: A pandas DataFrame containing the receiving stats.
     """
-    url = "https://www.nfl.com/stats/player-stats/category/receiving/2024/reg/all/receivingreceptions/desc"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find("table", class_="d3-o-table")
-    headers = [th.get_text().strip() for th in table.find_all("th")]
+    base_url = "https://www.nfl.com/stats/player-stats/category/receiving/2024/REG/all/receivingreceptions/DESC"
     player_data = []
-    for row in table.find_all("tr")[1:]:  # Skip the header row
-        player = [td.get_text().strip() for td in row.find_all("td")]
-        player_data.append(player)
-    df = pd.DataFrame(player_data, columns=headers)
+    headers = []
+
+    aftercursor = None
+    pages_scraped = 0
+    max_pages = 3  # Limit to the first 3 pages
+
+    while pages_scraped < max_pages:
+        # Construct URL with aftercursor if it's available
+        url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
+
+        # Make the request
+        response = requests.get(url)
+        if response.status_code != 200:
+            print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
+            break
+
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate the table
+        table = soup.find("table", class_="d3-o-table")
+        if not table:
+            print(f"No table found on {url}.")
+            break
+
+        # Extract headers (only once)
+        if not headers:
+            headers = [th.get_text().strip() for th in table.find_all("th")]
+
+        # Extract player data
+        for row in table.find_all("tr")[1:]:  # Skip the header row
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            player_data.append(player)
+
+        # Find the aftercursor value for the next page
+        next_button = soup.find("a", class_="nfl-o-table-pagination__next")
+        if next_button:
+            aftercursor = next_button.get("href").split("aftercursor=")[-1]
+        else:
+            print("No more pages to scrape.")
+            break
+
+        pages_scraped += 1
+
+    # Create a DataFrame
+    df = pd.DataFrame(player_data, columns=headers) if headers else pd.DataFrame(player_data)
     return df
+
 
 def find_best_wrs(df):
     """
@@ -259,19 +335,23 @@ def find_best_wrs(df):
     df['Rec'] = df['Rec'].astype(int)
     df['Yds'] = df['Yds'].astype(float)
     df['TD'] = df['TD'].astype(int)
+    df['20+'] = df['20+'].astype(int)
+    df['40+'] = df['40+'].astype(int)
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df['Score'] = (
         (df['Rec'] * 0.35) + 
-        (df['Yds'] * 0.15) + 
-        (df['TD'] * 0.15) + 
-        (df['Tgts'] * 0.1)
+        (df['Yds'] * 0.25) + 
+        (df['TD'] * 0.5) + 
+        (df['Tgts'] * 0.1) +
+        (df['20+'] * 0.2) +
+        (df['40+'] * 0.1)
     )
 
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
     # Sort wide receivers by the composite score in descending order
-    bestWRs = df.sort_values(by='Weighted Score', ascending=False).head(10)
+    bestWRs = df.sort_values(by='Weighted Score', ascending=False).head(100)
 
     # Print the top wide receivers
     # print(bestWRs)
@@ -281,33 +361,265 @@ def find_best_wrs(df):
 
     return bestWRs
 
+def get_defensive_stats_versus_receiving():
+    """
+    Function to scrape defensive stats versus receiving stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped defensive versus receiving stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/defense/receiving/2024/reg/all"
+    defense_data = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        defense = [td.get_text().strip() for td in row.find_all("td")]
+        defense_data.append(defense)
+    df = pd.DataFrame(defense_data, columns=headers)
+    return df
 
-# Scrape kicking stats
-kicking_df = get_kicking_stats()
-top_kickers = find_best_kickers(kicking_df)
+def find_best_defenses_versus_receiving(df):
+    """
+    Function to find the best defenses against receiving based on yards allowed, touchdowns allowed, and interceptions.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the defensive stats versus receiving.
+    Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Convert receiving yards allowed, touchdowns allowed, and interceptions to numeric values
+    df['Yds/Rec'] = df['Yds/Rec'].astype(float)
+    df['Yds'] = df['Yds'].astype(int)
+    df['TD'] = df['TD'].astype(int)
+    df['Rec FUM'] = df['Rec FUM'].astype(int)
+    df['PDef'] = df['PDef'].astype(int)
+    df['20+'] = df['20+'].astype(int)
+    df['40+'] = df['40+'].astype(int)
+    
 
-print(f"Kicking DataFrame:") 
-print(top_kickers)  # Print the top kickers
-print("\n")
+    # Calculate a composite score based on weighted stats 
+    df['Score'] = (
+        (df['Yds/Rec'] * 0.2) + 
+        (df['Yds'] * 0.3) +
+        (df['TD'] * 0.6) + 
+        (df['Rec FUM'] * 0.1) + 
+        (df['PDef'] * 0.2) + # PDef is passes defended
+        (df['40+'] * 0.2) + 
+        (df['20+'] * 0.1)
+        
+    )
 
-print("Scraping passing stats...")
-passing_df = get_passing_stats()
-top_qbs = find_best_qbs(passing_df)
-print(f"Passing DataFrame:")
-print(top_qbs)  # Print the first 10 rows of the passing DataFrame
-print("\n")
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
-print("Scraping rushing stats...")
-rushing_df = get_rushing_stats()
-top_rbs = find_best_rbs(rushing_df)
-print(f"Rushing DataFrame:")
-print(top_rbs)  # Print the first 10 rows of the rushing DataFrame
-print("\n")
+    # Sort defenses by the composite score in descending order
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=True,ignore_index=True).head(32)
 
-print("Scraping receiving stats...")
-receiving_df = get_receiving_stats()
-top_wrs = find_best_wrs(receiving_df)
-print(f"Receiving DataFrame:")
-print(top_wrs)  # Print the first 10 rows of the receiving DataFrame
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
 
 
+def get_defensive_stats_versus_rushing():
+    """
+    Function to scrape defensive stats versus rushing stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped defensive versus rushing stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/defense/rushing/2024/reg/all"
+    defense_data = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        defense = [td.get_text().strip() for td in row.find_all("td")]
+        defense_data.append(defense)
+    df = pd.DataFrame(defense_data, columns=headers)
+    return df
+
+def find_best_defenses_versus_rushing(df):
+    """
+    Function to find the best defenses against rushing based on yards allowed, touchdowns allowed, and interceptions.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the defensive stats versus rushing.
+        Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Convert rushing yards allowed, touchdowns allowed, and interceptions to numeric values
+    df['YPC'] = df['YPC'].astype(float)
+    df['Rush Yds'] = df['Rush Yds'].astype(int)
+    df['TD'] = df['TD'].astype(int)
+    df['Rush FUM'] = df['Rush FUM'].astype(int)
+    df['20+'] = df['20+'].astype(int)
+    df['40+'] = df['40+'].astype(int)
+
+    # Calculate a composite score based on weighted stats 
+    df['Score'] = (
+        (df['YPC'] * 0.3) + 
+        (df['Rush Yds'] * 0.3) +
+        (df['TD'] * 0.6) + 
+        (df['40+'] * 0.3) + 
+        (df['20+'] * 0.2) +
+        (df['Rush FUM'] * 0.1)
+        
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Sort defenses by the composite score in descending order
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=True,ignore_index=True).head(32)
+
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
+
+def get_best_overall_defenses(df1, df2):
+    """
+    Function to find the best defenses overall based on a combination of rushing and receiving stats.
+    Args:
+        df1 (DataFrame): A pandas DataFrame containing the defensive stats versus rushing.
+        df2 (DataFrame): A pandas DataFrame containing the defensive stats versus receiving.
+        Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Normalize the scores for each category
+    df1['Weighted Score'] = ((df1['Weighted Score'] - df1['Weighted Score'].min()) / (df1['Weighted Score'].max() - df1['Weighted Score'].min())) * 100
+    df2['Weighted Score'] = ((df2['Weighted Score'] - df2['Weighted Score'].min()) / (df2['Weighted Score'].max() - df2['Weighted Score'].min())) * 100
+
+    # Combine the scores for rushing and receiving
+    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
+
+    # Sort defenses by the combined score in descending order
+    bestDefenses = df1.sort_values(by='Combined Score', ascending=False).head(32)
+
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
+
+
+#TODO: Change function to use schedule vs defense stats
+def find_best_wr_defense_matchups(df1, df2):
+    """
+    Function to find the best wide receiver versus defense matchups based on a combination of receiving and defense stats.
+    Args:
+        df1 (DataFrame): A pandas DataFrame containing the receiving stats.
+        df2 (DataFrame): A pandas DataFrame containing the defensive stats.
+        Returns:
+        bestMatchups (DataFrame): A pandas DataFrame containing the top matchups ranked by a composite score.
+    """
+    # Normalize the scores for each category
+    df1['Weighted Score'] = ((df1['Weighted Score'] - df1['Weighted Score'].min()) / (df1['Weighted Score'].max() - df1['Weighted Score'].min())) * 100
+    df2['Weighted Score'] = ((df2['Weighted Score'] - df2['Weighted Score'].min()) / (df2['Weighted Score'].max() - df2['Weighted Score'].min())) * 100
+
+    # Combine the scores for receiving and defense
+    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
+
+    # Sort matchups by the combined score in descending order
+    bestMatchups = df1.sort_values(by='Combined Score', ascending=False).head(32)
+
+    # Print the top matchups
+    # print(bestMatchups)
+
+    # Optionally, save the top matchups to a new CSV file
+    # bestMatchups.to_csv('official_matchup_stats.csv', index=False)
+
+    return bestMatchups
+
+#TODO: Change function to use schedule vs defense stats
+def find_best_wr_defense_matchups(df1, df2):
+    """
+    Function to find the best wide receiver versus defense matchups based on a combination of receiving and defense stats.
+    Args:
+        df1 (DataFrame): A pandas DataFrame containing the receiving stats.
+        df2 (DataFrame): A pandas DataFrame containing the defensive stats.
+        Returns:
+        bestMatchups (DataFrame): A pandas DataFrame containing the top matchups ranked by a composite score.
+    """
+    # Normalize the scores for each category
+    df1['Weighted Score'] = ((df1['Weighted Score'] - df1['Weighted Score'].min()) / (df1['Weighted Score'].max() - df1['Weighted Score'].min())) * 100
+    df2['Weighted Score'] = ((df2['Weighted Score'] - df2['Weighted Score'].min()) / (df2['Weighted Score'].max() - df2['Weighted Score'].min())) * 100
+
+    # Combine the scores for receiving and defense
+    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
+
+    # Sort matchups by the combined score in descending order
+    bestMatchups = df1.sort_values(by='Combined Score', ascending=False).head(32)
+
+    # Print the top matchups
+    # print(bestMatchups)
+
+    # Optionally, save the top matchups to a new CSV file
+    # bestMatchups.to_csv('official_matchup_stats.csv', index=False)
+
+    return bestMatchups
+
+
+
+def main():
+    # Scrape kicking stats
+    print("Scraping kicking stats...")
+    kicking_df = get_kicking_stats()
+    top_kickers = find_best_kickers(kicking_df)
+    print(top_kickers)  # Print the top kickers
+    print("\n")
+
+    print("Scraping passing stats...")
+    passing_df = get_passing_stats()
+    top_qbs = find_best_qbs(passing_df)
+    print(top_qbs) # Print the top quarterbacks
+    print("\n")
+
+    print("Scraping rushing stats...")
+    rushing_df = get_rushing_stats()
+    top_rbs = find_best_rbs(rushing_df)
+    print(top_rbs) # Print the top running backs
+    print("\n")
+
+    print("Scraping receiving stats...")
+    receiving_df = get_receiving_stats()
+    top_wrs = find_best_wrs(receiving_df)
+    print(top_wrs)  # Print the top wide receivers
+    print("\n")
+
+
+    # Scrape defensive stats versus receiving
+    defense_df = get_defensive_stats_versus_receiving()
+    top_defenses_receiving = find_best_defenses_versus_receiving(defense_df)
+    print(f"Best Defenses Against Receiving:")
+    print(top_defenses_receiving)  # Print the top defenses against receiving
+    print("\n")
+
+    # Scrape defensive stats versus rushing
+    defense_rushing_df = get_defensive_stats_versus_rushing()
+    top_defenses_rushing = find_best_defenses_versus_rushing(defense_rushing_df)
+    print(f"Best Defenses Against Rushing:")
+    print(top_defenses_rushing)  # Print the top defenses against rushing
+    print("\n")
+
+    # Find the best overall defenses
+    best_defenses = get_best_overall_defenses(top_defenses_rushing, top_defenses_receiving)
+    print(f"Best Overall Defenses:")
+    print(best_defenses)  # Print the top overall defenses
+    print("\n")
+
+    # Find the best wide receiver versus defense matchups
+    best_matchups = find_best_wr_defense_matchups(top_wrs, top_defenses_receiving)
+    print(f"Best Wide Receiver vs. Defense Matchups:")
+    print(best_matchups)  # Print the top matchups
+    print("\n")
+
+
+if __name__ == "__main__": 
+    main()
