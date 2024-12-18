@@ -105,15 +105,15 @@ def find_best_kickers(df):
     # Find the top kicker based on total field goal attempts
     top_kicker_att = df['Att'].max()
     if top_kicker_att != 0:
-        df['FG Attempts % of Top'] = df['Att'] / top_kicker_att
+        df['FG Attempts % of Top'] = df['Att'] / top_kicker_att * 100
     else:
         df['FG Attempts % of Top'] = 0  # If no attempts, set to 0
 
     # Adjust the weighted score to include the percentage of top kicker's attempts
-    df['Weighted Score'] *= df['FG Attempts % of Top']
+    df['Weighted Score'] += df['FG Attempts % of Top']
 
     # Rank the top kickers by Weighted Score
-    bestKickers = df.nlargest(10, 'Weighted Score')
+    bestKickers = df.nlargest(32, 'Weighted Score')
 
     # Save the top kickers to a new CSV file
     # bestKickers.to_csv('official_kicker_stats.csv', index=False)
@@ -255,7 +255,7 @@ def find_best_rbs(df):
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
     # Sort running backs by the composite score in descending order
-    bestRBs = df.sort_values(by='Weighted Score', ascending=False).head(100)
+    bestRBs = df.sort_values(by='Weighted Score', ascending=False).head(35)
 
     # Print the top running backs
     # print(bestRBs)
@@ -351,7 +351,7 @@ def find_best_wrs(df):
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
     # Sort wide receivers by the composite score in descending order
-    bestWRs = df.sort_values(by='Weighted Score', ascending=False).head(100)
+    bestWRs = df.sort_values(by='Weighted Score', ascending=False).head(35)
 
     # Print the top wide receivers
     # print(bestWRs)
@@ -409,10 +409,20 @@ def find_best_defenses_versus_receiving(df):
         
     )
 
-    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+    df['Weighted Score'] = 100 - ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min()) * 100)
+
+    # Remove null records or columns
+    df.dropna(axis=0, how='any', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df['Team'] = df['Team'].str.split().str[0]
 
     # Sort defenses by the composite score in descending order
-    bestDefenses = df.sort_values(by='Weighted Score', ascending=True,ignore_index=True).head(32)
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=False,ignore_index=True).head(32)
 
     # Print the top defenses
     # print(bestDefenses)
@@ -468,10 +478,20 @@ def find_best_defenses_versus_rushing(df):
         
     )
 
-    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+    df['Weighted Score'] = 100 - ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min()) * 100)
+    
+    # Remove null records or columns
+    df.dropna(axis=0, how='any', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df['Team'] = df['Team'].str.split().str[0]
 
     # Sort defenses by the composite score in descending order
-    bestDefenses = df.sort_values(by='Weighted Score', ascending=True,ignore_index=True).head(32)
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=False,ignore_index=True).head(32)
 
     # Print the top defenses
     # print(bestDefenses)
@@ -481,24 +501,250 @@ def find_best_defenses_versus_rushing(df):
 
     return bestDefenses
 
-def get_best_overall_defenses(df1, df2):
+def get_interceptions_stats():
+    url = "https://www.nfl.com/stats/team-stats/defense/interceptions/2024/reg/all"
+    defense_data = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        defense = [td.get_text().strip() for td in row.find_all("td")]
+        defense_data.append(defense)
+    df = pd.DataFrame(defense_data, columns=headers)
+    return df
+
+def find_top_defense_interceptions(df):
+    """
+    Function to find the best defenses based on interceptions.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the defensive stats versus interceptions.
+        Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Convert interceptions to numeric values
+    df['INT'] = df['INT'].astype(int)
+    df['INT TD'] = df['INT TD'].astype(int)
+    df['INT Yds'] = df['INT Yds'].astype(int)
+
+    # Calculate a composite score based on weighted stats 
+    df['Score'] = ((df['INT'] * .8)  + 
+    (df['INT TD']) + 
+    (df['INT Yds'] * 0.2)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Remove null records or columns
+    df.dropna(axis=0, how='any', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df['Team'] = df['Team'].str.split().str[0]
+
+    # Sort defenses by the composite score in descending order
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=False,ignore_index=True).head(32)
+
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
+
+def get_special_teams_stats():
+    """
+    Function to scrape special teams stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped special teams stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/special-teams/kickoff-returns/2024/reg/all"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
+
+def find_best_special_teams(df):
+    """
+    Function to find the best special teams based on a composite score of return yards, return touchdowns, and return average.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the special teams stats.
+    Returns:
+        bestSpecialTeams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
+    """
+    # Convert return yards, return touchdowns, and return average to numeric values
+    # print(df.columns)
+    df['Yds'] = df['Yds'].astype(int)
+    df['KRet TD'] = df['KRet TD'].astype(int)
+    df['Avg'] = df['Avg'].astype(float)
+    df['FUM'] = df['FUM'].astype(int)
+    df['Ret'] = df['Ret'].astype(int)
+    df['20+'] = df['20+'].astype(int)
+    df['40+'] = df['40+'].astype(int)
+
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df['Score'] = (
+        (df['Yds'] * 0.4) + 
+        (df['KRet TD'] * 0.6) + 
+        (df['Avg'] * 0.2) +
+        (df['FUM'] * 0.1) +
+        (df['Ret'] * 0.2) +
+        (df['20+'] * 0.2) +
+        (df['40+'] * 0.1)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Sort special teams by the composite score in descending order
+    bestSpecialTeams = df.sort_values(by='Weighted Score', ascending=False).head(32)
+
+    # Print the top special teams
+    # print(bestSpecialTeams)
+
+    # Optionally, save the top special teams to a new CSV file
+    # bestSpecialTeams.to_csv('official_special_teams_stats.csv', index=False)
+
+    return bestSpecialTeams
+
+def get_punting_stats():
+    """
+    Function to scrape punting stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped punting stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/special-teams/punt-returns/2024/reg/all"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
+
+def find_best_punt_receivers(df):
+    """
+    Function to find the best punters based on a composite score of punt yards, punts inside the 20, and net average.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the punting stats.
+        Returns:
+        bestPunters (DataFrame): A pandas DataFrame containing the top punters ranked by a composite score.
+    """
+    # Convert punt yards, punts inside the 20, and net average to numeric values
+    # print(df.columns)
+    df['Yds'] = df['Yds'].astype(int)
+    df['Avg'] = df['Avg'].astype(float)
+    df['PRet T'] = df['PRet T'].astype(int)
+    df['FC'] = df['FC'].astype(int)
+    df['Ret'] = df['Ret'].astype(int)
+    df['20+'] = df['20+'].astype(int)
+    df['40+'] = df['40+'].astype(int)
+
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df['Score'] = (
+        (df['Yds'] * 0.4) + 
+        (df['20+'] * 0.6) + 
+        (df['Avg'] * 0.2) +
+        (df['Avg'] * 0.2) +
+        (df['FC'] * 0.1) +
+        (df['PRet T'] * 0.3) +
+        (df['Ret'] * 0.2) +
+        (df['20+'] * 0.2)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Sort punters by the composite score in descending order
+    bestPunters = df.sort_values(by='Weighted Score', ascending=False).head(32)
+
+    # Print the top punters
+    # print(bestPunters)
+
+    # Optionally, save the top punters to a new CSV file
+    # bestPunters.to_csv('official_punter_stats.csv', index=False)
+
+    return bestPunters
+
+def get_best_special_teams(df1, df2):
+    """
+    Function to find the best special teams based on a combination of return and punting stats.
+    Args:
+        df1 (DataFrame): A pandas DataFrame containing the special teams return stats.
+        df2 (DataFrame): A pandas DataFrame containing the special teams punting stats.
+        Returns:
+        bestSpecialTeams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
+    """
+    # Normalize the scores for each category
+    df1['Weighted Score'] = ((df1['Weighted Score'] - df1['Weighted Score'].min()) / (df1['Weighted Score'].max() - df1['Weighted Score'].min())) * 100
+    df2['Weighted Score'] = ((df2['Weighted Score'] - df2['Weighted Score'].min()) / (df2['Weighted Score'].max() - df2['Weighted Score'].min())) * 100
+
+    # Combine the scores for return and punting
+    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
+    
+    # Remove null records or columns
+    df1.dropna(axis=0, how='any', inplace=True)
+    df1.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df1.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df1['Team'] = df1['Team'].str.split().str[0]
+
+    # Sort special teams by the combined score in descending order
+    bestSpecialTeams = df1.sort_values(by='Combined Score', ascending=False, ignore_index=True).head(32)
+
+    # Print the top special teams
+    # print(bestSpecialTeams)
+
+    # Optionally, save the top special teams to a new CSV file
+    # bestSpecialTeams.to_csv('official_special_teams_stats.csv', index=False)
+
+    return bestSpecialTeams
+
+
+def get_best_overall_defenses(df1, df2, df3):
     """
     Function to find the best defenses overall based on a combination of rushing and receiving stats.
     Args:
         df1 (DataFrame): A pandas DataFrame containing the defensive stats versus rushing.
         df2 (DataFrame): A pandas DataFrame containing the defensive stats versus receiving.
+        df3 (DataFrame): A pandas DataFrame containing the defensive interceptions.
         Returns:
         bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
     """
     # Normalize the scores for each category
     df1['Weighted Score'] = ((df1['Weighted Score'] - df1['Weighted Score'].min()) / (df1['Weighted Score'].max() - df1['Weighted Score'].min())) * 100
     df2['Weighted Score'] = ((df2['Weighted Score'] - df2['Weighted Score'].min()) / (df2['Weighted Score'].max() - df2['Weighted Score'].min())) * 100
+    df3['Weighted Score'] = ((df3['Weighted Score'] - df3['Weighted Score'].min()) / (df3['Weighted Score'].max() - df3['Weighted Score'].min())) * 100
 
     # Combine the scores for rushing and receiving
-    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
+    df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score'] + df3['Weighted Score']
+
+    # Remove null records or columns
+    df1.dropna(axis=0, how='any', inplace=True)
+    df1.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df1.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df1['Team'] = df1['Team'].str.split().str[0]
 
     # Sort defenses by the combined score in descending order
-    bestDefenses = df1.sort_values(by='Combined Score', ascending=False).head(32)
+    bestDefenses = df1.sort_values(by='Combined Score', ascending=False, ignore_index=True).head(32)
 
     # Print the top defenses
     # print(bestDefenses)
@@ -527,7 +773,7 @@ def find_best_wr_defense_matchups(df1, df2):
     df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
 
     # Sort matchups by the combined score in descending order
-    bestMatchups = df1.sort_values(by='Combined Score', ascending=False).head(32)
+    bestMatchups = df1.sort_values(by='Combined Score', ascending=True).head(32)
 
     # Print the top matchups
     # print(bestMatchups)
@@ -538,7 +784,7 @@ def find_best_wr_defense_matchups(df1, df2):
     return bestMatchups
 
 #TODO: Change function to use schedule vs defense stats
-def find_best_wr_defense_matchups(df1, df2):
+def find_best_rb_defense_matchups(df1, df2):
     """
     Function to find the best wide receiver versus defense matchups based on a combination of receiving and defense stats.
     Args:
@@ -555,7 +801,7 @@ def find_best_wr_defense_matchups(df1, df2):
     df1['Combined Score'] = df1['Weighted Score'] + df2['Weighted Score']
 
     # Sort matchups by the combined score in descending order
-    bestMatchups = df1.sort_values(by='Combined Score', ascending=False).head(32)
+    bestMatchups = df1.sort_values(by='Combined Score', ascending=True).head(32)
 
     # Print the top matchups
     # print(bestMatchups)
@@ -607,19 +853,51 @@ def main():
     print(f"Best Defenses Against Rushing:")
     print(top_defenses_rushing)  # Print the top defenses against rushing
     print("\n")
+    
+    # Scrape defensive stats versus interceptions
+    defense_interceptions_df = get_interceptions_stats()
+    top_defenses_interceptions = find_top_defense_interceptions(defense_interceptions_df)
+    print(f"Best Defenses For Interceptions:")
+    print(top_defenses_interceptions)  # Print the top defenses against interceptions
+    print("\n")
+
+    # Scrape special teams stats
+    # print("Scraping special teams stats...")
+    special_teams_df = get_special_teams_stats()
+    top_special_teams = find_best_special_teams(special_teams_df)
+    # print(top_special_teams)  # Print the top special teams
+    # print("\n")
+    
+    # Scrape punting stats
+    #print("Scraping punting stats...")
+    punting_df = get_punting_stats()
+    top_punters = find_best_punt_receivers(punting_df)
+    # print(top_punters)  # Print the top punters
+    # print("\n")
+
+    # Find the best special teams
+    best_special_teams = get_best_special_teams(top_special_teams, top_punters)
+    print(f"Top Return Special Teams:")
+    print(best_special_teams)  # Print the top special teams
+    print("\n")
 
     # Find the best overall defenses
-    best_defenses = get_best_overall_defenses(top_defenses_rushing, top_defenses_receiving)
+    best_defenses = get_best_overall_defenses(top_defenses_rushing, top_defenses_receiving, top_defenses_interceptions)
     print(f"Best Overall Defenses:")
     print(best_defenses)  # Print the top overall defenses
     print("\n")
 
     # Find the best wide receiver versus defense matchups
     best_matchups = find_best_wr_defense_matchups(top_wrs, top_defenses_receiving)
-    print(f"Best Wide Receiver vs. Defense Matchups:")
-    print(best_matchups)  # Print the top matchups
-    print("\n")
+    # print(f"Best Wide Receiver vs. Defense Matchups:")
+    # print(best_matchups)  # Print the top matchups
+    # print("\n")
 
+    # Find the best running back versus defense matchups
+    best_rb_matchups = find_best_rb_defense_matchups(top_rbs, top_defenses_rushing)
+    # print(f"Best Running Back vs. Defense Matchups:")
+    # print(best_rb_matchups)  # Print the top matchups
+    # print("\n")
 
 if __name__ == "__main__": 
     main()
