@@ -1,3 +1,7 @@
+"""
+NFL Stats Analyzer
+Author: Patrick Mejia
+"""
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -154,11 +158,12 @@ def find_best_qbs(df):
         best_qbs (DataFrame): A pandas DataFrame containing the top quarterbacks ranked by a composite score.
     """
     # Convert passing yards and touchdowns to numeric values
-    df["Pass Yards"] = df["Pass Yds"].str.replace(",", "").astype(int)
-    df["TD"] = df["TD"].astype(int)
-    df["Yds/Att"] = df["Yds/Att"].astype(float)
-    df["Cmp %"] = df["Cmp %"].astype(float)
-    df["INT"] = df["INT"].astype(int)
+    # Convert relevant columns to numeric values
+    df["Pass Yards"] = pd.to_numeric(df["Pass Yds"].str.replace(",", ""), errors='coerce').fillna(0).astype(int)
+    df["TD"] = pd.to_numeric(df["TD"], errors='coerce').fillna(0).astype(int)
+    df["Yds/Att"] = pd.to_numeric(df["Yds/Att"], errors='coerce').fillna(0).astype(float)
+    df["Cmp %"] = pd.to_numeric(df["Cmp %"], errors='coerce').fillna(0).astype(float)
+    df["INT"] = pd.to_numeric(df["INT"], errors='coerce').fillna(0).astype(int)
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df["Score"] = (
@@ -357,12 +362,13 @@ def find_best_wrs(df):
         best_wrs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
     """
     # Convert receiving yards, receptions, and touchdowns to numeric values
-    df["Tgts"] = df["Tgts"].astype(int)
-    df["Rec"] = df["Rec"].astype(int)
-    df["Yds"] = df["Yds"].astype(float)
-    df["TD"] = df["TD"].astype(int)
-    df["20+"] = df["20+"].astype(int)
-    df["40+"] = df["40+"].astype(int)
+    # Convert relevant columns to numeric values
+    df["Tgts"] = pd.to_numeric(df["Tgts"], errors='coerce').fillna(0).astype(int)
+    df["Rec"] = pd.to_numeric(df["Rec"], errors='coerce').fillna(0).astype(int)
+    df["Yds"] = pd.to_numeric(df["Yds"].str.replace(",", ""), errors='coerce').fillna(0).astype(float)
+    df["TD"] = pd.to_numeric(df["TD"], errors='coerce').fillna(0).astype(int)
+    df["20+"] = pd.to_numeric(df["20+"], errors='coerce').fillna(0).astype(int)
+    df["40+"] = pd.to_numeric(df["40+"], errors='coerce').fillna(0).astype(int)
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df["Score"] = (
