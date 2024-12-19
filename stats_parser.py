@@ -1061,14 +1061,14 @@ def main():
     # Scrape defensive stats versus receiving
     defense_df = get_defensive_stats_versus_receiving()
     top_defenses_receiving = find_best_defenses_versus_receiving(defense_df)
-    print(f"Best Defenses Against Receiving:")
+    print("Best Defenses Against Receiving:")
     print(top_defenses_receiving)  # Print the top defenses against receiving
     print("\n")
 
     # Scrape defensive stats versus rushing
     defense_rushing_df = get_defensive_stats_versus_rushing()
     top_defenses_rushing = find_best_defenses_versus_rushing(defense_rushing_df)
-    print(f"Best Defenses Against Rushing:")
+    print("Best Defenses Against Rushing:")
     print(top_defenses_rushing)  # Print the top defenses against rushing
     print("\n")
 
@@ -1077,21 +1077,21 @@ def main():
     top_defenses_interceptions = find_top_defense_interceptions(
         defense_interceptions_df
     )
-    print(f"Best Defenses For Interceptions:")
+    print("Best Defenses For Interceptions:")
     print(top_defenses_interceptions)  # Print the top defenses against interceptions
     print("\n")
 
     # Scrape defensive stats fumbles
     defense_fumbles_df = get_fumbles_stats()
     top_defenses_fumbles = find_top_defense_fumbles(defense_fumbles_df)
-    print(f"Best Defenses For Fumbles:")
+    print("Best Defenses For Fumbles:")
     print(top_defenses_fumbles)  # Print the top defenses against fumbles
     print("\n")
 
     # Scrape defenses for tackles
     defense_tackles_df = get_tackles_stats()
     top_defenses_tackles = find_top_defense_tackles(defense_tackles_df)
-    print(f"Best Defenses For Tackles:")
+    print("Best Defenses For Tackles:")
     print(top_defenses_tackles)  # Print the top defenses against tackles
     print("\n")
 
@@ -1111,7 +1111,7 @@ def main():
 
     # Find the best special teams
     best_special_teams = get_best_special_teams(top_special_teams, top_punters)
-    print(f"Top Return Special Teams:")
+    print("Top Return Special Teams:")
     print(best_special_teams)  # Print the top special teams
     print("\n")
 
@@ -1119,19 +1119,19 @@ def main():
     best_defenses = get_best_overall_defenses(
         top_defenses_rushing, top_defenses_receiving, top_defenses_interceptions
     )
-    print(f"Best Overall Defenses:")
+    print("Best Overall Defenses:")
     print(best_defenses)  # Print the top overall defenses
     print("\n")
 
     # Find the best wide receiver versus defense matchups
     # best_matchups = find_best_wr_defense_matchups(top_wrs, top_defenses_receiving)
-    # print(f"Best Wide Receiver vs. Defense Matchups:")
+    # print("Best Wide Receiver vs. Defense Matchups:")
     # print(best_matchups)  # Print the top matchups
     # print("\n")
 
     # Find the best running back versus defense matchups
     # best_rb_matchups = find_best_rb_defense_matchups(top_rbs, top_defenses_rushing)
-    # print(f"Best Running Back vs. Defense Matchups:")
+    # print("Best Running Back vs. Defense Matchups:")
     # print(best_rb_matchups)  # Print the top matchups
     # print("\n")
 
