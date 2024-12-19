@@ -69,7 +69,7 @@ def find_best_kickers(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the kicking stats.
     Returns:
-        bestKickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
+        best_kickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
     """
     # List of distance ranges with corresponding weights
     distance_ranges = {
@@ -88,8 +88,7 @@ def find_best_kickers(df):
     # Iterate through the distance ranges and calculate weighted scores
     for distance, weight in distance_ranges.items():
         made_col = f"{distance} > A-M"
-        att_col = f"{distance} > A-M"
-
+        
         # Split made/attempted values into separate columns for made and attempted
         made_values = (
             df[made_col].str.split("/", expand=True)[0].astype(float).fillna(0)
@@ -119,12 +118,12 @@ def find_best_kickers(df):
     df["Weighted Score"] += df["FG Attempts % of Top"]
 
     # Rank the top kickers by Weighted Score
-    bestKickers = df.nlargest(32, "Weighted Score")
+    best_kickers = df.nlargest(32, "Weighted Score")
 
     # Save the top kickers to a new CSV file
-    # bestKickers.to_csv('official_kicker_stats.csv', index=False)
+    # best_kickers.to_csv('official_kicker_stats.csv', index=False)
 
-    return bestKickers
+    return best_kickers
 
 
 def get_passing_stats():
@@ -152,7 +151,7 @@ def find_best_qbs(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the passing stats.
     Returns:
-        best_QBs (DataFrame): A pandas DataFrame containing the top quarterbacks ranked by a composite score.
+        best_qbs (DataFrame): A pandas DataFrame containing the top quarterbacks ranked by a composite score.
     """
     # Convert passing yards and touchdowns to numeric values
     df["Pass Yards"] = df["Pass Yds"].str.replace(",", "").astype(int)
@@ -175,15 +174,15 @@ def find_best_qbs(df):
     ) * 100
 
     # Sort quarterbacks by the composite score in descending order
-    best_QBs = df.sort_values(by="Weighted Score", ascending=False).head(25)
+    best_qbs = df.sort_values(by="Weighted Score", ascending=False).head(25)
 
     # Print the top quarterbacks
-    # print(best_QBs)
+    # print(best_qbs)
 
     # Optionally, save the top quarterbacks to a new CSV file
-    # best_QBs.to_csv('official_qb_stats.csv', index=False)
+    # best_qbs.to_csv('official_qb_stats.csv', index=False)
 
-    return best_QBs
+    return best_qbs
 
 
 def get_rushing_stats():
@@ -254,7 +253,7 @@ def find_best_rbs(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the rushing stats.
         Returns:
-        best_RBs (DataFrame): A pandas DataFrame containing the top running backs ranked by a composite score.
+        best_rbs (DataFrame): A pandas DataFrame containing the top running backs ranked by a composite score.
     """
     # Convert rushing yards and touchdowns to numeric values
     df["Rush Yds"] = df["Rush Yds"].str.replace(",", "").astype(int)
@@ -275,15 +274,15 @@ def find_best_rbs(df):
     ) * 100
 
     # Sort running backs by the composite score in descending order
-    best_RBs = df.sort_values(by="Weighted Score", ascending=False).head(35)
+    best_rbs = df.sort_values(by="Weighted Score", ascending=False).head(35)
 
     # Print the top running backs
-    # print(best_RBs)
+    # print(best_rbs)
 
     # Optionally, save the top running backs to a new CSV file
-    # best_RBs.to_csv('official_rb_stats.csv', index=False)
+    # best_rbs.to_csv('official_rb_stats.csv', index=False)
 
-    return best_RBs
+    return best_rbs
 
 
 def get_receiving_stats():
@@ -355,7 +354,7 @@ def find_best_wrs(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the receiving stats.
     Returns:
-        best_WRs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
+        best_wrs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
     """
     # Convert receiving yards, receptions, and touchdowns to numeric values
     df["Tgts"] = df["Tgts"].astype(int)
@@ -380,15 +379,15 @@ def find_best_wrs(df):
     ) * 100
 
     # Sort wide receivers by the composite score in descending order
-    best_WRs = df.sort_values(by="Weighted Score", ascending=False).head(35)
+    best_wrs = df.sort_values(by="Weighted Score", ascending=False).head(35)
 
     # Print the top wide receivers
-    # print(best_WRs)
+    # print(best_wrs)
 
     # Optionally, save the top wide receivers to a new CSV file
-    # best_WRs.to_csv('official_wr_stats.csv', index=False)
+    # best_wrs.to_csv('official_wr_stats.csv', index=False)
 
-    return best_WRs
+    return best_wrs
 
 
 def get_defensive_stats_versus_receiving():
@@ -757,7 +756,7 @@ def find_best_special_teams(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the special teams stats.
     Returns:
-        bestSpecialTeams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
+        best_special_teams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
     """
     # Convert return yards, return touchdowns, and return average to numeric values
     # print(df.columns)
@@ -785,15 +784,15 @@ def find_best_special_teams(df):
     ) * 100
 
     # Sort special teams by the composite score in descending order
-    bestSpecialTeams = df.sort_values(by="Weighted Score", ascending=False).head(32)
+    best_special_teams = df.sort_values(by="Weighted Score", ascending=False).head(32)
 
     # Print the top special teams
-    # print(bestSpecialTeams)
+    # print(best_special_teams)
 
     # Optionally, save the top special teams to a new CSV file
-    # bestSpecialTeams.to_csv('official_special_teams_stats.csv', index=False)
+    # best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
 
-    return bestSpecialTeams
+    return best_special_teams
 
 
 def get_punting_stats():
@@ -821,7 +820,7 @@ def find_best_punt_receivers(df):
     Args:
         df (DataFrame): A pandas DataFrame containing the punting stats.
         Returns:
-        bestPunters (DataFrame): A pandas DataFrame containing the top punters ranked by a composite score.
+        best_punters (DataFrame): A pandas DataFrame containing the top punters ranked by a composite score.
     """
     # Convert punt yards, punts inside the 20, and net average to numeric values
     # print(df.columns)
@@ -850,15 +849,15 @@ def find_best_punt_receivers(df):
     ) * 100
 
     # Sort punters by the composite score in descending order
-    bestPunters = df.sort_values(by="Weighted Score", ascending=False).head(32)
+    best_punters = df.sort_values(by="Weighted Score", ascending=False).head(32)
 
     # Print the top punters
-    # print(bestPunters)
+    # print(best_punters)
 
     # Optionally, save the top punters to a new CSV file
-    # bestPunters.to_csv('official_punter_stats.csv', index=False)
+    # best_punters.to_csv('official_punter_stats.csv', index=False)
 
-    return bestPunters
+    return best_punters
 
 
 def get_best_special_teams(df1, df2):
@@ -868,7 +867,7 @@ def get_best_special_teams(df1, df2):
         df1 (DataFrame): A pandas DataFrame containing the special teams return stats.
         df2 (DataFrame): A pandas DataFrame containing the special teams punting stats.
         Returns:
-        bestSpecialTeams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
+        best_special_teams (DataFrame): A pandas DataFrame containing the top special teams ranked by a composite score.
     """
     # Normalize the scores for each category
     df1["Weighted Score"] = (
@@ -894,17 +893,17 @@ def get_best_special_teams(df1, df2):
     df1["Team"] = df1["Team"].str.split().str[0]
 
     # Sort special teams by the combined score in descending order
-    bestSpecialTeams = df1.sort_values(
+    best_special_teams = df1.sort_values(
         by="Combined Score", ascending=False, ignore_index=True
     ).head(32)
 
     # Print the top special teams
-    # print(bestSpecialTeams)
+    # print(best_special_teams)
 
     # Optionally, save the top special teams to a new CSV file
-    # bestSpecialTeams.to_csv('official_special_teams_stats.csv', index=False)
+    # best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
 
-    return bestSpecialTeams
+    return best_special_teams
 
 
 def get_best_overall_defenses(df1, df2, df3):
@@ -1031,6 +1030,9 @@ def find_best_rb_defense_matchups(df1, df2):
 
 
 def main():
+    """
+    Main function to scrape and analyze NFL player and team stats.
+    """
     # Scrape kicking stats
     print("Scraping kicking stats...")
     kicking_df = get_kicking_stats()
