@@ -556,6 +556,126 @@ def find_top_defense_interceptions(df):
 
     return bestDefenses
 
+def get_fumbles_stats():
+    """
+    Function to scrape fumbles stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped fumbles stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/defense/fumbles/2024/reg/all"
+    defense_data = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        defense = [td.get_text().strip() for td in row.find_all("td")]
+        defense_data.append(defense)
+    df = pd.DataFrame(defense_data, columns=headers)
+    return df
+
+def find_top_defense_fumbles(df):
+    """
+    Function to find the best defenses based on fumbles.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the defensive stats versus fumbles.
+        Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Convert fumbles to numeric values
+    df['FF'] = df['FF'].astype(int)
+    df['FR'] = df['FR'].astype(int)
+    df['FR TD'] = df['FR TD'].astype(int)
+
+    # Calculate a composite score based on weighted stats 
+    df['Score'] = ((df['FF'] * .5)  + 
+    (df['FR'] * 0.5) + 
+    (df['FR TD'] * 0.3)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Remove null records or columns
+    df.dropna(axis=0, how='any', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df['Team'] = df['Team'].str.split().str[0]
+
+    # Sort defenses by the composite score in descending order
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=False,ignore_index=True).head(32)
+
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
+
+def get_tackles_stats():
+    """
+    Function to scrape tackles stats from the NFL website.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped tackles stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/defense/tackles/2024/reg/all"
+    defense_data = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        defense = [td.get_text().strip() for td in row.find_all("td")]
+        defense_data.append(defense)
+    df = pd.DataFrame(defense_data, columns=headers)
+    return df
+
+def find_top_defense_tackles(df):
+    """
+    Function to find the best defenses based on tackles.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the defensive stats versus tackles.
+        Returns:
+        bestDefenses (DataFrame): A pandas DataFrame containing the top defenses ranked by a composite score.
+    """
+    # Convert tackles to numeric values
+    df['Sck'] = df['Sck'].astype(int)
+    df['Solo'] = df['Solo'].astype(int)
+    df['Comb'] = df['Comb'].astype(float)
+
+    # Calculate a composite score based on weighted stats 
+    df['Score'] = ((df['Sck'] * .5)  + 
+    (df['Solo'] * 0.3) + 
+    (df['Comb'] * 0.5)
+    )
+
+    df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
+
+    # Remove null records or columns
+    df.dropna(axis=0, how='any', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
+
+    # Remove newline characters from the dataframe
+    df.replace('\n', '', regex=True, inplace=True)
+
+    # Remove everything after the first word for the team name
+    df['Team'] = df['Team'].str.split().str[0]
+
+    # Sort defenses by the composite score in descending order
+    bestDefenses = df.sort_values(by='Weighted Score', ascending=False,ignore_index=True).head(32)
+
+    # Print the top defenses
+    # print(bestDefenses)
+
+    # Optionally, save the top defenses to a new CSV file
+    # bestDefenses.to_csv('official_defense_stats.csv', index=False)
+
+    return bestDefenses
+
 def get_special_teams_stats():
     """
     Function to scrape special teams stats from the NFL website.
@@ -605,6 +725,7 @@ def find_best_special_teams(df):
 
     df['Weighted Score'] = ((df['Score'] - df['Score'].min()) / (df['Score'].max() - df['Score'].min())) * 100
 
+    
     # Sort special teams by the composite score in descending order
     bestSpecialTeams = df.sort_values(by='Weighted Score', ascending=False).head(32)
 
@@ -859,6 +980,20 @@ def main():
     top_defenses_interceptions = find_top_defense_interceptions(defense_interceptions_df)
     print(f"Best Defenses For Interceptions:")
     print(top_defenses_interceptions)  # Print the top defenses against interceptions
+    print("\n")
+    
+    # Scrape defensive stats fumbles
+    defense_fumbles_df = get_fumbles_stats()
+    top_defenses_fumbles = find_top_defense_fumbles(defense_fumbles_df)
+    print(f"Best Defenses For Fumbles:")
+    print(top_defenses_fumbles)  # Print the top defenses against fumbles
+    print("\n")
+
+    #Scrape defenses for tackles
+    defense_tackles_df = get_tackles_stats()
+    top_defenses_tackles = find_top_defense_tackles(defense_tackles_df)
+    print(f"Best Defenses For Tackles:")
+    print(top_defenses_tackles)  # Print the top defenses against tackles
     print("\n")
 
     # Scrape special teams stats
