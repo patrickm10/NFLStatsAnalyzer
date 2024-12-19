@@ -14,7 +14,7 @@ def get_stats(url):
         DataFrame: A pandas DataFrame containing the scraped stats.
     """
     # Send a GET request to the URL
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
 
     # Check if the request was successful
     if response.status_code != 200:
@@ -50,7 +50,7 @@ def get_kicking_stats():
     Returns: df (DataFrame): A pandas DataFrame containing the scraped kicking stats.
     """
     url = "https://www.nfl.com/stats/player-stats/category/field-goals/2024/reg/all/kickingfgmade/desc"
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -133,7 +133,7 @@ def get_passing_stats():
         df (DataFrame): A pandas DataFrame containing the scraped passing stats.
     """
     url = "https://www.nfl.com/stats/player-stats/category/passing/2024/reg/all/passingyards/desc"
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -204,7 +204,7 @@ def get_rushing_stats():
         url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
 
         # Make the request
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         if response.status_code != 200:
             print(
                 f"Failed to retrieve data from {url}. Status code: {response.status_code}"
@@ -305,7 +305,7 @@ def get_receiving_stats():
         url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
 
         # Make the request
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         if response.status_code != 200:
             print(
                 f"Failed to retrieve data from {url}. Status code: {response.status_code}"
@@ -398,7 +398,7 @@ def get_defensive_stats_versus_receiving():
     """
     url = "https://www.nfl.com/stats/team-stats/defense/receiving/2024/reg/all"
     defense_data = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -475,7 +475,7 @@ def get_defensive_stats_versus_rushing():
     """
     url = "https://www.nfl.com/stats/team-stats/defense/rushing/2024/reg/all"
     defense_data = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -550,7 +550,7 @@ def get_interceptions_stats():
     """
     url = "https://www.nfl.com/stats/team-stats/defense/interceptions/2024/reg/all"
     defense_data = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -613,7 +613,7 @@ def get_fumbles_stats():
     """
     url = "https://www.nfl.com/stats/team-stats/defense/fumbles/2024/reg/all"
     defense_data = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -676,7 +676,7 @@ def get_tackles_stats():
     """
     url = "https://www.nfl.com/stats/team-stats/defense/tackles/2024/reg/all"
     defense_data = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -738,7 +738,7 @@ def get_special_teams_stats():
         df (DataFrame): A pandas DataFrame containing the scraped special teams stats.
     """
     url = "https://www.nfl.com/stats/team-stats/special-teams/kickoff-returns/2024/reg/all"
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
@@ -802,7 +802,7 @@ def get_punting_stats():
         df (DataFrame): A pandas DataFrame containing the scraped punting stats.
     """
     url = "https://www.nfl.com/stats/team-stats/special-teams/punt-returns/2024/reg/all"
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="d3-o-table")
     headers = [th.get_text().strip() for th in table.find_all("th")]
