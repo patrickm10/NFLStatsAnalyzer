@@ -88,7 +88,7 @@ def find_best_kickers(df):
     # Iterate through the distance ranges and calculate weighted scores
     for distance, weight in distance_ranges.items():
         made_col = f"{distance} > A-M"
-        
+
         # Split made/attempted values into separate columns for made and attempted
         made_values = (
             df[made_col].str.split("/", expand=True)[0].astype(float).fillna(0)
