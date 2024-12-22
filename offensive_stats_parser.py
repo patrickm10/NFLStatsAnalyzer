@@ -6,6 +6,68 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+def get_team_td_stats():
+    """
+    Function to scrape kicking stats from the NFL website.
+    Returns: df (DataFrame): A pandas DataFrame containing the scraped kicking stats.
+    """
+    url = "https://www.nfl.com/stats/team-stats/offense/scoring/2024/reg/all"
+    response = requests.get(url, timeout=10)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    return df
+
+def find_best_team_td(df):
+    """
+    Function to find the best kicker based on a kicker score that incorporates field goal percentage,
+    distance ranges, and field goal attempts as a percentage of the top kicker's attempts.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the kicking stats.
+    Returns:
+        best_kickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
+    """
+   
+    # Initialize the weighted score column and ensure FGM and Att are integers
+    df["Weighted Score"] = 0
+    #print(df.columns)
+    df["Team"] = df["Team"].str.split().str[0]
+    df["Rsh TD"] = df["Rsh TD"].astype(int)
+    df["Rec TD"] = df["Rec TD"].astype(int)
+    df["Tot TD"] = df["Tot TD"].astype(int)
+    df["2-PT"] = df["2-PT"].astype(int)
+
+    df["Score"] = (
+        (df["Rsh TD"] * .25)
+        + (df["Rec TD"] * .25)
+        + (df["Tot TD"] * .4)
+        + (df["2-PT"] * .1)
+    )
+
+    df["Weighted Score"] = (
+        (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
+    ) * 100
+
+    # Sort quarterbacks by the composite score in descending order
+    best_team_td = df.sort_values(by="Weighted Score", ascending=False,ignore_index=True).head(25)
+
+    # Print the top quarterbacks
+    # print(best_team_td)
+
+    # Optionally, save the top quarterbacks to a new CSV file
+    # best_team_td.to_csv('official_team_td_stats.csv', index=False)
+
+    return best_team_td
+
+
+    
+
+
 def get_kicking_stats():
     """
     Function to scrape kicking stats from the NFL website.
@@ -451,6 +513,12 @@ def main():
     receiving_df = get_receiving_stats()
     top_wrs = find_best_wrs(receiving_df)
     print(top_wrs)  # Print the top wide receivers
+    print("\n")
+
+    print("Scraping Team TD stats...")
+    team_td_df = get_team_td_stats()
+    top_team_td = find_best_team_td(team_td_df)
+    print(top_team_td)  # Print the top wide receivers
     print("\n")
 
     # Find the best wide receiver versus defense matchups
