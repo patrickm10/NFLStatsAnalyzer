@@ -19,10 +19,11 @@ NFC_West = ["Rams", "Seahawks", "Cardinals","49ers"]
 #display_data("official_wr_stats.csv", wr_frame)  # Replace with actual file paths
 #display_data("official_kicker_stats.csv", kicker_frame)  # Replace with actual file paths
 
-# Function to create a Treeview for displaying CSV data
+# Function to create a Treeview for displaying CSV data with sortable columns
 def display_data(csv_file, parent_frame):
     # Load the CSV file into a pandas DataFrame
     df = pd.read_csv(csv_file)
+    original_df = df.copy()  # Save the original order for resetting
 
     # Create a Treeview widget to display the DataFrame
     tree = ttk.Treeview(parent_frame)
@@ -30,10 +31,34 @@ def display_data(csv_file, parent_frame):
     # Define the columns of the Treeview based on the DataFrame columns
     tree["columns"] = list(df.columns)
 
+    # Track the sorting state of each column
+    sort_states = {col: None for col in df.columns}  # None, "asc", "desc"
+
+    # Function to handle column sorting
+    def sort_column(col):
+        nonlocal df
+        if sort_states[col] is None or sort_states[col] == "desc":
+            # Sort ascending
+            df = df.sort_values(by=col, ascending=True)
+            sort_states[col] = "asc"
+        elif sort_states[col] == "asc":
+            # Sort descending
+            df = df.sort_values(by=col, ascending=False)
+            sort_states[col] = "desc"
+        else:
+            # Reset to original order
+            df = original_df.copy()
+            sort_states[col] = None
+
+        # Clear and repopulate the Treeview
+        tree.delete(*tree.get_children())
+        for index, row in df.iterrows():
+            tree.insert("", "end", values=list(row))
+
     # Format the columns
     tree.column("#0", width=0, stretch=tk.NO)  # Hide the default column
     for col in df.columns:
-        tree.heading(col, text=col)  # Set column headers
+        tree.heading(col, text=col, command=lambda c=col: sort_column(c))  # Bind header click
         tree.column(col, width=100)  # Set column width
 
     # Insert data into the Treeview
@@ -77,13 +102,12 @@ notebook.add(wr_frame, text="Wide Receivers")
 notebook.add(kicker_frame, text="Kickers")
 notebook.add(defense_frame, text="Defense")
 
-# Display data in each tab
+
 display_data("official_qb_stats.csv", qb_frame)  # Replace with actual file paths
 display_data("official_rb_stats.csv", rb_frame)  # Replace with actual file paths
 display_data("official_wr_stats.csv", wr_frame)  # Replace with actual file paths
 display_data("official_kicker_stats.csv", kicker_frame)  # Replace with actual file paths
-display_data("official_defense_stats.csv", defense_frame)  # Replace with actual file paths
-
+display_data("official_defense_stats.csv", defense_frame) 
 # Pack the Notebook widget to expand and fill the window
 notebook.pack(expand=True, fill=tk.BOTH)
 
