@@ -9,6 +9,7 @@ Options to filter data by team, position, and week.
 
 ### Comprehensive Data Retrieval:
 Scrapes stats for all NFL positional players, including QBs, RBs, WRs, and more.
+
 Includes metrics like yards, touchdowns, and interceptions.
 
 ### Weekly Stats stored in the [position]_weekly_stats folder in this repository.
