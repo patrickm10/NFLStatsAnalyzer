@@ -2,9 +2,6 @@
 ## Overview
 NFLStatsAnalyzer is a Python-based tool designed to scrape and analyze weekly NFL player statistics for fantasy football or personal analysis. It features a GUI built with Tkinter for ease of use, enabling you to retrieve, view, and save player stats effortlessly.
 
-![Image Placeholder](https://athlonsports.com/.image/t_share/MTgyMDE4NzExNDgzMDY1Njcy/image-placeholder-title.jpg)
-
-
 ## Features
 ### User-Friendly GUI:
 Built with Tkinter for seamless interaction.
