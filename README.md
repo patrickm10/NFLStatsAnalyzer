@@ -14,3 +14,25 @@ Includes metrics like yards, touchdowns, and interceptions.
 Data Export:
 
 Saves the retrieved data in CSV format for analysis in external tools.
+
+## Prerequisites
+Python Version: Python 3.8 or higher.
+
+## Required Libraries:
+requests
+beautifulsoup4
+pandas
+tkinter (pre-installed with Python)
+
+## Install dependencies:
+Copy code
+pip install -r requirements.txt  
+python nfl_stats_analyzer.py  
+python GUI.py
+Use the GUI:
+
+Select filters like team, position, and week.
+Click "Scrape Data" to retrieve player stats.
+Export Data:
+
+Use the "Save to CSV" option to save the data for further analysis.
