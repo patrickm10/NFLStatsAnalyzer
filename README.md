@@ -12,7 +12,7 @@ Scrapes stats for all NFL positional players, including QBs, RBs, WRs, and more.
 
 Includes metrics like yards, touchdowns, and interceptions.
 
-### Weekly Stats stored in the [position]_weekly_stats folder in this repository.
+Weekly Stats stored in the [position]_weekly_stats folder in this repository.
 
 ### Data Export:
 Saves the retrieved data in CSV format for analysis in external tools.
