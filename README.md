@@ -24,7 +24,6 @@ pandas
 tkinter (pre-installed with Python)
 
 ## Install dependencies:
-### Copy code
 pip install -r requirements.txt  
 python nfl_stats_analyzer.py  
 
