@@ -16,7 +16,8 @@ Saves the retrieved data in CSV format for analysis in external tools.
 
 ## Prerequisites
 Python Version: Python 3.8 or higher.
-Required Libraries:
+
+## Required Libraries:
 requests
 beautifulsoup4
 pandas
