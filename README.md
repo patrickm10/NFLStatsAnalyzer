@@ -48,7 +48,11 @@ NFLStatsAnalyzer/
 
 ## Future Enhancements
 Add historical data scraping.
+
 Introduce data visualization in the GUI.
+
 Move csv files to the cloud.
+
 Implement advanced filters and error handling.
+
 Add more (Going to create a project based on these)
