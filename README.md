@@ -49,8 +49,8 @@ NFLStatsAnalyzer/
   |— wr_weekly_stats
   |— nfl_metadata
 |— Scripts/
-  |— offensive_stats_analyzer.py
-  |— defensive_stats_analyzer.py  
+  |— offensive_stats_parser.py
+  |— defensive_stats_parser.py  
   |— GUI.py
 
 
