@@ -42,15 +42,25 @@ Use the "Save to CSV" option to save the data for further analysis.
 ## File Structure
 NFLStatsAnalyzer/  
 |— README.md  
+
 |— requirements.txt  
+
 |— data/
+
 |— qb_weekly_stats
+
 |— rb_weekly_stats
+
 |— wr_weekly_stats
+
 |— nfl_metadata
+
 |— Scripts/
+
 |— offensive_stats_parser.py
+
 |— defensive_stats_parser.py  
+
 |— GUI.py
 
 
