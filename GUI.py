@@ -44,14 +44,14 @@ NFL_Teams = [
 ]
 
 
-AFC_East = NFL_Teams[0:4]
-AFC_North = NFL_Teams[4:8]
-AFC_South = NFL_Teams[8:12]
-AFC_West = NFL_Teams[12:16]
-NFC_East = NFL_Teams[16:20]
-NFC_North = NFL_Teams[20:24]
-NFC_South = NFL_Teams[24:28]
-NFC_West = NFL_Teams[28:32]
+AFC_East = NFL_Teams[0:3]
+AFC_North = NFL_Teams[4:7]
+AFC_South = NFL_Teams[8:11]
+AFC_West = NFL_Teams[12:15]
+NFC_East = NFL_Teams[16:19]
+NFC_North = NFL_Teams[20:23]
+NFC_South = NFL_Teams[24:27]
+NFC_West = NFL_Teams[28:31]
 
 # Function to calculate a color based on value
 def calculate_color(value, min_value, max_value):
