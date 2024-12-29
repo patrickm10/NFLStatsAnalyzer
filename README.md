@@ -65,6 +65,8 @@ NFLStatsAnalyzer/
 
 
 ## Future Enhancements
+Top 5 most likely to score
+
 Add historical data scraping.
 
 Introduce data visualization in the GUI.
@@ -72,5 +74,28 @@ Introduce data visualization in the GUI.
 Move csv files to the cloud.
 
 Implement advanced filters and error handling.
+
+Add if a team passes or throws more
+
+Add playoff predictions
+
+
+## GUI DESIGN
+
+Year selection in top left
+
+Import player photos when they are clicked
+
+Search bar at top of display
+
+Best positional matchups
+
+Easiest defensive matchups
+
+Wide receiver vs cb
+
+
+
+
 
 Add more (Going to create a project based on these)
