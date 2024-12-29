@@ -340,26 +340,6 @@ notebook.pack(expand=True, fill=tk.BOTH)
 # Start the Tkinter event loop
 window.mainloop()
 
-    "New England Patriots", "Buffalo Bills", "Miami Dolphins", "New York Jets", 
-    "Pittsburgh Steelers", "Baltimore Ravens", "Cincinnati Bengals", "Cleveland Browns", 
-    "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Tennessee Titans", 
-    "Kansas City Chiefs", "Los Angeles Chargers", "Denver Broncos", "Las Vegas Raiders", 
-    "Philadelphia Eagles", "Washington Commanders", "Dallas Cowboys", "New York Giants", 
-    "Detroit Lions", "Minnesota Vikings", "Green Bay Packers", "Chicago Bears",
-   "Tampa Bay Buccaneers", "Atlanta Falcons", "New Orleans Saints", "Carolina Panthers", 
-    "Los Angeles Rams", "Seattle Seahawks", "Arizona Cardinals", "San Francisco 49ers"
-]
-
-
-AFC_East = ["Patriots", "Bills", "Dolphins", "Jets"]
-AFC_North = ["Steelers", "Ravens", "Bengals", "Browns"]
-AFC_South = ["Texans", "Colts", "Jaguars", "Titans"]
-AFC_West = ["Chiefs", "Chargers", "Broncos", "Raiders"]
-NFC_East = ["Eagles", "Commanders", "Cowboys", "Giants"]
-NFC_North = ["Lions", "Vikings", "Packers", "Bears"]
-NFC_South = ["Buccaneers", "Falcons", "Saints", "Panthers"]
-NFC_West = ["Rams", "Seahawks", "Cardinals", "49ers"]
-
 # Function to calculate a color based on value
 def calculate_color(value, min_value, max_value):
     if pd.isna(value) or max_value == min_value:
