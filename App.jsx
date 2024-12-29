@@ -17,7 +17,11 @@ const App = () => {
   const [activeTab, setActiveTab] = useState("stats");
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
+  const [careerStats, setCareerStats] = useState(null);
   const [selectedDivision, setSelectedDivision] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
+  const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
+  const [currentPlayer, setCurrentPlayer] = useState(""); // Track current player for career stats
 
   const divisions = {
     "AFC East": NFL_Teams.slice(0, 4),
@@ -48,6 +52,34 @@ const App = () => {
       });
   };
 
+  const fetchCareerStats = (playerName) => {
+    const formattedName = playerName.replace(/\s+/g, '_');
+    const filePath = `/wr_stats/career_stats/${formattedName}_career_receiving_stats.csv`;
+    console.log(filePath);
+
+    setCurrentPlayer(playerName); // Update the current player name
+
+    fetch(filePath)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then((csvText) => {
+        const parsedData = Papa.parse(csvText, { header: true });
+        if (parsedData.data && parsedData.data.length > 0) {
+          setCareerStats(parsedData.data || []);
+        } else {
+          console.log("Fail: No data fetched for player:", playerName);
+          setCareerStats([]); // Set empty array if no career stats found
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading career stats file:", error);
+      });
+  };
+
   useEffect(() => {
     if (activeTab === "stats") {
       fetchStats("official_qb_stats.csv");
@@ -64,10 +96,102 @@ const App = () => {
     }
   }, [activeTab]);
 
+  const handleSort = (column) => {
+    let direction = "ascending";
+    if (sortConfig.key === column && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+
+    const sortedData = [...data].sort((a, b) => {
+      const aValue = isNaN(a[column]) ? a[column] : parseFloat(a[column]);
+      const bValue = isNaN(b[column]) ? b[column] : parseFloat(b[column]);
+
+      if (aValue < bValue) return direction === "ascending" ? -1 : 1;
+      if (aValue > bValue) return direction === "ascending" ? 1 : -1;
+      return 0;
+    });
+
+    setData(sortedData);
+    setSortConfig({ key: column, direction });
+  };
+
+  const renderTable = () => {
+    // Filter data based on searchQuery (searching for player name)
+    const filteredData = data.filter((row) =>
+      row.Player.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            {columns.map((col, index) => (
+              <th key={index} onClick={() => handleSort(col)}>
+                {col}
+                {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((row, rowIndex) => {
+            const playerName = row.Player;
+            return (
+              <tr key={rowIndex} onClick={() => fetchCareerStats(playerName)}>
+                {columns.map((col, colIndex) => (
+                  <td key={colIndex}>{row[col]}</td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  };
+
+  const renderCareerStats = () => (
+    <div>
+      <h3>Career Stats</h3>
+      {careerStats && careerStats.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              {Object.keys(careerStats[0]).map((key, index) => (
+                <th key={index}>{key}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {careerStats.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {Object.keys(row).map((key, colIndex) => (
+                  <td key={colIndex}>{row[key]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No career stats available for {currentPlayer} or loading...</p> 
+      )}
+    </div>
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    if (searchQuery) {
+      const formattedSearchQuery = searchQuery.replace(/\s+/g, '_');
+      fetchCareerStats(formattedSearchQuery);
+    }
+  };
+
   return (
     <div>
       <header>
-        <h1>NFL Viewer</h1>
+        <h1>NFL Analyzer</h1>
         <nav>
           <button onClick={() => setActiveTab("stats")}>QB Stats</button>
           <button onClick={() => setActiveTab("rbStats")}>RB Stats</button>
@@ -79,171 +203,22 @@ const App = () => {
         </nav>
       </header>
 
-      {activeTab === "stats" && (
-        <div>
-          <h2>Quarterback Stats</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
-        </div>
-      )}
+      {/* Search Bar for player */}
+      <div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search for a player"
+        />
+        <button onClick={handleSearchSubmit}>Search</button>
+      </div>
 
-      {activeTab === "rbStats" && (
+      {activeTab !== "teams" && (
         <div>
-          <h2>Running Back Stats</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === "wrStats" && (
-        <div>
-          <h2>Wide Receiver Stats</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === "kickerStats" && (
-        <div>
-          <h2>Kicker Stats</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === "defenseStats" && (
-        <div>
-          <h2>Defense Stats</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === "schedule" && (
-        <div>
-          <h2>NFL Schedule</h2>
-          {data.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  {columns.map((col, index) => (
-                    <th key={index}>{col}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {columns.map((col, colIndex) => (
-                      <td key={colIndex}>{row[col]}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>Loading data...</p>
-          )}
+          <h2>{activeTab === "stats" ? "Quarterback Stats" : activeTab === "rbStats" ? "Running Back Stats" : activeTab === "wrStats" ? "Wide Receiver Stats" : "Kicker Stats"}</h2>
+          {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+          {renderCareerStats()}
         </div>
       )}
 
@@ -254,10 +229,7 @@ const App = () => {
             <p>Select a division to view teams:</p>
             <div className="buttons">
               {Object.keys(divisions).map((division) => (
-                <button
-                  key={division}
-                  onClick={() => setSelectedDivision(division)}
-                >
+                <button key={division} onClick={() => setSelectedDivision(division)}>
                   {division}
                 </button>
               ))}
