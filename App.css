@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #dbdbdb;
+  background-color: #e2e2e2;
   margin: 0;
   padding: 0;
 }
@@ -27,11 +27,11 @@ nav {
 button {
   background-color: rgb(237, 32, 32);
   color: white;
-  padding: 10px 15px;
+  padding: 5px 10px; /* Reduced padding */
   border: none;
   cursor: pointer;
   margin: 5px;
-  font-size: 1.1em;
+  font-size: 0.9em; /* Reduced font size */
   border-radius: 5px;
 }
 
@@ -44,11 +44,13 @@ button:focus {
 }
 
 input[type="text"] {
-  padding: 10px;
-  font-size: 1.2em;
+  padding: 6px; /* Further reduced padding */
+  font-size: 0.9em; /* Reduced font size */
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 10%; /* Smaller width */
+  margin-bottom: 15px; /* Added margin for spacing */
 }
 
 input[type="text"]:focus {
@@ -74,7 +76,7 @@ table th, table td {
 }
 
 table th {
-  background-color:rgb(237, 32, 32);
+  background-color: rgb(237, 32, 32);
   color: white; /* Keeps header text white */
   cursor: pointer;
 }
@@ -91,16 +93,17 @@ table td {
   font-size: 1.1em;
 }
 
-
 /* Career Stats Table */
 h3 {
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 1.8em;
+  text-align: center;
 }
 
 p {
   font-size: 1.2em;
   color: #888;
+  text-align: center;
 }
 
 /* Team Section Styles */
@@ -112,11 +115,12 @@ p {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  gap: 5px; /* Reduced gap */
 }
 
 .buttons button {
-  width: 150px;
-  margin: 10px;
+  width: 120px; /* Smaller button width */
+  margin: 5px;
 }
 
 .team-list {
@@ -146,4 +150,32 @@ h2 {
   font-size: 2em;
   color: black;
   margin-top: 20px;
+}
+
+/* Search Bar and Stats Positioning */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+.search-container select,
+.search-container input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.search-container label {
+  margin-right: 8px;
+}
+
+
+.statistics {
+  text-align: center;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
