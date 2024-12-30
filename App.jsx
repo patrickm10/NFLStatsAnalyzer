@@ -3,153 +3,214 @@ import Papa from "papaparse";
 import "./App.css";
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState("stats");
-  const [columns, setColumns] = useState([]);
-  const [data, setData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" }); // State for sorting
+    const [activeTab, setActiveTab] = useState("stats");
+    const [columns, setColumns] = useState([]);
+    const [data, setData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" }); // State for sorting
+    const [isCareerStats, setIsCareerStats] = useState(false); // State to track if career stats are being displayed
+    const [playerName, setPlayerName] = useState(""); // State to store the player's name
 
-  // Fetch stats for the specific tab
-  const fetchStats = (fileName) => {
-    console.log(`Fetching data for: ${fileName}`); // Log the file name being fetched
-    fetch(`/data/${fileName}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+    // Fetch stats for the specific tab
+    const fetchStats = (fileName) => {
+        console.log(`Fetching data for: ${fileName}`);
+        fetch(`/data/${fileName}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then((csvText) => {
+                const parsedData = Papa.parse(csvText, { header: true });
+                setColumns(parsedData.meta.fields || []);
+                setData(parsedData.data || []);
+            })
+            .catch((error) => {
+                console.error("Error loading CSV file:", error);
+            });
+    };
+
+    useEffect(() => {
+        fetchStats(getFileNameForActiveTab());
+    }, [activeTab]);
+
+    const handleSearchChange = (event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+
+        // Filter data dynamically as user types in the search bar
+        if (query) {
+            const filteredData = data.filter((row) =>
+                row.Player.toLowerCase().includes(query.toLowerCase())
+            );
+            setData(filteredData);
+        } else {
+            fetchStats(getFileNameForActiveTab()); // Reset to the original data
         }
-        return response.text();
-      })
-      .then((csvText) => {
-        const parsedData = Papa.parse(csvText, { header: true });
-        setColumns(parsedData.meta.fields || []);
-        setData(parsedData.data || []);
-      })
-      .catch((error) => {
-        console.error("Error loading CSV file:", error);
-      });
-  };
+    };
 
-  useEffect(() => {
-    if (activeTab === "stats") {
-      fetchStats("official_qb_stats.csv");
-    } else if (activeTab === "rbStats") {
-      fetchStats("official_rb_stats.csv");
-    } else if (activeTab === "wrStats") {
-      fetchStats("official_wr_stats.csv");
-    } else if (activeTab === "kickerStats") {
-      fetchStats("official_kicker_stats.csv");
-    } else if (activeTab === "defenseStats") {
-      fetchStats("official_defense_stats.csv");
-    } else if (activeTab === "schedule") {
-      fetchStats("schedule.csv");
-    } else if (activeTab === "roster") {
-      fetchStats("nfl_roster.csv");
-    }
-  }, [activeTab]);
+    const getFileNameForActiveTab = () => {
+        switch (activeTab) {
+            case "stats":
+                return "official_qb_stats.csv";
+            case "rbStats":
+                return "official_rb_stats.csv";
+            case "wrStats":
+                return "official_wr_stats.csv";
+            case "kickerStats":
+                return "official_kicker_stats.csv";
+            case "defenseStats":
+                return "official_defense_stats.csv";
+            case "schedule":
+                return "schedule.csv";
+            case "roster":
+                return "nfl_official_team_roster.csv";
+            default:
+                return "";
+        }
+    };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+    // Function to handle sorting of columns
+    const handleSort = (column) => {
+        let direction = "ascending";
+        if (sortConfig.key === column && sortConfig.direction === "ascending") {
+            direction = "descending";
+        }
 
-  const handleSearchSubmit = () => {
-    if (searchQuery) {
-      const filteredData = data.filter((row) =>
-        row.Player.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setData(filteredData);
-    }
-  };
+        const sortedData = [...data].sort((a, b) => {
+            const aValue = a[column] ?? "";
+            const bValue = b[column] ?? "";
 
-  // Function to handle sorting of columns
-  const handleSort = (column) => {
-    let direction = "ascending";
-    if (sortConfig.key === column && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
+            const aNumeric = isNaN(aValue) ? aValue : parseFloat(aValue);
+            const bNumeric = isNaN(bValue) ? bValue : parseFloat(bValue);
 
-    const sortedData = [...data].sort((a, b) => {
-      const aValue = a[column] ?? "";
-      const bValue = b[column] ?? "";
+            if (aNumeric < bNumeric) return direction === "ascending" ? -1 : 1;
+            if (aNumeric > bNumeric) return direction === "ascending" ? 1 : -1;
+            return 0;
+        });
 
-      // Convert to numbers if possible
-      const aNumeric = isNaN(aValue) ? aValue : parseFloat(aValue);
-      const bNumeric = isNaN(bValue) ? bValue : parseFloat(bValue);
+        setData(sortedData);
+        setSortConfig({ key: column, direction });
+    };
 
-      if (aNumeric < bNumeric) return direction === "ascending" ? -1 : 1;
-      if (aNumeric > bNumeric) return direction === "ascending" ? 1 : -1;
-      return 0;
-    });
+    const handlePlayerClick = (player) => {
+        let playerFileName = "";
+        let filePath = "";
 
-    setData(sortedData);
-    setSortConfig({ key: column, direction });
-  };
+        if (activeTab === "stats") {
+            playerFileName = `${player.Player.replace(/ /g, "_")}_career_passing_stats.csv`;
+            filePath = `/data/qb_stats/career_stats/${playerFileName}`;
+        } else if (activeTab === "rbStats") {
+            playerFileName = `${player.Player.replace(/ /g, "_")}_career_rushing_stats.csv`;
+            filePath = `/data/rb_stats/career_stats/${playerFileName}`;
+        } else if (activeTab === "wrStats") {
+            playerFileName = `${player.Player.replace(/ /g, "_")}_career_receiving_stats.csv`;
+            filePath = `/data/wr_stats/career_stats/${playerFileName}`;
+        } else if (activeTab === "kickerStats") {
+            playerFileName = `${player.Player.replace(/ /g, "_")}_career_kicking_stats.csv`;
+            filePath = `/data/kicker_stats/career_stats/${playerFileName}`;
+        }
 
-  const renderTable = () => (
-    <table>
-      <thead>
-        <tr>
-          {columns.map((col, index) => (
-            <th key={index} onClick={() => handleSort(col)}>
-              {col}
-              {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {columns.map((col, colIndex) => (
-              <td key={colIndex}>{row[col]}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+        console.log(`Fetching player data from: ${filePath}`);
+        fetch(filePath)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then((csvText) => {
+                const parsedData = Papa.parse(csvText, { header: true });
+                setColumns(parsedData.meta.fields || []);
+                setData(parsedData.data || []);
+                setIsCareerStats(true); // Show career stats
+                setPlayerName(player.Player); // Set the player's name
+            })
+            .catch((error) => {
+                console.error("Error loading player CSV file:", error);
+            });
+    };
 
-  return (
-    <div>
-      <header>
-        <h1>NFL Viewer</h1>
-        <nav>
-          <button onClick={() => setActiveTab("stats")}>QB Stats</button>
-          <button onClick={() => setActiveTab("rbStats")}>RB Stats</button>
-          <button onClick={() => setActiveTab("wrStats")}>WR Stats</button>
-          <button onClick={() => setActiveTab("kickerStats")}>Kicker Stats</button>
-          <button onClick={() => setActiveTab("defenseStats")}>Defense Stats</button>
-          <button onClick={() => setActiveTab("schedule")}>Schedule</button>
-          <button onClick={() => setActiveTab("roster")}>NFL Roster</button>
-        </nav>
-      </header>
+    const handleBackClick = () => {
+        setIsCareerStats(false); // Go back to the previous view
+        setPlayerName(""); // Clear the player's name
+        setSearchQuery(""); // Reset search query
+        fetchStats(getFileNameForActiveTab()); // Re-fetch the stats data
+    };
 
-      {/* Search Bar for player */}
-      <div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search for a player"
-        />
-        <button onClick={handleSearchSubmit}>Search</button>
-      </div>
+    const renderTable = () => (
+        <table>
+            <thead>
+                <tr>
+                    {columns.map((col, index) => (
+                        <th key={index} onClick={() => handleSort(col)}>
+                            {col}
+                            {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((row, rowIndex) => (
+                    <tr key={rowIndex} onClick={() => handlePlayerClick(row)}>
+                        {columns.map((col, colIndex) => (
+                            <td key={colIndex}>{row[col]}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
 
-      {/* Content for active tab */}
-      <div>
-        <h2>
-          {activeTab === "stats" ? "Quarterback Stats" :
-           activeTab === "rbStats" ? "Running Back Stats" :
-           activeTab === "wrStats" ? "Wide Receiver Stats" :
-           activeTab === "kickerStats" ? "Kicker Stats" :
-           activeTab === "defenseStats" ? "Defense Stats" :
-           activeTab === "schedule" ? "NFL Schedule" :
-           activeTab === "roster" ? "NFL Roster" :
-           "Schedule"}
-        </h2>
-        {data.length > 0 ? renderTable() : <p>Loading data...</p>}
-      </div>
-    </div>
-  );
+    return (
+        <div>
+            <header>
+                <h1>NFL Statistics Analyzer</h1>
+                <nav>
+                    <button onClick={() => { setActiveTab("stats"); setSearchQuery(""); }}>QB Rankings</button>
+                    <button onClick={() => { setActiveTab("rbStats"); setSearchQuery(""); }}>RB Rankings</button>
+                    <button onClick={() => { setActiveTab("wrStats"); setSearchQuery(""); }}>WR Rankings</button>
+                    <button onClick={() => { setActiveTab("kickerStats"); setSearchQuery(""); }}>Kicker Rankings</button>
+                    <button onClick={() => { setActiveTab("defenseStats"); setSearchQuery(""); }}>Defense Rankings</button>
+                    <button onClick={() => { setActiveTab("schedule"); setSearchQuery(""); }}>2024-2025 Schedule</button>
+                    <button onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
+                </nav>
+                {/* Search Bar for player */}
+            <div>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search ..."
+                />
+            </div>
+            <h3>
+                    {activeTab === "stats" ? "Quarterback Stats" :
+                     activeTab === "rbStats" ? "Running Back Stats" :
+                     activeTab === "wrStats" ? "Wide Receiver Stats" :
+                     activeTab === "kickerStats" ? "Kicker Stats" :
+                     activeTab === "defenseStats" ? "Defense Stats" :
+                     activeTab === "schedule" ? "2024-2025 Schedule" :
+                     activeTab === "roster" ? "NFL Roster" :
+                     "Schedule"}
+                </h3>
+            </header>
+
+            {/* Content for active tab */}
+            <div>
+                {/* Show back button and player name if viewing career stats */}
+                {isCareerStats && (
+                    <div>
+                        <button onClick={handleBackClick}>Back to stats</button>
+                        <h3>{playerName}'s Career Stats</h3>
+                    </div>
+                )}
+
+                {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+            </div>
+        </div>
+    );
 };
 
 export default App;
