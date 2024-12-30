@@ -78,7 +78,7 @@ def find_best_defenses_versus_receiving(df):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_receiving_stats.csv', index=False)
 
     return best_defenses
 
@@ -153,7 +153,7 @@ def find_best_defenses_versus_rushing(df):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_rushing_stats.csv', index=False)
 
     return best_defenses
 
@@ -216,7 +216,7 @@ def find_top_defense_interceptions(df):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_interception_stats.csv', index=False)
 
     return best_defenses
 
@@ -279,7 +279,7 @@ def find_top_defense_fumbles(df):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_fumble_stats.csv', index=False)
 
     return best_defenses
 
@@ -342,7 +342,7 @@ def find_top_defense_tackles(df):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_tackle_stats.csv', index=False)
 
     return best_defenses
 
@@ -406,7 +406,7 @@ def find_best_special_teams(df):
     # print(best_special_teams)
 
     # Optionally, save the top special teams to a new CSV file
-    # best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
+    best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
 
     return best_special_teams
 
@@ -471,7 +471,7 @@ def find_best_punt_receivers(df):
     # print(best_punters)
 
     # Optionally, save the top punters to a new CSV file
-    # best_punters.to_csv('official_punter_stats.csv', index=False)
+    best_punters.to_csv('official_punter_stats.csv', index=False)
 
     return best_punters
 
@@ -517,7 +517,7 @@ def get_best_special_teams(df1, df2):
     # print(best_special_teams)
 
     # Optionally, save the top special teams to a new CSV file
-    # best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
+    best_special_teams.to_csv('official_special_teams_stats.csv', index=False)
 
     return best_special_teams
 
@@ -570,7 +570,7 @@ def get_best_overall_defenses(df1, df2, df3):
     # print(best_defenses)
 
     # Optionally, save the top defenses to a new CSV file
-    # best_defenses.to_csv('official_defense_stats.csv', index=False)
+    best_defenses.to_csv('official_defense_stats.csv', index=False)
 
     return best_defenses
 
