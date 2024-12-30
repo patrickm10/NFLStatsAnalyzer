@@ -1,16 +1,17 @@
 /* Global Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
+  background-color: #dbdbdb;
   margin: 0;
   padding: 0;
 }
 
 header {
-  background-color: #333;
-  color: #fff;
+  background-color: #585858;
+  color: black;
   padding: 15px 0;
   text-align: center;
+  font-size: 2.0cap;
   margin-bottom: 20px;
 }
 
@@ -24,7 +25,7 @@ nav {
 }
 
 button {
-  background-color: red;
+  background-color: rgb(237, 32, 32);
   color: white;
   padding: 10px 15px;
   border: none;
@@ -69,11 +70,12 @@ table th, table td {
   padding: 12px;
   text-align: left;
   border: 1px solid #ddd;
+  color: black; /* Ensures all text in the table is black */
 }
 
 table th {
-  background-color: red;
-  color: white;
+  background-color:rgb(237, 32, 32);
+  color: white; /* Keeps header text white */
   cursor: pointer;
 }
 
@@ -88,6 +90,7 @@ table tr:hover {
 table td {
   font-size: 1.1em;
 }
+
 
 /* Career Stats Table */
 h3 {
@@ -141,6 +144,6 @@ p {
 h2 {
   text-align: center;
   font-size: 2em;
-  color: #333;
+  color: black;
   margin-top: 20px;
 }
