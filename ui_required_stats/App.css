@@ -1,0 +1,181 @@
+/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #e2e2e2;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #585858;
+  color: black;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 2.0cap;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+nav {
+  margin-top: 15px;
+}
+
+button {
+  background-color: rgb(237, 32, 32);
+  color: white;
+  padding: 5px 10px; /* Reduced padding */
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 0.9em; /* Reduced font size */
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #005f6a;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="text"] {
+  padding: 6px; /* Further reduced padding */
+  font-size: 0.9em; /* Reduced font size */
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 10%; /* Smaller width */
+  margin-bottom: 15px; /* Added margin for spacing */
+}
+
+input[type="text"]:focus {
+  border-color: #008CBA;
+}
+
+div {
+  padding: 20px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  color: black; /* Ensures all text in the table is black */
+}
+
+table th {
+  background-color: rgb(237, 32, 32);
+  color: white; /* Keeps header text white */
+  cursor: pointer;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
+table td {
+  font-size: 1.1em;
+}
+
+/* Career Stats Table */
+h3 {
+  margin-top: 20px;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+p {
+  font-size: 1.2em;
+  color: #888;
+  text-align: center;
+}
+
+/* Team Section Styles */
+.App-header {
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px; /* Reduced gap */
+}
+
+.buttons button {
+  width: 120px; /* Smaller button width */
+  margin: 5px;
+}
+
+.team-list {
+  margin-top: 30px;
+}
+
+.team-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.team-list li {
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+.team-list li:hover {
+  background-color: #ddd;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2em;
+  color: black;
+  margin-top: 20px;
+}
+
+/* Search Bar and Stats Positioning */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+.search-container select,
+.search-container input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.search-container label {
+  margin-right: 8px;
+}
+
+
+.statistics {
+  text-align: center;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
