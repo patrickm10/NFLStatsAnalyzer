@@ -5,7 +5,7 @@ Author: Patrick Mejia
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+ 
 def get_team_td_stats():
     """
     Function to scrape kicking stats from the NFL website.
