@@ -5,6 +5,36 @@ body {
   margin: 0;
   padding: 0;
 }
+.logos-container {
+  display: flex;
+  gap: 20px; /* Adjust space between the logos */
+  align-items: center; /* Align logos vertically if they have different heights */
+}
+
+.team-logo {
+  width: 12.5%;  /* 100% / 8 = 12.5% */
+  height: auto;  /* Maintain aspect ratio */
+}
+
+.patriots-logo {
+  margin-bottom: 20px; /* Move the Patriots logo 20px to the up */
+}
+
+.dolphins-logo {
+  margin-top: 0px; /* Move the Dolphins logo 0px down */
+}
+
+.buffalo-logo {
+  margin-right: 0px; /* Move the Bills logo 0px to the right */
+}
+
+.jets-logo {
+  margin-bottom: 15px; /* Move the Jets logo 0px up */
+}
+
+.cowboys-logo {
+  margin-left: 100px; /* Move the Cowboys logo 0px right */
+}
 
 header {
   background-color: #585858;
@@ -152,22 +182,25 @@ h2 {
   margin-top: 20px;
 }
 
-/* Search Bar and Stats Positioning */
-.search-bar {
+.search-container {
   display: flex;
+  gap: 20px; /* Add space between the dropdowns */
+  flex-wrap: wrap; /* Ensures the dropdowns wrap on smaller screens */
   justify-content: center;
-  margin-bottom: 20px;
 }
 
-
-.search-container select,
-.search-container input {
-  padding: 8px;
-  font-size: 16px;
+.search-container div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.search-container label {
-  margin-right: 8px;
+label {
+  margin-bottom: 5px;
+}
+
+select {
+  width: 150px; /* Adjust the width of each select element */
 }
 
 
