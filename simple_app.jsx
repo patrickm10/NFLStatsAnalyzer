@@ -136,4 +136,75 @@ const App = () => {
                     {columns.map((col, index) => (
                         <th key={index} onClick={() => handleSort(col)}>
                             {col}
-                           
+                            {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((row, rowIndex) => (
+                    <tr key={rowIndex} onClick={() => handlePlayerClick(row)}>
+                        {columns.map((col, colIndex) => (
+                            <td key={colIndex}>{row[col]}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+
+    return (
+        <div>
+            <header>
+                <h1>NFL Statistics Analyzer</h1>
+                <nav>
+                    <button onClick={() => setActiveTab("stats")}>QB Rankings</button>
+                    <button onClick={() => setActiveTab("rbStats")}>RB Rankings</button>
+                    <button onClick={() => setActiveTab("wrStats")}>WR Rankings</button>
+                    <button onClick={() => setActiveTab("kickerStats")}>Kicker Rankings</button>
+                    <button onClick={() => setActiveTab("defenseStats")}>Defense Rankings</button>
+                    <button onClick={() => setActiveTab("schedule")}>2024-2025 Schedule</button>
+                    <button onClick={() => setActiveTab("roster")}>NFL Roster</button>
+                </nav>
+                {activeTab === "schedule" && (
+                    <div>
+                        <label htmlFor="matchNumber">Select Week: </label>
+                        <select
+                            id="matchNumber"
+                            value={selectedMatchNumber}
+                            onChange={handleMatchNumberChange}
+                        >
+                            <option value="">All Weeks</option>
+                            {matchNumbers.map((matchNumber, index) => (
+                                <option key={index} value={matchNumber}>
+                                    Week {matchNumber}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+                <h3>
+                    {activeTab === "stats" ? "Quarterback Stats" :
+                        activeTab === "rbStats" ? "Running Back Stats" :
+                        activeTab === "wrStats" ? "Wide Receiver Stats" :
+                        activeTab === "kickerStats" ? "Kicker Stats" :
+                        activeTab === "defenseStats" ? "Defense Stats" :
+                        activeTab === "schedule" ? "2024-2025 Schedule" :
+                        activeTab === "roster" ? "NFL Roster" :
+                        "Schedule"}
+                </h3>
+            </header>
+            <div>
+                {isCareerStats && (
+                    <div>
+                        <button onClick={handleBackClick}>Back to stats</button>
+                        <h3>{playerName}'s Career Stats</h3>
+                    </div>
+                )}
+                {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+            </div>
+        </div>
+    );
+};
+
+export default App;
