@@ -39,7 +39,7 @@ body {
 header {
   background-color: #585858;
   color: black;
-  padding: 15px 0;
+  padding: 20px 0; /* Adjusted to add more space at top */
   text-align: center;
   font-size: 2.0cap;
   margin-bottom: 20px;
@@ -57,12 +57,15 @@ nav {
 button {
   background-color: rgb(237, 32, 32);
   color: white;
-  padding: 5px 10px; /* Reduced padding */
+  padding: 15px 15px; /* Increased padding for 20% taller height */
+  text-align: center;
   border: none;
   cursor: pointer;
-  margin: 5px;
-  font-size: 0.9em; /* Reduced font size */
+  margin: 10px; /* Increased margin to add space between buttons */
+  font-size: .9em; /* Adjusted font size for better visibility */
   border-radius: 5px;
+  width: 240px; /* 30% longer (wider) than the previous width (225px * 1.3 = 292px) */
+  height: 42px; /* 20% taller than the previous height (35px * 1.2 = 42px) */
 }
 
 button:hover {
@@ -74,13 +77,14 @@ button:focus {
 }
 
 input[type="text"] {
-  padding: 6px; /* Further reduced padding */
-  font-size: 0.9em; /* Reduced font size */
+  padding: 10px; /* Increased padding for better text visibility */
+  font-size: 1em; /* Adjusted font size for better visibility */
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 10%; /* Smaller width */
+  width: 50%; /* Adjusted to ensure the search bar is proportionate */
   margin-bottom: 15px; /* Added margin for spacing */
+  text-align: center; /* Centers text inside input */
 }
 
 input[type="text"]:focus {
@@ -145,12 +149,13 @@ p {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 5px; /* Reduced gap */
+  gap: 15px; /* Increased gap between buttons */
 }
 
 .buttons button {
-  width: 120px; /* Smaller button width */
-  margin: 5px;
+  width: 200px; /* 30% longer (wider) than the previous width (225px * 1.3 = 292px) */
+  height: 50px; /* 20% taller than the previous height (35px * 1.2 = 42px) */
+  font-size: 1em; /* Adjusted font size */
 }
 
 .team-list {
@@ -184,15 +189,18 @@ h2 {
 
 .search-container {
   display: flex;
-  gap: 20px; /* Add space between the dropdowns */
-  flex-wrap: wrap; /* Ensures the dropdowns wrap on smaller screens */
-  justify-content: center;
+  justify-content: center; /* Centers search bar container */
+  align-items: center;
+  flex-direction: column;
+  gap: 20px; /* Increased gap for better spacing */
+  margin-top: 30px; /* Increased margin for more space */
 }
 
 .search-container div {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 label {
@@ -200,9 +208,8 @@ label {
 }
 
 select {
-  width: 150px; /* Adjust the width of each select element */
+  width: 150px;
 }
-
 
 .statistics {
   text-align: center;
