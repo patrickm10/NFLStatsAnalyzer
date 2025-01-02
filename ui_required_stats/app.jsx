@@ -218,14 +218,17 @@ const App = () => {
                         </div>
                     )}
 
-                    <div>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                            placeholder="Search ..."
-                        />
-                    </div>
+                    {/* Remove search bar for schedule tab */}
+                    {activeTab !== "schedule" && (
+                        <div>
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search ..."
+                            />
+                        </div>
+                    )}
                 </div>
                 <h3>
                     {activeTab === "stats" ? "Quarterback Stats" :
