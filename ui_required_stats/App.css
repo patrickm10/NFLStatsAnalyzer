@@ -5,40 +5,59 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
 }
 
 /* Left-side Menu */
 nav {
-  background-color: #444; /* A softer dark gray to complement the theme */
+  background-color: #444;
   color: white;
-  width: 250px; /* Fixed width for the menu */
-  height: 100vh; /* Full height of the screen */
+  width: 250px;
+  height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
-  padding-top: 20px; /* Adds some space at the top */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
 
-nav a {
-  display: block;
-  padding: 15px;
+/* Side Menu Tabs */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  display: flex;
+  font-size: 0.8em;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 290px 0 30px;
+  background-color: #585858;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  justify-content: flex-start;
+}
+
+/* Side Menu Button */
+.side-menu div {
+  width: 85%;
   text-align: center;
-  text-decoration: none;
+  padding: 20px 15px;
   color: white;
-  font-size: 1.2em;
-  border-bottom: 1px solid #555; /* Subtle border for better contrast */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: .8em;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgb(237, 32, 32);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-nav a:hover {
+.side-menu div:hover {
   background-color: #ff6b6b;
-  color: #fff;
-}
-
-nav a:focus {
-  outline: none;
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Header Styles */
@@ -48,81 +67,25 @@ header {
   padding: 20px 0;
   text-align: center;
   font-size: 2.0em;
-  margin-bottom: 20px;
+  width: 100%; /* Ensures the header stretches across the entire screen */
+  position: relative;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 10;
 }
 
 h1 {
   font-size: 2.5em;
   margin: 0;
-}
-
-/* Side Menu Tabs */
-.side-menu {
-  position: fixed;
-  top: 0; /* Adjusted to start higher on the screen */
-  left: 0;
-  width: 250px; /* Maintain fixed width */
-  display: flex;
-  font-size: 0.8em;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px; /* Space between menu items */
-  padding: 275px 0 30px; /* Reduced top padding */
-  background-color: #585858; /* Matches the nav background */
-  height: 100vh; /* Full screen height */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-  transition: background-color 0.3s ease;
-  justify-content: flex-start; /* Ensure buttons align from the top */
-}
-
-/* Side Menu Button */
-.side-menu div {
-  width: 85%;
   text-align: center;
-  padding: 20px 15px; /* Increased vertical padding */
-  color: white;
-  font-size: .8em;
-  border-radius: 8px; /* Slightly rounded corners */
-  cursor: pointer;
-  background-color: rgb(237, 32, 32);
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.side-menu div:hover {
-  background-color: #ff6b6b;
-  transform: translateX(5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow on hover */
 }
 
 /* Main Content Area */
 .main-content {
-  margin-left: 275px; /* Offset matches the side menu width */
+  margin-left: 250px; /* Offset to avoid overlap with the side menu */
   padding: 20px;
-  width: calc(100% - 290px); /* Ensure content doesn't overlap with the menu */
-}
-
-/* Search Input Styles */
-.search-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.search-container div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-label {
-  margin-bottom: 5px;
-}
-
-select {
-  width: 150px;
+  width: calc(100% - 250px); /* Ensure content doesn't overlap with the side menu */
+  padding-top: 20px; /* Add padding to the top to avoid overlap with the header */
 }
 
 /* Button Styles */
@@ -134,31 +97,21 @@ button {
   border: none;
   cursor: pointer;
   width: 250px; /* Increased width */
-  min-height: 30px;
   margin: 10px;
   font-size: 1em;
   border-radius: 30px; /* Soft rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-  transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+  transition: all 0.3s ease-in-out;
 }
 
 button:hover {
-  background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32)); /* Reverse the gradient on hover */
+  background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32));
   transform: translateY(-5px); /* Slight lift on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
 }
 
 button:focus {
   outline: none;
-}
-
-/* Side Menu Button Container */
-.side-menu-buttons {
-  width: 100%;
-  display: flex;
-  min-height: 30px;
-  gap: 60px; /* Add space between buttons */
-  flex-wrap: wrap; /* Ensure buttons wrap when there is not enough space */
 }
 
 /* Table Styles */
