@@ -5,14 +5,28 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  flex-direction: column;
 }
 
-/* Left-side Menu */
-nav {
-  background-color: #444;
+/* Header Styles */
+header {
+  background-color: #585858;
   color: white;
-  width: 250px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 2.0em;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Side Menu */
+nav {
+  background-color: #585858;
+  color: white;
+  width: 265px;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -38,76 +52,29 @@ nav {
   height: 100vh;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
-  justify-content: flex-start;
 }
 
-/* Side Menu Button */
-.side-menu div {
-  width: 85%;
-  text-align: center;
-  padding: 20px 15px;
-  color: white;
-  font-size: .8em;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: rgb(237, 32, 32);
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.side-menu div:hover {
-  background-color: #ff6b6b;
-  transform: translateX(5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Header Styles */
-header {
-  background-color: #585858;
-  color: black;
-  padding: 20px 0;
-  text-align: center;
-  font-size: 2.0em;
-  width: 100%; /* Ensures the header stretches across the entire screen */
-  position: relative;
-  margin: 0;
-  box-sizing: border-box;
-  z-index: 10;
-}
-
-h1 {
-  font-size: 2.5em;
-  margin: 0;
-  text-align: center;
-}
-
-/* Main Content Area */
-.main-content {
-  margin-left: 250px; /* Offset to avoid overlap with the side menu */
-  padding: 20px;
-  width: calc(100% - 250px); /* Ensure content doesn't overlap with the side menu */
-  padding-top: 20px; /* Add padding to the top to avoid overlap with the header */
-}
-
-/* Button Styles */
+/* Header and Tabs Button */
 button {
-  background: linear-gradient(135deg, rgb(237, 32, 32), #ff6b6b); /* Gradient effect */
+  background: linear-gradient(135deg, rgb(237, 32, 32), #ff6b6b);
   color: white;
-  padding: 15px 15px;
+  padding: 15px;
   text-align: center;
   border: none;
   cursor: pointer;
-  width: 250px; /* Increased width */
-  margin: 10px;
-  font-size: 1em;
-  border-radius: 30px; /* Soft rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  width: 260px;
+  margin-top: 35px;
+  font-size: .75em;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
+  min-height: 10%;
 }
 
 button:hover {
   background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32));
-  transform: translateY(-5px); /* Slight lift on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 button:focus {
@@ -119,6 +86,8 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  margin-left: 280px;
+  width: calc(100% - 280px);
 }
 
 table th, table td {
@@ -142,6 +111,34 @@ table tr:hover {
   background-color: #f1f1f1;
 }
 
-table td {
-  font-size: 1.1em;
+/* Search Input */
+.search-container input {
+  padding: 8px;
+  font-size: 1em;
+  border-radius: 4px;
+  width: 250px;
+  margin: 10px 0;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 280px;
+  padding: 20px;
+  width: calc(100% - 280px);
+  padding-top: 20px;
+}
+
+/* Back Button */
+button.back {
+  background-color: #ff6b6b;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  margin-top: 10px;
+}
+
+button.back:hover {
+  background-color: #e53b3b;
 }
