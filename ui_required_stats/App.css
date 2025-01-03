@@ -9,14 +9,16 @@ body {
 
 /* Left-side Menu */
 nav {
-  background-color: #333;
+  background-color: #444; /* A softer dark gray to complement the theme */
   color: white;
-  width: 200px; /* Fixed width for the menu */
+  width: 250px; /* Fixed width for the menu */
   height: 100vh; /* Full height of the screen */
   position: fixed;
   left: 0;
   top: 0;
   padding-top: 20px; /* Adds some space at the top */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+  transition: background-color 0.3s ease;
 }
 
 nav a {
@@ -26,11 +28,13 @@ nav a {
   text-decoration: none;
   color: white;
   font-size: 1.2em;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #555; /* Subtle border for better contrast */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 nav a:hover {
-  background-color: rgb(237, 32, 32);
+  background-color: #ff6b6b;
+  color: #fff;
 }
 
 nav a:focus {
@@ -55,36 +59,46 @@ h1 {
 /* Side Menu Tabs */
 .side-menu {
   position: fixed;
-  top: 80px; /* Space below the header */
+  top: 0; /* Adjusted to start higher on the screen */
   left: 0;
-  width: 200px;
+  width: 250px; /* Maintain fixed width */
   display: flex;
+  font-size: 0.8em;
   flex-direction: column;
   align-items: center;
-  gap: 10px; /* Space between menu items */
-  padding-top: 20px;
-  background-color: #333;
-  height: calc(100vh - 80px); /* Full height minus header */
+  gap: 30px; /* Space between menu items */
+  padding: 275px 0 30px; /* Reduced top padding */
+  background-color: #585858; /* Matches the nav background */
+  height: 100vh; /* Full screen height */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+  transition: background-color 0.3s ease;
+  justify-content: flex-start; /* Ensure buttons align from the top */
 }
 
+/* Side Menu Button */
 .side-menu div {
-  width: 100%;
+  width: 85%;
   text-align: center;
-  padding: 15px;
+  padding: 20px 15px; /* Increased vertical padding */
   color: white;
+  font-size: .8em;
+  border-radius: 8px; /* Slightly rounded corners */
   cursor: pointer;
-  background-color: #444;
+  background-color: rgb(237, 32, 32);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .side-menu div:hover {
-  background-color: rgb(237, 32, 32);
+  background-color: #ff6b6b;
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow on hover */
 }
 
 /* Main Content Area */
 .main-content {
-  margin-left: 200px; /* Offset for the left menu bar */
+  margin-left: 275px; /* Offset matches the side menu width */
   padding: 20px;
-  width: calc(100% - 200px); /* Ensure content doesn't overlap with the menu */
+  width: calc(100% - 290px); /* Ensure content doesn't overlap with the menu */
 }
 
 /* Search Input Styles */
@@ -93,8 +107,7 @@ h1 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 30px;
+  gap: 40px;
 }
 
 .search-container div {
@@ -120,11 +133,11 @@ button {
   text-align: center;
   border: none;
   cursor: pointer;
+  width: 250px; /* Increased width */
+  min-height: 30px;
   margin: 10px;
   font-size: 1em;
   border-radius: 30px; /* Soft rounded corners */
-  width: 240px;
-  height: 45px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
   transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
 }
@@ -137,6 +150,15 @@ button:hover {
 
 button:focus {
   outline: none;
+}
+
+/* Side Menu Button Container */
+.side-menu-buttons {
+  width: 100%;
+  display: flex;
+  min-height: 30px;
+  gap: 60px; /* Add space between buttons */
+  flex-wrap: wrap; /* Ensure buttons wrap when there is not enough space */
 }
 
 /* Table Styles */
@@ -170,5 +192,3 @@ table tr:hover {
 table td {
   font-size: 1.1em;
 }
-
-/* Other Styles for Career Stats, Team Section, etc. */
