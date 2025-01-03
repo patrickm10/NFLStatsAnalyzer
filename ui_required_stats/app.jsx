@@ -104,7 +104,16 @@ const App = () => {
             })
             .then((csvText) => {
                 const parsedData = Papa.parse(csvText, { header: true });
-                setWeeklyStats(parsedData.data || []);
+                let fetchedWeeklyStats = parsedData.data || [];
+
+                // Sort weekly stats by the "WK" column in descending order
+                fetchedWeeklyStats = fetchedWeeklyStats.sort((a, b) => {
+                    const weekA = parseInt(a["WK"], 10);
+                    const weekB = parseInt(b["WK"], 10);
+                    return weekB - weekA; // Sorting in descending order
+                });
+
+                setWeeklyStats(fetchedWeeklyStats);
             })
             .catch((error) => {
                 console.error("Error loading weekly stats CSV file:", error);
@@ -205,128 +214,106 @@ const App = () => {
             playerFileName = `${player.Player.replace(/ /g, "_")}`;
             careerFilePath = `/data/wr_stats/career_stats/${playerFileName}_career_receiving_stats.csv`;
             weeklyFilePath = `/data/wr_stats/wr_weekly_stats/${playerFileName}_weekly_stats.csv`;
-        } else if (activeTab === "kickerStats") {
-            playerFileName = `${player.Player.replace(/ /g, "_")}`;
-            careerFilePath = `/data/kicker_stats/career_stats/${playerFileName}_career_kicking_stats.csv`;
-            weeklyFilePath = `/data/kicker_stats/kicker_weekly_stats/${playerFileName}_kicking_stats.csv`;
         }
 
-        console.log(`Fetching player data from: ${careerFilePath} and ${weeklyFilePath}`);
+        setPlayerName(player.Player);
         fetchCareerStats(player.Player, careerFilePath);
         fetchWeeklyStats(player.Player, weeklyFilePath);
         setIsCareerStats(true);
         setIsWeeklyStats(true);
-        setPlayerName(player.Player);
     };
 
-    const handleBackClick = () => {
-        setIsCareerStats(false);
-        setIsWeeklyStats(false);
-        setPlayerName("");
-        setSearchQuery("");
-        fetchStats(getFileNameForActiveTab());
-    };
-
-    const renderTable = () => (
-        <table>
-            <thead>
-                <tr>
-                    {columns.map((col, index) => (
-                        <th key={index} onClick={() => handleSort(col)}>
-                            {col}
-                            {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-                        </th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((row, rowIndex) => (
-                    <tr key={rowIndex} onClick={() => handlePlayerClick(row)}>
-                        {columns.map((col, colIndex) => (
-                            <td key={colIndex}>{row[col]}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
-
-    const renderCareerStats = () => (
-        <div>
-            <h2>{playerName}'s Career Stats</h2>
-            {careerStats.length > 0 ? (
+    const renderWeeklyStats = () => {
+        return (
+            <div>
+                <h3>Weekly Stats for {playerName}</h3>
                 <table>
                     <thead>
                         <tr>
-                            {Object.keys(careerStats[0]).map((col, index) => (
-                                <th key={index} onClick={() => handleSort(col)}>
+                            <th>Week</th>
+                            <th>Stats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {weeklyStats.map((row, index) => (
+                            <tr key={index}>
+                                <td>{row.WK}</td>
+                                <td>{row.Stats}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    };
+
+    const renderCareerStats = () => {
+        return (
+            <div>
+                <h3>Career Stats for {playerName}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Season</th>
+                            <th>Stats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {careerStats.map((row, index) => (
+                            <tr key={index}>
+                                <td>{row.Season}</td>
+                                <td>{row.Stats}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    };
+
+    const renderTable = () => {
+        return (
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            {columns.map((col, index) => (
+                                <th
+                                    key={index}
+                                    onClick={() => handleSort(col)}
+                                >
                                     {col}
-                                    {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
                                 </th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
-                        {careerStats.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {Object.values(row).map((val, colIndex) => (
-                                    <td key={colIndex}>{val}</td>
+                        {data.map((row, index) => (
+                            <tr key={index} onClick={() => handlePlayerClick(row)}>
+                                {columns.map((col, colIndex) => (
+                                    <td key={colIndex}>{row[col]}</td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            ) : (
-                <p>No career stats available.</p>
-            )}
-        </div>
-    );
-
-    const renderWeeklyStats = () => (
-        <div>
-            <button onClick={handleBackClick}>Back to stats</button>
-            <h2>{playerName}'s Weekly Stats</h2>
-            {weeklyStats.length > 0 ? (
-                <table>
-                    <thead>
-                        <tr>
-                            {Object.keys(weeklyStats[0]).map((col, index) => (
-                                <th key={index} onClick={() => handleSort(col)}>
-                                    {col}
-                                    {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {weeklyStats.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {Object.values(row).map((val, colIndex) => (
-                                    <td key={colIndex}>{val}</td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p>No weekly stats available.</p>
-            )}
-        </div>
-    );
+            </div>
+        );
+    };
 
     return (
         <div>
             <header>
                 <h1>NFL Statistics Analyzer</h1>
-                <nav className="tabs-nav">
-                    <button onClick={() => { setActiveTab("stats"); setSearchQuery(""); }}>QB Rankings</button>
-                    <button onClick={() => { setActiveTab("rbStats"); setSearchQuery(""); }}>RB Rankings</button>
-                    <button onClick={() => { setActiveTab("wrStats"); setSearchQuery(""); }}>WR Rankings</button>
-                    <button onClick={() => { setActiveTab("kickerStats"); setSearchQuery(""); }}>Kicker Rankings</button>
-                    <button onClick={() => { setActiveTab("defenseStats"); setSearchQuery(""); }}>Defense Rankings</button>
-                    <button onClick={() => { setActiveTab("schedule"); setSearchQuery(""); }}>2024-2025 Schedule</button>
-                    <button onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Depth Chart</button>
-                </nav>
+                <div className="side-menu">
+                    <div onClick={() => { setActiveTab("stats"); setSearchQuery(""); }}>QB Rankings</div>
+                    <div onClick={() => { setActiveTab("rbStats"); setSearchQuery(""); }}>RB Rankings</div>
+                    <div onClick={() => { setActiveTab("wrStats"); setSearchQuery(""); }}>WR Rankings</div>
+                    <div onClick={() => { setActiveTab("kickerStats"); setSearchQuery(""); }}>Kicker Rankings</div>
+                    <div onClick={() => { setActiveTab("defenseStats"); setSearchQuery(""); }}>Defense Rankings</div>
+                    <div onClick={() => { setActiveTab("schedule"); setSearchQuery(""); }}>2024-2025 Schedule</div>
+                    <div onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Depth Chart</div>
+                </div>
 
                 <div className="search-container">
                     {activeTab === "schedule" && (
@@ -370,7 +357,7 @@ const App = () => {
                 </h3>
             </header>
 
-            <div>
+            <div className="main-content">
                 {isWeeklyStats && (
                     <div>
                         {renderWeeklyStats()}
