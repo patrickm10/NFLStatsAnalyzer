@@ -1,375 +1,322 @@
-Pos.,Team,Ht.,Wt.,First Name,Last Name,ID,Abbreviation,Conference,Division
-WR,Giants,6-3,220,Lane,Jerome,21.0,NYG,NFC,East
-WR,Falcons,6-0,170,Davis,Reggie,2.0,ATL,NFC,South
-WR,Broncos,5-11,199,Henderson,Carlos,10.0,DEN,AFC,West
-WR,Bills,6-1,202,Shorts,Daikiel,4.0,BUF,AFC,East
-WR,Falcons,5-10,183,Hall,Marvin,2.0,ATL,NFC,South
-WR,Broncos,5-7,173,McKenzie,Isaiah,10.0,DEN,AFC,West
-WR,Chiefs,6-4,185,Kemp,Marcus,16.0,KC,AFC,West
-WR,Chiefs,6-4,198,Stevens,Tony,16.0,KC,AFC,West
-WR,Bills,6-2,200,Reilly,Brandon,4.0,BUF,AFC,East
-WR,Panthers,5-11,195,Samuel,Curtis,5.0,CAR,NFC,South
-WR,Steelers,6-1,215,Smith-Schuster,JuJu,25.0,PIT,AFC,North
-WR,Vikings,6-2,215,Treadwell,Laquon,18.0,MIN,NFC,North
-WR,Rams,5-8,169,Ryan,Shakeir,29.0,LAR,NFC,West
-WR,Buccaneers,6-1,205,Godwin,Chris,30.0,TB,NFC,South
-WR,Dolphins,6-2,198,Ford,Isaiah,17.0,MIA,AFC,East
-WR,Packers,6-2,196,Dupre,Malachi,12.0,GB,NFC,North
-WR,Eagles,5-11,186,Ward,Greg,24.0,PHI,NFC,East
-WR,49ers,6-1,203,Bourne,Kendrick,27.0,SF,NFC,West
-WR,Jets,5-11,182,Cannon,KD,22.0,NYJ,AFC,East
-WR,Raiders,6-3,224,Zamora,Ishmael,23.0,LV,AFC,West
-WR,Bengals,6-3,208,Malone,Josh,7.0,CIN,AFC,North
-WR,Titans,5-11,188,Cherry,Bra'Lon,31.0,TEN,AFC,South
-WR,Cowboys,6-2,222,Brown,Noah,9.0,DAL,NFC,East
-WR,Jets,5-10,200,Marshall,Jalin,22.0,NYJ,AFC,East
-WR,Packers,6-6,217,Clark,Michael,12.0,GB,NFC,North
-WR,Packers,6-0,194,Pearson,Colby,12.0,GB,NFC,North
-WR,49ers,5-8,178,Bolden,"Jr., Victor",27.0,SF,NFC,West
-WR,Cowboys,5-10,181,Switzer,Ryan,9.0,DAL,NFC,East
-WR,Rams,5-11,207,Cooper,Pharoh,29.0,LAR,NFC,West
-WR,Bills,6-2,200,Jones,Zay,4.0,BUF,AFC,East
-WR,Seahawks,6-2,203,Lawler,Kenny,28.0,SEA,NFC,West
-WR,Lions,6-1,200,Thomas,Noel,11.0,DET,NFC,North
-WR,Vikings,6-1,189,Adams,Rodney,18.0,MIN,NFC,North
-WR,Titans,6-1,195,Pascascio,Giovanni,31.0,TEN,AFC,South
-WR,Titans,5-11,203,Taylor,Taywan,31.0,TEN,AFC,South
-WR,Rams,6-3,230,North,Marquez,29.0,LAR,NFC,West
-WR,Chiefs,6-1,203,Robinson,Demarcus,16.0,KC,AFC,West
-WR,Raiders,6-1,212,Hatcher,Keon,23.0,LV,AFC,West
-WR,Bengals,5-11,188,Ross,John,7.0,CIN,AFC,North
-WR,Steelers,5-9,190,Ayers,Demarcus,25.0,PIT,AFC,North
-WR,Cardinals,6-1,204,Williams,Chad,1.0,ARI,NFC,West
-WR,Packers,6-1,220,Yancey,DeAngelo,12.0,GB,NFC,North
-WR,Commanders,6-2,219,Pascal,Zach,,,,
-WR,Commanders,6-0,177,Quick,James,,,,
-WR,Ravens,6-3,197,Adeboyejo,Quincy,3.0,BAL,AFC,North
-WR,Cowboys,6-1,204,Brown,Brian,9.0,DAL,NFC,East
-WR,Cardinals,6-4,215,Bundy,Marquis,1.0,ARI,NFC,West
-WR,Bears,6-2,210,Gentry,Tanner,6.0,CHI,NFC,North
-WR,Browns,5-11,185,Coleman,Corey,8.0,CLE,AFC,North
-WR,Broncos,5-9,160,Raymond,Kalif,10.0,DEN,AFC,West
-WR,Titans,6-2,194,Sharpe,Tajae',31.0,TEN,AFC,South
-WR,Commanders,6-3,217,Davis,Robert,,,,
-WR,Panthers,6-2,210,Ross,Fred,5.0,CAR,NFC,South
-WR,Jets,5-11,189,Marks,Gabe,22.0,NYJ,AFC,East
-WR,Ravens,5-10,175,White,Tim,3.0,BAL,AFC,North
-WR,Jets,6-2,202,Hansen,Chad,22.0,NYJ,AFC,East
-WR,Ravens,6-1,233,Bailey,Aaron,3.0,BAL,AFC,North
-WR,Eagles,5-11,191,Gibson,Shelton,24.0,PHI,NFC,East
-WR,Browns,6-1,198,Higgins,Rashard,8.0,CLE,AFC,North
-WR,Cowboys,6-1,214,Jones,Andy,9.0,DAL,NFC,East
-WR,Dolphins,6-0,193,Morgan,Drew,17.0,MIA,AFC,East
-WR,Giants,6-2,211,Johnson,Keeon,21.0,NYG,NFC,East
-WR,Dolphins,6-3,210,Owusu,Francis,17.0,MIA,AFC,East
-WR,Chargers,5-10,190,Scott,Artavis,26.0,LAC,AFC,West
-WR,Bengals,6-2,197,Boyd,Tyler,7.0,CIN,AFC,North
-WR,Colts,6-4,221,Howard,Bug,14.0,IND,AFC,South
-WR,Seahawks,6-2,219,Moore,David,28.0,SEA,NFC,West
-WR,Rams,6-3,192,Reynolds,Josh,29.0,LAR,NFC,West
-WR,Buccaneers,5-11,187,Sperbeck,Thomas,30.0,TB,NFC,South
-WR,Dolphins,6-2,219,Stringfellow,Damore'ea,17.0,MIA,AFC,East
-WR,Titans,6-3,209,Davis,Corey,31.0,TEN,AFC,South
-WR,Eagles,6-1,204,Johnson,Marcus,24.0,PHI,NFC,East
-WR,Cardinals,6-3,222,Hogan,Krishawn,1.0,ARI,NFC,West
-WR,Buccaneers,5-9,186,Wilson,Jesus,30.0,TB,NFC,South
-WR,Falcons,6-2,205,Burton,Deante,2.0,ATL,NFC,South
-WR,Rams,6-1,195,Thomas,Mike,29.0,LAR,NFC,West
-WR,Raiders,6-1,211,Cooper,Amari,23.0,LV,AFC,West
-WR,Bengals,6-1,199,Hamilton,Karel,7.0,CIN,AFC,North
-WR,Raiders,6-2,204,Whitney,Isaac,23.0,LV,AFC,West
-WR,Chargers,6-4,218,Williams,Mike,26.0,LAC,AFC,West
-WR,Seahawks,6-1,218,Rogers,Darreus,28.0,SEA,NFC,West
-WR,Ravens,6-1,200,Moore,Chris,3.0,BAL,AFC,North
-WR,Colts,6-2,222,Moncrief,Donte,14.0,IND,AFC,South
-WR,Chiefs,5-10,185,Hill,Tyreek,16.0,KC,AFC,West
-WR,Eagles,6-4,221,Hollins,Mack,24.0,PHI,NFC,East
-WR,Ravens,6-2,215,Perriman,Breshad,3.0,BAL,AFC,North
-WR,Packers,6-1,188,Davis,Trevor,12.0,GB,NFC,North
-WR,Texans,6-2,205,Strong,Jaelen,13.0,HOU,AFC,South
-WR,Jaguars,6-0,178,Westbrook,Dede,15.0,JAX,AFC,South
-WR,Falcons,6-0,194,Fuller,Devin,2.0,ATL,NFC,South
-WR,Patriots,6-2,200,Lucien,Devin,19.0,NE,AFC,East
-WR,Packers,6-2,200,McCaffrey,Max,12.0,GB,NFC,North
-WR,Vikings,6-1,195,Coley,Stacy,18.0,MIN,NFC,North
-WR,49ers,6-1,208,Burbridge,Aaron,27.0,SF,NFC,West
-WR,Seahawks,5-9,178,Grayson,"Jr., Cyril",28.0,SEA,NFC,West
-WR,Buccaneers,6-5,231,Evans,Mike,30.0,TB,NFC,South
-WR,Bills,6-1,211,Watkins,Sammy,4.0,BUF,AFC,East
-WR,Patriots,5-10,189,Cooks,Brandin,19.0,NE,AFC,East
-WR,Texans,6-0,175,Thompson,Chris,13.0,HOU,AFC,South
-WR,Vikings,6-0,191,Diggs,Stefon,18.0,MIN,NFC,North
-WR,Saints,6-2,207,Dural,Travin,20.0,NO,NFC,South
-WR,Eagles,6-2,212,Watford,David,24.0,PHI,NFC,East
-WR,Texans,6-0,180,Fuller,Will,13.0,HOU,AFC,South
-WR,Jaguars,6-3,211,Robinson,Allen,15.0,JAX,AFC,South
-WR,Saints,6-0,205,Lampman,Jake,20.0,NO,NFC,South
-WR,Panthers,5-9,170,Duke,Austin,5.0,CAR,NFC,South
-WR,Bengals,6-3,210,Core,Cody,7.0,CIN,AFC,North
-WR,Texans,5-10,175,Gray,Deanté,13.0,HOU,AFC,South
-WR,Jaguars,6-1,208,Etta-Tawo,Amba,15.0,JAX,AFC,South
-WR,Eagles,6-0,185,Treggs,Bryce,24.0,PHI,NFC,East
-WR,Panthers,6-4,225,Funchess,Devin,5.0,CAR,NFC,South
-WR,Broncos,5-11,198,Sharp,Hunter,10.0,DEN,AFC,West
-WR,Buccaneers,5-10,195,Dye,Donteea,30.0,TB,NFC,South
-WR,Bears,5-10,185,Braverman,Daniel,6.0,CHI,NFC,North
-WR,Jets,5-11,204,Stewart,ArDarius,22.0,NYJ,AFC,East
-WR,Giants,6-0,196,Lewis,Roger,21.0,NYG,NFC,East
-WR,Dolphins,5-10,190,Lewis,Malcolm,17.0,MIA,AFC,East
-WR,Rams,6-2,205,Kupp,Cooper,29.0,LAR,NFC,West
-WR,Bengals,6-0,196,Madaris,Monty,7.0,CIN,AFC,North
-WR,Lions,6-4,213,Golladay,Kenny,11.0,DET,NFC,North
-WR,Cardinals,6-6,220,Agudosi,Carlton,1.0,ARI,NFC,West
-WR,Texans,6-1,200,Hardee,Justin,13.0,HOU,AFC,South
-WR,Raiders,5-11,170,Mickens,Jaydon,23.0,LV,AFC,West
-WR,Titans,6-5,210,McKay,Mekale,31.0,TEN,AFC,South
-WR,Broncos,6-5,200,Nash,Anthony,10.0,DEN,AFC,West
-WR,Jets,5-11,185,Harper,Chris,22.0,NYJ,AFC,East
-WR,Colts,5-11,215,Riles,Al-Damion,14.0,IND,AFC,South
-WR,Colts,6-2,209,Griffey,Trey,14.0,IND,AFC,South
-WR,Colts,5-7,159,Natson,JoJo,14.0,IND,AFC,South
-WR,Ravens,6-4,208,Patrick,Tim,3.0,BAL,AFC,North
-WR,Browns,6-2,215,Louis,Ricardo,8.0,CLE,AFC,North
-WR,Colts,6-1,180,Rogers,Chester,14.0,IND,AFC,South
-WR,Chiefs,6-3,203,Chesson,Jehu,16.0,KC,AFC,West
-WR,Titans,6-1,212,Mabon,KeVonn,31.0,TEN,AFC,South
-WR,Raiders,6-4,190,Brent,K.J.,23.0,LV,AFC,West
-WR,Commanders,5-9,177,Crowder,Jamison,,,,
-WR,Panthers,5-11,190,Frazier,Mose,5.0,CAR,NFC,South
-WR,Patriots,6-4,209,Hollister,Cody,19.0,NE,AFC,East
-WR,Packers,6-3,202,Allison,Geronimo,12.0,GB,NFC,North
-WR,Vikings,6-4,225,Böhringer,Moritz,18.0,MIN,NFC,North
-WR,Saints,6-3,228,Williams-Lambert,Jordan,20.0,NO,NFC,South
-WR,49ers,5-8,181,Taylor,Trent,27.0,SF,NFC,West
-WR,Rams,5-11,196,Shippen,Brandon,29.0,LAR,NFC,West
-WR,Ravens,6-0,181,Board,C.J.,3.0,BAL,AFC,North
-WR,Lions,6-2,210,Ford,Dontez,11.0,DET,NFC,North
-WR,Texans,5-9,185,McCarron,Riley,13.0,HOU,AFC,South
-WR,Vikings,5-11,205,Shelton,R.J.,18.0,MIN,NFC,North
-WR,Chargers,5-8,180,Paige,Mitchell,26.0,LAC,AFC,West
-WR,Browns,6-1,209,Payton,Jordan,8.0,CLE,AFC,North
-WR,Lions,6-1,190,Rector,Michael,11.0,DET,NFC,North
-WR,Patriots,6-1,195,Carr,Austin,19.0,NE,AFC,East
-WR,Seahawks,6-2,216,Darboh,Amara,28.0,SEA,NFC,West
-WR,Giants,6-3,220,Powe,Darius,21.0,NYG,NFC,East
-WR,Jaguars,5-9,188,Walker,Kenneth,15.0,JAX,AFC,South
-WR,Bengals,6-1,191,Brown,Chris,7.0,CIN,AFC,North
-WR,Dolphins,6-0,217,Carroo,Leonte,17.0,MIA,AFC,East
-WR,Saints,5-11,185,Thomas,Justin,20.0,NO,NFC,South
-WR,Chargers,6-3,210,Patton,Andre,26.0,LAC,AFC,West
-WR,Packers,6-0,184,Crockett,Montay,12.0,GB,NFC,North
-WR,Chargers,6-1,189,Jones,Jamaal,26.0,LAC,AFC,West
-WR,Titans,6-0,210,McBride,Tre,31.0,TEN,AFC,South
-WR,Buccaneers,5-11,195,Humphries,Adam,30.0,TB,NFC,South
-WR,Bears,6-3,216,White,Kevin,6.0,CHI,NFC,North
-WR,Jets,6-3,190,Anderson,Robby,22.0,NYJ,AFC,East
-WR,Colts,5-10,186,Bray,Quan,14.0,IND,AFC,South
-WR,Dolphins,6-3,212,Parker,DeVante,17.0,MIA,AFC,East
-WR,Bengals,6-0,195,Erickson,Alex,7.0,CIN,AFC,North
-WR,Chiefs,5-9,200,Wilson,Albert,16.0,KC,AFC,West
-WR,Bills,6-4,214,Lewis,Dezmin,4.0,BUF,AFC,East
-WR,Lions,6-0,190,Jones,TJ,11.0,DET,NFC,North
-WR,Giants,5-11,198,Beckham,"Jr, Odell",21.0,NYG,NFC,East
-WR,Texans,6-1,205,Miller,Braxton,13.0,HOU,AFC,South
-WR,Jaguars,5-11,186,Greene,"Sr., Rashad",15.0,JAX,AFC,South
-WR,Chiefs,5-8,176,Thomas,De'Anthony,16.0,KC,AFC,West
-WR,Saints,6-3,212,Thomas,Michael,20.0,NO,NFC,South
-WR,Eagles,6-0,198,Agholor,Nelson,24.0,PHI,NFC,East
-WR,Steelers,6-2,205,Severin,Canaan,25.0,PIT,AFC,North
-WR,Commanders,6-3,200,Harris,Maurice,,,,
-WR,Broncos,6-2,215,Latimer,Cody,10.0,DEN,AFC,West
-WR,Colts,6-0,210,Leak,Marcus,14.0,IND,AFC,South
-WR,Jaguars,5-6,168,Wynn,Shane,15.0,JAX,AFC,South
-WR,Dolphins,5-11,206,Landry,Jarvis,17.0,MIA,AFC,East
-WR,Steelers,6-1,212,Coates,Sammie,25.0,PIT,AFC,North
-WR,49ers,5-8,190,Carter,DeAndre,27.0,SF,NFC,West
-WR,Panthers,6-3,215,Garrett,Keyarris,5.0,CAR,NFC,South
-WR,Colts,5-10,185,Dorsett,Phillip,14.0,IND,AFC,South
-WR,Titans,5-10,169,Jennings,Darius,31.0,TEN,AFC,South
-WR,Rams,5-10,205,Marquez,Bradley,29.0,LAR,NFC,West
-WR,Browns,6-0,200,Hall,Rannell,8.0,CLE,AFC,North
-WR,Lions,5-9,189,Billingsley,Jace,11.0,DET,NFC,North
-WR,Vikings,6-2,209,Jones,Cayleb,18.0,MIN,NFC,North
-WR,Saints,6-6,225,Coleman,Brandon,20.0,NO,NFC,South
-WR,Steelers,5-10,190,Tucker,Marcus,25.0,PIT,AFC,North
-WR,Seahawks,5-10,182,Lockett,Tyler,28.0,SEA,NFC,West
-WR,Bengals,6-4,206,Russell,Alonzo,7.0,CIN,AFC,North
-WR,Jets,6-2,209,Peake,Charone,22.0,NYJ,AFC,East
-WR,Cardinals,6-3,208,Clark,Larry,1.0,ARI,NFC,West
-WR,Packers,6-1,215,Adams,Davante,12.0,GB,NFC,North
-WR,Texans,6-2,190,Anderson,Dres,13.0,HOU,AFC,South
-WR,Colts,6-2,205,Smith,Tevaun,14.0,IND,AFC,South
-WR,Chiefs,6-3,205,Conley,Chris,16.0,KC,AFC,West
-WR,Saints,6-2,203,Lawrence,Rashad,20.0,NO,NFC,South
-WR,Steelers,5-10,187,Rogers,Eli,25.0,PIT,AFC,North
-WR,Panthers,5-9,180,Byrd,Damiere,5.0,CAR,NFC,South
-WR,Texans,5-10,180,Hill,Shaq,13.0,HOU,AFC,South
-WR,Eagles,6-5,237,Green-Beckham,Dorial,24.0,PHI,NFC,East
-WR,Seahawks,6-1,219,Williams,Kasen,28.0,SEA,NFC,West
-WR,Commanders,6-2,206,Doctson,Josh,,,,
-WR,Patriots,6-1,200,Mitchell,Malcolm,19.0,NE,AFC,East
-WR,Jaguars,6-4,205,Robinson,Jamal,15.0,JAX,AFC,South
-WR,Dolphins,5-7,172,Grant,Jakeem,17.0,MIA,AFC,East
-WR,Eagles,5-10,193,Turner,Paul,24.0,PHI,NFC,East
-WR,Seahawks,6-6,230,McEvoy,Tanner,28.0,SEA,NFC,West
-WR,Rams,6-2,197,McRoberts,Paul,29.0,LAR,NFC,West
-WR,Bears,6-1,200,Davis,Titus,6.0,CHI,NFC,North
-WR,Chiefs,6-3,207,Dieter,Gehrig,16.0,KC,AFC,West
-WR,Chiefs,6-2,225,Jones,Tevin,16.0,KC,AFC,West
-WR,Bears,6-3,207,Meredith,Cameron,6.0,CHI,NFC,North
-WR,Cardinals,5-9,155,Hubert,Chris,1.0,ARI,NFC,West
-WR,Chiefs,6-3,200,Jones,Seantavius,16.0,KC,AFC,West
-WR,Eagles,6-3,212,Matthews,Jordan,24.0,PHI,NFC,East
-WR,Chiefs,6-2,185,Moore,Alonzo,16.0,KC,AFC,West
-WR,Saints,5-11,195,Snead,"IV, Willie",20.0,NO,NFC,South
-WR,49ers,6-1,212,Johnson,"III, BJ",27.0,SF,NFC,West
-WR,Jaguars,6-1,194,Cole,Keelan,15.0,JAX,AFC,South
-WR,Jets,5-10,177,Foxx,Deshon,22.0,NYJ,AFC,East
-WR,Rams,6-1,210,Spruce,Nelson,29.0,LAR,NFC,West
-WR,Giants,5-10,194,Shepard,Sterling,21.0,NYG,NFC,East
-WR,Saints,5-7,168,Lewis,Tommylee,20.0,NO,NFC,South
-WR,Commanders,5-11,185,Jacobs,Levern,,,,
-WR,Bills,5-11,190,Brown,Philly,4.0,BUF,AFC,East
-WR,Texans,6-1,215,Hopkins,DeAndre,13.0,HOU,AFC,South
-WR,Dolphins,6-0,195,Stills,Kenny,17.0,MIA,AFC,East
-WR,Steelers,6-4,211,Bryant,Martavis,25.0,PIT,AFC,North
-WR,49ers,5-9,197,Ellington,Bruce,27.0,SF,NFC,West
-WR,Seahawks,6-0,183,Richardson,Paul,28.0,SEA,NFC,West
-WR,Commanders,6-2,196,Thompson,Kendal,,,,
-WR,Browns,6-1,209,Leslie,Jordan,8.0,CLE,AFC,North
-WR,Jaguars,6-0,196,Lee,Marqise,15.0,JAX,AFC,South
-WR,Chargers,6-2,217,Davis,Geremy,26.0,LAC,AFC,West
-WR,Browns,6-1,201,Wright,James,8.0,CLE,AFC,North
-WR,Cowboys,5-9,180,Whitehead,Lucky,9.0,DAL,NFC,East
-WR,Chargers,6-2,211,Allen,Keenan,26.0,LAC,AFC,West
-WR,Falcons,5-10,192,Hardy,Justin,2.0,ATL,NFC,South
-WR,Cardinals,5-10,160,Nelson,J.J.,1.0,ARI,NFC,West
-WR,Browns,5-8,177,Alford,Mario,8.0,CLE,AFC,North
-WR,Buccaneers,5-11,206,Huff,Josh,30.0,TB,NFC,South
-WR,Commanders,6-1,195,Hazel,Matt,,,,
-WR,Ravens,6-2,228,Mayle,Vince,3.0,BAL,AFC,North
-WR,Broncos,6-1,212,Fowler,"III, Bennie",10.0,DEN,AFC,West
-WR,Raiders,6-0,190,Holton,Johnny,23.0,LV,AFC,West
-WR,Chargers,6-4,205,Williams,Tyrell,26.0,LAC,AFC,West
-WR,Buccaneers,6-0,195,Martino,Freddie,30.0,TB,NFC,South
-WR,Patriots,6-0,192,White,DeAndrew,19.0,NE,AFC,East
-WR,Titans,5-11,190,Krause,Jonathan,31.0,TEN,AFC,South
-WR,Rams,6-0,193,Woods,Robert,29.0,LAR,NFC,West
-WR,Jaguars,6-0,196,Pinkard,Larry,15.0,JAX,AFC,South
-WR,49ers,6-2,227,Smelter,DeAndre,27.0,SF,NFC,West
-WR,Buccaneers,5-9,175,Reedy,Bernard,30.0,TB,NFC,South
-WR,Bills,6-0,189,Powell,Walter,4.0,BUF,AFC,East
-WR,Falcons,5-11,170,Magee,Josh,2.0,ATL,NFC,South
-WR,Jets,6-2,225,Enunwa,Quincy,22.0,NYJ,AFC,East
-WR,Chargers,6-0,199,Brown,Da'Ron,26.0,LAC,AFC,West
-WR,Panthers,5-10,195,Clay,Kaelin,5.0,CAR,NFC,South
-WR,Cardinals,6-3,205,Dobson,Aaron,1.0,ARI,NFC,West
-WR,Bengals,6-4,206,Kumerow,Jake,7.0,CIN,AFC,North
-WR,Giants,6-0,190,Snead,Kevin,21.0,NYG,NFC,East
-WR,Ravens,6-1,197,Bell,Kenny,3.0,BAL,AFC,North
-WR,Broncos,6-5,210,Taylor,Jordan,10.0,DEN,AFC,West
-WR,Dolphins,6-2,204,Scott,Rashawn,17.0,MIA,AFC,East
-WR,Buccaneers,6-1,188,Walker,Derel,30.0,TB,NFC,South
-WR,Jaguars,6-3,201,Hurns,Allen,15.0,JAX,AFC,South
-WR,Chargers,5-10,187,Burse,Isaiah,26.0,LAC,AFC,West
-WR,Lions,6-1,195,Abbrederis,Jared,11.0,DET,NFC,North
-WR,Raiders,6-2,195,Roberts,Seth,23.0,LV,AFC,West
-WR,Saints,6-2,200,Fuller,Corey,20.0,NO,NFC,South
-WR,Steelers,6-4,203,Hunter,Justin,25.0,PIT,AFC,North
-WR,49ers,5-9,179,Goodwin,Marquise,27.0,SF,NFC,West
-WR,Bears,5-11,189,Wheaton,Markus,6.0,CHI,NFC,North
-WR,Giants,6-1,200,King,Tavarres,21.0,NYG,NFC,East
-WR,Panthers,6-5,245,Benjamin,Kelvin,5.0,CAR,NFC,South
-WR,Cowboys,5-10,179,McDuffie,Quincy,9.0,DAL,NFC,East
-WR,Commanders,6-0,204,Grant,Ryan,,,,
-WR,Falcons,5-10,184,Williams,Nick,2.0,ATL,NFC,South
-WR,Broncos,6-5,214,Brown,Marlon,10.0,DEN,AFC,West
-WR,Vikings,6-3,210,Fruechte,Isaac,18.0,MIN,NFC,North
-WR,Cowboys,5-11,194,Nwachukwu,Uzoma,9.0,DAL,NFC,East
-WR,Bills,6-2,213,Butler,Jeremy,4.0,BUF,AFC,East
-WR,Falcons,5-8,167,Gabriel,Taylor,2.0,ATL,NFC,South
-WR,Lions,6-1,204,Spadola,Ryan,11.0,DET,NFC,North
-WR,Packers,5-10,192,Cobb,Randall,12.0,GB,NFC,North
-WR,Panthers,6-1,195,Shepard,Russell,5.0,CAR,NFC,South
-WR,Giants,6-0,190,Rudolph,Travis,21.0,NYG,NFC,East
-WR,Vikings,6-2,200,Thielen,Adam,18.0,MIN,NFC,North
-WR,Bears,6-2,208,Randle,Rueben,6.0,CHI,NFC,North
-WR,Browns,5-11,205,Boyce,Josh,8.0,CLE,AFC,North
-WR,Texans,5-10,185,Williams,Wendall,13.0,HOU,AFC,South
-WR,Packers,6-3,219,Janis,Jeff,12.0,GB,NFC,North
-WR,Steelers,6-2,201,Hamilton,Cobi,25.0,PIT,AFC,North
-WR,Jets,6'3,200,Street,Devin,22.0,NYJ,AFC,East
-WR,Raiders,6-2,220,Patterson,Cordarrelle,23.0,LV,AFC,West
-WR,Dolphins,6-6,215,Mathews,Mitch,17.0,MIA,AFC,East
-WR,Bills,6-0,180,Ross,Rashad,4.0,BUF,AFC,East
-WR,Panthers,6-3,210,Bersin,Brenton,5.0,CAR,NFC,South
-WR,Lions,6-2,198,Jones,"Jr., Marvin",11.0,DET,NFC,North
-WR,Rams,5-8,179,Austin,Tavon,29.0,LAR,NFC,West
-WR,Commanders,6-4,228,Pryor,"Sr., Terrelle",,,,
-WR,Falcons,6-2,210,Sanu,Mohamed,2.0,ATL,NFC,South
-WR,Cardinals,5-11,179,Brown,John,1.0,ARI,NFC,West
-WR,Chargers,5-10,175,Benjamin,Travis,26.0,LAC,AFC,West
-WR,Ravens,6-5,228,Matthews,Chris,3.0,BAL,AFC,North
-WR,Bears,5-10,191,Wright,Kendall,6.0,CHI,NFC,North
-WR,Cardinals,6-2,205,Brown,Jaron,1.0,ARI,NFC,West
-WR,Colts,5-9,180,Hilton,T.Y.,14.0,IND,AFC,South
-WR,Jets,6-1,184,Hammond,Frankie,22.0,NYJ,AFC,East
-WR,Seahawks,6-1,209,Kearse,Jermaine,28.0,SEA,NFC,West
-WR,Jets,6-0,195,White,Myles,22.0,NYJ,AFC,East
-WR,Lions,5-11,195,Martin,Keshawn,11.0,DET,NFC,North
-WR,Vikings,5-10,191,Wright,Jarius,18.0,MIN,NFC,North
-WR,Eagles,6-3,218,Jeffery,Alshon,24.0,PHI,NFC,East
-WR,Seahawks,6-5,225,Smith,Rodney,28.0,SEA,NFC,West
-WR,Vikings,6-2,220,Floyd,Michael,18.0,MIN,NFC,North
-WR,Titans,6-0,217,Matthews,Rishard,31.0,TEN,AFC,South
-WR,Cowboys,6-3,220,Butler,Brice,9.0,DAL,NFC,East
-WR,Falcons,5-11,217,Daniels,B.J.,2.0,ATL,NFC,South
-WR,Cowboys,6-2,210,Williams,Terrance,9.0,DAL,NFC,East
-WR,Giants,6-2,210,Norwood,Kevin,21.0,NYG,NFC,East
-WR,Colts,6-2,215,Aiken,Kamar,14.0,IND,AFC,South
-WR,Cardinals,5-11,186,Golden,Brittan,1.0,ARI,NFC,West
-WR,Falcons,6-3,220,Jones,Julio,2.0,ATL,NFC,South
-WR,Cowboys,5-8,180,Beasley,Cole,9.0,DAL,NFC,East
-WR,Panthers,6-2,215,Johnson,Charles,5.0,CAR,NFC,South
-WR,Bears,6-0,205,Thompson,Deonte,6.0,CHI,NFC,North
-WR,Bears,6-0,211,Bellamy,Josh,6.0,CHI,NFC,North
-WR,Lions,5-10,197,Tate,Golden,11.0,DET,NFC,North
-WR,Patriots,6-1,210,Hogan,Chris,19.0,NE,AFC,East
-WR,Chargers,6-3,205,Inman,Dontrelle,26.0,LAC,AFC,West
-WR,Falcons,6-4,220,Dable,Anthony,2.0,ATL,NFC,South
-WR,Jaguars,6-2,228,Benn,Arrelious,15.0,JAX,AFC,South
-WR,49ers,5-9,188,Kerley,Jeremy,27.0,SF,NFC,West
-WR,Bengals,6-4,210,Green,A.J.,7.0,CIN,AFC,North
-WR,Browns,6-3,223,Britt,Kenny,8.0,CLE,AFC,North
-WR,49ers,5-10,187,Robinson,Aldrick,27.0,SF,NFC,West
-WR,Bills,6-4,210,Holmes,Andre,4.0,BUF,AFC,East
-WR,Eagles,6-0,205,Smith,Torrey,24.0,PHI,NFC,East
-WR,Commanders,6-3,218,Quick,Brian,,,,
-WR,Steelers,5-10,181,Brown,Antonio,25.0,PIT,AFC,North
-WR,Cowboys,6-2,220,Bryant,Dez,9.0,DAL,NFC,East
-WR,Seahawks,5-10,192,Baldwin,Doug,28.0,SEA,NFC,West
-WR,Bills,6-1,195,Tate,Brandon,4.0,BUF,AFC,East
-WR,Cardinals,6-0,215,Ross,Jeremy,1.0,ARI,NFC,West
-WR,Raiders,6-1,214,Crabtree,Michael,23.0,LV,AFC,West
-WR,Giants,5-10,202,Harris,Dwayne,21.0,NYG,NFC,East
-WR,Falcons,5-11,192,Roberts,Andre,2.0,ATL,NFC,South
-WR,Bills,6-3,200,Streater,Rod,4.0,BUF,AFC,East
-WR,Broncos,6-3,229,Thomas,Demaryius,10.0,DEN,AFC,West
-WR,Broncos,5-11,180,Sanders,Emmanuel,10.0,DEN,AFC,West
-WR,Bengals,6-3,210,LaFell,Brandon,7.0,CIN,AFC,North
-WR,Buccaneers,5-10,175,Jackson,DeSean,30.0,TB,NFC,South
-WR,49ers,6-0,211,Garçon,Pierre,27.0,SF,NFC,West
-WR,Ravens,6-0,205,Wallace,Mike,3.0,BAL,AFC,North
-WR,Bears,6-0,204,Cruz,Victor,6.0,CHI,NFC,North
-WR,Jets,6-3,214,Decker,Eric,22.0,NYJ,AFC,East
-WR,Steelers,6-2,210,Heyward-Bey,Darrius,25.0,PIT,AFC,North
-WR,Patriots,5-10,200,Edelman,Julian,19.0,NE,AFC,East
-WR,Titans,5-9,195,Weems,Eric,31.0,TEN,AFC,South
-WR,Patriots,5-7,180,Hawkins,Andrew,19.0,NE,AFC,East
-WR,Patriots,6-0,205,Slater,Matthew,19.0,NE,AFC,East
-WR,Patriots,5-11,190,Amendola,Danny,19.0,NE,AFC,East
-WR,Saints,5-11,180,Ginn,Ted,20.0,NO,NFC,South
-WR,Titans,6-0,183,Douglas,Harry,31.0,TEN,AFC,South
-WR,Packers,6-3,217,Nelson,Jordy,12.0,GB,NFC,North
-WR,Cardinals,6-3,218,Fitzgerald,Larry,1.0,ARI,NFC,West
-WR,Giants,6-4,230,Marshall,Brandon,21.0,NYG,NFC,East
+First Name,Last Name,Position,Height,Weight,Arms,Hands,Team,Conference,Division
+Adam,Thielen,WR,6-2,195.0,,,Carolina Panthers,NFC,South
+Adonai,Mitchell,WR,6-2,205.0,32 1/2,9,Indianapolis Colts,AFC,South
+Ahmarean,Brown,WR,5-9,167.0,,,Buffalo Bills,AFC,East
+Ainias,Smith,WR,5-9,176.0,29,8 1/2,Philadelphia Eagles,NFC,East
+Alec,Pierce,WR,6-3,211.0,33,9,Indianapolis Colts,AFC,South
+Alex,Johnson,WR,5-9,167.0,,,Indianapolis Colts,AFC,South
+Alex,Bachman,WR,6-0,190.0,,,Las Vegas Raiders,AFC,West
+Alex,Erickson,WR,6-0,195.0,,,New England Patriots,AFC,East
+Alex,Johnson,WR,5-9,167.0,,,New York Giants,NFC,East
+Allen,Robinson,WR,6-2,220.0,32,9 1/2,Detroit Lions,NFC,North
+Allen,Lazard,WR,6-5,227.0,32 1/4,9 3/4,New York Jets,AFC,East
+Amari,Cooper,WR,6-1,210.0,31 1/2,10,Buffalo Bills,AFC,East
+Amari,Cooper,WR,6-1,210.0,31 1/2,10,Cleveland Browns,AFC,North
+Andre,Baccellia,WR,5-10,175.0,,,Arizona Cardinals,NFC,West
+Andrei,Iosivas,WR,6-3,210.0,32,8 3/4,Cincinnati Bengals,AFC,North
+Andy,Isabella,WR,5-9,188.0,29 3/4,8 1/2,Pittsburgh Steelers,AFC,North
+Anthony,Miller,WR,5-11,199.0,31 3/4,10,Baltimore Ravens,AFC,North
+Anthony,Gould,WR,5-8,174.0,29 3/4,9,Indianapolis Colts,AFC,South
+Anthony,Schwartz,WR,6-0,195.0,31 1/2,9 1/2,Miami Dolphins,AFC,East
+Antoine,Green,WR,6-2,200.0,32 1/4,9,Detroit Lions,NFC,North
+Ashton,Dulin,WR,6-2,215.0,33 1/2,9,Indianapolis Colts,AFC,South
+Austin,Trammell,WR,5-10,185.0,,,Jacksonville Jaguars,AFC,South
+Ben,Skowronek,WR,6-3,224.0,33 1/4,10 1/4,Pittsburgh Steelers,AFC,North
+Bo,Melton,WR,5-11,189.0,31 1/4,9,Green Bay Packers,NFC,North
+Brandin,Cooks,WR,5-10,189.0,30 3/4,9 3/4,Dallas Cowboys,NFC,East
+Brandon,Powell,WR,5-8,181.0,,,Minnesota Vikings,NFC,North
+Brandon,Aiyuk,WR,6-0,200.0,33 1/2,9 3/4,San Francisco 49ers,NFC,NFC
+Brandon,Coleman,WR,6-6,225.0,34,9 1/4,Washington Commanders,NFC,East
+Braxton,Berrios,WR,5-9,185.0,28,9 1/4,Miami Dolphins,AFC,East
+Braylon,Sanders,WR,6-1,190.0,31 1/2,10,New England Patriots,AFC,East
+Brenden,Rice,WR,6-3,210.0,33,9 3/4,Los Angeles Chargers,AFC,West
+Britain,Covey,WR,5-8,173.0,,,Philadelphia Eagles,NFC,East
+Bryce,Ford-Wheaton,WR,6-3,220.0,33 1/2,9 1/2,New York Giants,NFC,East
+Bryce,Oliver,WR,6-1,214.0,,,Tennessee Titans,AFC,South
+Brycen,Tremayne,WR,6-4,212.0,,,Washington Commanders,NFC,East
+Bub,Means,WR,6-2,215.0,33 1/4,10 1/4,New Orleans Saints,NFC,South
+Calvin,Austin III,WR,5-9,162.0,30,9 1/4,Pittsburgh Steelers,AFC,North
+Calvin,Ridley,WR,6-1,190.0,31 3/4,9 1/4,Tennessee Titans,AFC,South
+Casey,Washington,WR,6-0,200.0,,,Atlanta Falcons,NFC,South
+Cedric,Tillman,WR,6-2,219.0,,,Cleveland Browns,AFC,North
+CeeDee,Lamb,WR,6-2,200.0,32 1/4,9 1/4,Dallas Cowboys,NFC,East
+Charlie,Jones,WR,5-8,175.0,,,Cincinnati Bengals,AFC,North
+Chase,Cota,WR,6-4,200.0,,,New York Giants,NFC,East
+Chris,Moore,WR,6-1,200.0,33 1/2,9 1/2,Arizona Cardinals,NFC,West
+Chris,Blair,WR,6-2,198.0,,,Atlanta Falcons,NFC,South
+Chris,Brooks,WR,6-2,210.0,,,Green Bay Packers,NFC,North
+Chris,Olave,WR,6-0,187.0,31 1/4,9 1/2,New Orleans Saints,NFC,South
+Chris,Conley,WR,6-3,205.0,33 3/4,10,San Francisco 49ers,NFC,NFC
+Chris,Godwin,WR,6-1,209.0,31 3/4,9 1/4,Tampa Bay Buccaneers,NFC,South
+Chris,Moore,WR,6-1,200.0,33 1/2,9 1/2,Washington Commanders,NFC,East
+Christian,Watson,WR,6-4,208.0,32 1/2,10 1/4,Green Bay Packers,NFC,North
+Christian,Kirk,WR,5-11,200.0,30 1/2,10,Jacksonville Jaguars,AFC,South
+Cody,Thompson,WR,6-2,205.0,31,9 1/2,Tampa Bay Buccaneers,NFC,South
+Cole,Burgess,WR,6-1,192.0,,,Cincinnati Bengals,AFC,North
+Collin,Johnson,WR,6-6,220.0,31 3/4,9,Chicago Bears,NFC,North
+Colton,Dowell,WR,6-3,212.0,,,Tennessee Titans,AFC,South
+Cooper,Kupp,WR,6-2,208.0,31 1/2,9 1/2,Los Angeles Rams,NFC,West
+Cornell,Powell,WR,6-0,204.0,32 3/4,10,Kansas City Chiefs,AFC,West
+Cornell,Powell,WR,6-0,204.0,32 3/4,10,Seattle Seahawks,NFC,West
+Courtland,Sutton,WR,6-4,216.0,32 1/2,9 3/4,Denver Broncos,AFC,West
+Curtis,Samuel,WR,5-11,195.0,31 1/4,9 1/2,Buffalo Bills,AFC,East
+Dan,Chisena,WR,6-3,202.0,,,Arizona Cardinals,NFC,West
+Dan,Chisena,WR,6-3,202.0,,,Carolina Panthers,NFC,South
+Danny,Gray,WR,6-0,200.0,32,9 3/4,Philadelphia Eagles,NFC,East
+Dante,Pettis,WR,6-1,195.0,32 1/4,9 1/2,New Orleans Saints,NFC,South
+Dareke,Young,WR,6-2,224.0,,,Seattle Seahawks,NFC,West
+Darius,Slayton,WR,6-1,198.0,32 3/4,10,New York Giants,NFC,East
+Darnell,Mooney,WR,5-11,177.0,31,9 3/4,Atlanta Falcons,NFC,South
+Davante,Adams,WR,6-1,215.0,32 3/4,9,Las Vegas Raiders,AFC,West
+Davante,Adams,WR,6-1,215.0,32 3/4,9,New York Jets,AFC,East
+David,Moore,WR,6-0,219.0,,,Carolina Panthers,NFC,South
+David,Bell,WR,6-1,212.0,32,9 1/4,Cleveland Browns,AFC,North
+David,Sills,WR,6-3,211.0,32,9,Denver Broncos,AFC,West
+Dax,Milne,WR,6-1,200.0,29 1/2,9 1/2,Carolina Panthers,NFC,South
+Dayton,Wade,WR,5-9,184.0,,,Baltimore Ravens,AFC,North
+DeAndre,Carter,WR,5-8,190.0,,,Chicago Bears,NFC,North
+DeAndre,Hopkins,WR,6-1,212.0,33 1/2,10,Kansas City Chiefs,AFC,West
+DeAndre,Hopkins,WR,6-1,212.0,33 1/2,10,Tennessee Titans,AFC,South
+Demarcus,Robinson,WR,6-1,203.0,33,9 1/2,Los Angeles Rams,NFC,West
+Demario,Douglas,WR,5-8,192.0,30 1/4,8 3/4,New England Patriots,AFC,East
+Dennis,Houston,WR,6-1,198.0,,,Tampa Bay Buccaneers,NFC,South
+Deon,Cain,WR,6-2,202.0,33,8 3/4,Buffalo Bills,AFC,East
+Deon,Cain,WR,6-2,202.0,33,8 3/4,Carolina Panthers,NFC,South
+Derius,Davis,WR,5-8,165.0,29 1/4,8,Los Angeles Chargers,AFC,West
+Devaughn,Vele,WR,6-5,210.0,33 1/2,9 3/4,Denver Broncos,AFC,West
+Deven,Thompkins,WR,5-8,155.0,,,Carolina Panthers,NFC,South
+Devin,Duvernay,WR,5-11,202.0,30 3/4,9 1/2,Jacksonville Jaguars,AFC,South
+DeVonta,Smith,WR,6-0,170.0,31 1/4,9 1/4,Philadelphia Eagles,NFC,East
+Devontez,Walker,WR,6-1,198.0,33 1/4,9 1/4,Baltimore Ravens,AFC,North
+Dez,Fitzpatrick,WR,6-2,208.0,32 3/4,9 3/4,Los Angeles Chargers,AFC,West
+Diontae,Johnson,WR,5-10,183.0,30 3/4,9,Baltimore Ravens,AFC,North
+Diontae,Johnson,WR,5-10,183.0,30 3/4,9,Carolina Panthers,NFC,South
+Diontae,Johnson,WR,5-10,183.0,30 3/4,9,Houston Texans,AFC,South
+DJ,Turner,WR,5-9,206.0,,,Las Vegas Raiders,AFC,West
+DK,Metcalf,WR,6-4,235.0,35,10,Seattle Seahawks,NFC,West
+Donovan,Peoples-Jones,WR,6-2,204.0,33 1/2,10 1/4,Detroit Lions,NFC,North
+Dontayvion,Wicks,WR,6-1,206.0,32 1/2,10,Green Bay Packers,NFC,North
+Drake,London,WR,6-4,213.0,33,9 1/2,Atlanta Falcons,NFC,South
+Drake,Stoops,WR,5-10,189.0,,,Los Angeles Rams,NFC,West
+Dyami,Brown,WR,6-0,195.0,32 3/4,9 3/4,Washington Commanders,NFC,East
+Dylan,Drummond,WR,6-0,186.0,,,Atlanta Falcons,NFC,South
+Easop,Winston,WR,5-11,199.0,,,New York Jets,AFC,East
+Elijah,Moore,WR,5-10,180.0,30 1/4,9 1/2,Cleveland Browns,AFC,North
+Elijah,Cooks,WR,6-4,215.0,,,Jacksonville Jaguars,AFC,South
+Erik,Ezukanma,WR,6-2,206.0,33 1/2,9 1/2,Miami Dolphins,AFC,East
+Ethan,Fernea,WR,6-0,195.0,,,Indianapolis Colts,AFC,South
+Gabe,Davis,WR,6-2,225.0,32 1/4,9 1/4,Jacksonville Jaguars,AFC,South
+Garrett,Wilson,WR,6-0,183.0,32,10,New York Jets,AFC,East
+George,Pickens,WR,6-3,200.0,32 1/2,8 3/4,Pittsburgh Steelers,AFC,North
+Grant,DuBose,WR,6-2,201.0,32,9 1/2,Miami Dolphins,AFC,East
+Greg,Dortch,WR,5-7,175.0,29 1/4,9 1/4,Arizona Cardinals,NFC,West
+Griffin,Hebert,WR,6-1,231.0,,,Philadelphia Eagles,NFC,East
+Gunner,Olszewski,WR,6-0,190.0,,,New York Giants,NFC,East
+Ihmir,Smith-Marsette,WR,6-1,185.0,30 3/4,9 3/4,New York Giants,NFC,East
+Irvin,Charles,WR,6-4,219.0,,,New York Jets,AFC,East
+Isaiah,McKenzie,WR,5-8,173.0,29,9,Miami Dolphins,AFC,East
+Isaiah,Hodgins,WR,6-3,201.0,33 1/4,10,New York Giants,NFC,East
+Jacob,Harris,WR,6-5,211.0,,,Philadelphia Eagles,NFC,East
+Jacob,Cowing,WR,5-9,170.0,29 1/4,9,San Francisco 49ers,NFC,NFC
+Jaelen,Gill,WR,6-0,185.0,,,Cleveland Browns,AFC,North
+Jaelon,Darden,WR,5-8,175.0,30 3/4,8 3/4,Cleveland Browns,AFC,North
+Jaelon,Darden,WR,5-8,175.0,30 3/4,8 3/4,Seattle Seahawks,NFC,West
+Jahan,Dotson,WR,5-11,184.0,30 3/4,9 1/2,Philadelphia Eagles,NFC,East
+Jake,Bobo,WR,6-4,211.0,32 1/4,10,Seattle Seahawks,NFC,West
+Jakobi,Meyers,WR,6-2,200.0,32,9 1/2,Las Vegas Raiders,AFC,West
+Jalen,Virgil,WR,6-1,210.0,,,Buffalo Bills,AFC,East
+Jalen,Coker,WR,6-3,213.0,33,10,Carolina Panthers,NFC,South
+Jalen,Brooks,WR,6-2,205.0,34 1/4,9 1/2,Dallas Cowboys,NFC,East
+Jalen,Moreno-Cropper,WR,5-11,180.0,30 1/4,9,Dallas Cowboys,NFC,East
+Jalen,Tolbert,WR,6-1,195.0,32 1/4,10,Dallas Cowboys,NFC,East
+Jalen,Wayne,WR,6-2,210.0,32 1/4,9 1/2,Green Bay Packers,NFC,North
+Jalen,Guyton,WR,6-1,212.0,,,Las Vegas Raiders,AFC,West
+Jalen,Reagor,WR,5-11,197.0,31 1/2,9 1/2,Los Angeles Chargers,AFC,West
+Jalen,Nailor,WR,6-0,190.0,30 1/4,9 1/4,Minnesota Vikings,NFC,North
+Jalen,Reagor,WR,5-11,197.0,31 1/2,9 1/2,New England Patriots,AFC,East
+Jalen,McMillan,WR,6-1,192.0,32 1/4,10,Tampa Bay Buccaneers,NFC,South
+Jalin,Hyatt,WR,6-0,185.0,32 1/2,9,New York Giants,NFC,East
+Jamal,Agnew,WR,5-10,190.0,,,Pittsburgh Steelers,AFC,North
+Jamari,Thrash,WR,6-0,190.0,31,8 3/4,Cleveland Browns,AFC,North
+James,Proche,WR,5-11,193.0,29 3/4,9 3/4,Cleveland Browns,AFC,North
+Jameson,Williams,WR,6-1,180.0,32 1/4,9 1/4,Detroit Lions,NFC,North
+Jamison,Crowder,WR,5-9,177.0,30 1/2,8 3/4,Washington Commanders,NFC,East
+JaQuae,Jackson,WR,6-1,184.0,,,New England Patriots,AFC,East
+Jaray,Jenkins,WR,6-2,200.0,31 3/4,10,Pittsburgh Steelers,AFC,North
+Jared,Wayne,WR,6-3,210.0,,,Houston Texans,AFC,South
+Jason,Brownlee,WR,6-3,202.0,33 3/4,9 3/4,New York Jets,AFC,East
+Jauan,Jennings,WR,6-3,212.0,31 3/4,9,San Francisco 49ers,NFC,NFC
+Javon,Baker,WR,6-1,202.0,32 1/4,9 3/4,New England Patriots,AFC,East
+Jaxon,Smith-Njigba,WR,6-0,197.0,30 1/2,9,Seattle Seahawks,NFC,West
+Jayden,Reed,WR,5-11,187.0,30 1/2,9 1/4,Green Bay Packers,NFC,North
+Jaylen,Waddle,WR,5-10,185.0,30 1/2,9 1/4,Miami Dolphins,AFC,East
+Jeff,Foreman,WR,6-0,182.0,,,Las Vegas Raiders,AFC,West
+Jermaine,Burton,WR,6-0,204.0,31,10,Cincinnati Bengals,AFC,North
+Jermaine,Jackson,WR,5-7,170.0,,,New Orleans Saints,NFC,South
+Jerry,Jeudy,WR,6-1,195.0,32 1/4,9 1/2,Cleveland Browns,AFC,North
+Jeshaun,Jones,WR,6-1,188.0,,,Minnesota Vikings,NFC,North
+Jesse,Matthews,WR,6-0,190.0,,,Atlanta Falcons,NFC,South
+John,Jackson,WR,5-10,175.0,,,Chicago Bears,NFC,North
+John,Jiles,WR,6-3,205.0,,,New England Patriots,AFC,East
+John,Ross,WR,5-11,190.0,31 1/2,8 3/4,Philadelphia Eagles,NFC,East
+Johnny,Johnson III,WR,6-1,199.0,30 1/2,9 3/4,Houston Texans,AFC,South
+Johnny,Wilson,WR,6-3,203.0,,,Philadelphia Eagles,NFC,East
+Jonathan,Mingo,WR,6-2,220.0,32 1/4,10 1/2,Carolina Panthers,NFC,South
+Jonathan,Mingo,WR,6-2,220.0,32 1/4,10 1/2,Dallas Cowboys,NFC,East
+Jordan,Whittington,WR,6-1,202.0,30 1/2,10,Los Angeles Rams,NFC,West
+Jordan,Addison,WR,5-11,175.0,31,8 3/4,Minnesota Vikings,NFC,North
+Josh,Reynolds,WR,6-3,194.0,31 1/2,9 1/2,Denver Broncos,AFC,West
+Josh,Downs,WR,5-9,171.0,30 1/2,9 1/4,Indianapolis Colts,AFC,South
+Josh,Reynolds,WR,6-3,194.0,31 1/2,9 1/2,Jacksonville Jaguars,AFC,South
+Josh,Palmer,WR,6-1,210.0,33,9 3/4,Los Angeles Chargers,AFC,West
+Joshua,Cephus,WR,6-3,185.0,,,Jacksonville Jaguars,AFC,South
+JuJu,Smith-Schuster,WR,6-1,215.0,33,10 1/2,Kansas City Chiefs,AFC,West
+Julian,Hicks,WR,6-2,201.0,,,Green Bay Packers,NFC,North
+Justin,Watson,WR,6-2,215.0,,,Kansas City Chiefs,AFC,West
+Justin,Jefferson,WR,6-1,195.0,33,9 1/4,Minnesota Vikings,NFC,North
+Justyn,Ross,WR,6-4,210.0,32 1/4,9 3/4,Kansas City Chiefs,AFC,West
+Juwann,Winfree,WR,6-1,210.0,,,Indianapolis Colts,AFC,South
+Kadarius,Toney,WR,6-0,193.0,31 1/4,9 1/4,Cleveland Browns,AFC,North
+Kaden,Davis,WR,6-1,190.0,,,Cleveland Browns,AFC,North
+Kaden,Davis,WR,6-1,190.0,,,Denver Broncos,AFC,West
+Kalif,Raymond,WR,5-8,180.0,,,Detroit Lions,NFC,North
+Kameron,Johnson,WR,5-10,170.0,,,Tampa Bay Buccaneers,NFC,South
+KaVontae,Turpin,WR,5-9,153.0,,,Dallas Cowboys,NFC,East
+Kayshon,Boutte,WR,5-11,197.0,31 1/2,9 1/2,New England Patriots,AFC,East
+Kazmeir,Allen,WR,5-8,176.0,,,Washington Commanders,NFC,East
+Kearis,Jackson,WR,5-11,196.0,31 1/4,9 1/2,New York Giants,NFC,East
+Keenan,Allen,WR,6-2,211.0,32 3/4,10,Chicago Bears,NFC,North
+Keith,Kirkwood,WR,6-3,210.0,,,Baltimore Ravens,AFC,North
+Kelvin,Harmon,WR,6-2,215.0,32 1/2,9 1/2,Dallas Cowboys,NFC,East
+Kendric,Pryor,WR,5-11,189.0,,,Cincinnati Bengals,AFC,North
+Kendrick,Bourne,WR,6-1,205.0,32 1/2,9 1/4,New England Patriots,AFC,East
+Keon,Coleman,WR,6-4,215.0,32 1/4,9 1/2,Buffalo Bills,AFC,East
+KhaDarel,Hodge,WR,6-2,208.0,,,Atlanta Falcons,NFC,South
+Khalil,Shakir,WR,6-0,190.0,29,9 1/2,Buffalo Bills,AFC,East
+Kristian,Wilkerson,WR,6-1,214.0,,,Las Vegas Raiders,AFC,West
+Kyle,Philips,WR,5-11,189.0,29 3/4,8 3/4,Philadelphia Eagles,NFC,East
+Ladd,McConkey,WR,6-0,185.0,30 1/4,8 3/4,Los Angeles Chargers,AFC,West
+Lance,McCutcheon,WR,6-3,202.0,,,Pittsburgh Steelers,AFC,North
+Laquon,Treadwell,WR,6-2,215.0,33 1/2,9 1/2,Indianapolis Colts,AFC,South
+Lideatrick,Griffin,WR,5-10,180.0,30 3/4,9 1/4,Cleveland Browns,AFC,North
+Lucky,Jackson,WR,6-0,186.0,,,Minnesota Vikings,NFC,North
+Luke,McCaffrey,WR,6-2,198.0,30 1/4,9 3/4,Washington Commanders,NFC,East
+Mack,Hollins,WR,6-4,221.0,33 1/4,9 3/4,Buffalo Bills,AFC,East
+Malachi,Corley,WR,5-11,215.0,32 1/4,9 1/4,New York Jets,AFC,East
+Malik,Cunningham,WR,6-1,186.0,31 1/2,9 1/2,Baltimore Ravens,AFC,North
+Malik,Heath,WR,6-2,213.0,32 1/2,9 1/4,Green Bay Packers,NFC,North
+Malik,Knowles,WR,6-2,196.0,32 1/4,8 3/4,Green Bay Packers,NFC,North
+Malik,Washington,WR,5-8,191.0,30 1/2,9 1/4,Miami Dolphins,AFC,East
+Malik,Nabers,WR,6-0,200.0,,,New York Giants,NFC,East
+Malik,Taylor,WR,6-1,220.0,,,New York Jets,AFC,East
+Malik,Turner,WR,6-2,202.0,,,San Francisco 49ers,NFC,NFC
+Marcus,Harris,WR,6-1,187.0,,,Houston Texans,AFC,South
+Marcus,Harris,WR,6-1,187.0,,,New England Patriots,AFC,East
+Marcus,Rosemy-Jacksaint,WR,6-3,195.0,33,10,Philadelphia Eagles,NFC,East
+Marcus,Simms,WR,6-0,197.0,,,Seattle Seahawks,NFC,West
+Marquez,Valdes-Scantling,WR,6-4,206.0,32 1/4,10,Buffalo Bills,AFC,East
+Marquez,Valdes-Scantling,WR,6-4,206.0,32 1/4,10,New Orleans Saints,NFC,South
+Marquez,Callaway,WR,6-2,204.0,32 1/2,9 1/2,Tampa Bay Buccaneers,NFC,South
+Marquise,Brown,WR,5-9,180.0,30 1/2,9,Kansas City Chiefs,AFC,West
+Mason,Tipton,WR,5-11,187.0,,,New Orleans Saints,NFC,South
+Mason,Kinsey,WR,5-11,200.0,,,Tennessee Titans,AFC,South
+Matt,Landers,WR,6-4,200.0,32 1/2,9 1/4,New England Patriots,AFC,East
+Mecole,Hardman,WR,5-10,187.0,30 1/4,9,Kansas City Chiefs,AFC,West
+Michael,Wilson,WR,6-2,213.0,31,9 3/4,Arizona Cardinals,NFC,West
+Michael,Bandy,WR,5-10,190.0,,,Denver Broncos,AFC,West
+Mike,Williams,WR,6-4,218.0,33 1/2,9 1/2,New York Jets,AFC,East
+Mike,Williams,WR,6-4,218.0,33 1/2,9 1/2,Pittsburgh Steelers,AFC,North
+Mike,Evans,WR,6-5,231.0,35 1/4,9 3/4,Tampa Bay Buccaneers,NFC,South
+Mike,Strachan,WR,6-5,225.0,34 1/4,10,Washington Commanders,NFC,East
+Miles,Boykin,WR,6-4,220.0,33 1/2,10,Seattle Seahawks,NFC,West
+Mitchell,Tinsley,WR,6-1,205.0,32 1/2,10,Washington Commanders,NFC,East
+Montrell,Washington,WR,5-10,170.0,,,Kansas City Chiefs,AFC,West
+Nelson,Agholor,WR,6-0,200.0,32 1/4,9 1/4,Baltimore Ravens,AFC,North
+Nick,Westbrook-Ikhine,WR,6-2,211.0,,,Tennessee Titans,AFC,South
+Nico,Collins,WR,6-4,222.0,34 1/4,9 1/2,Houston Texans,AFC,South
+Nikko,Remigio,WR,5-9,187.0,,,Kansas City Chiefs,AFC,West
+Noah,Brown,WR,6-2,225.0,31 3/4,9 1/4,Washington Commanders,NFC,East
+Nsimba,Webster,WR,5-10,180.0,,,Chicago Bears,NFC,North
+Olamide,Zaccheaus,WR,5-8,193.0,,,Washington Commanders,NFC,East
+Parker,Washington,WR,5-10,204.0,29,10 1/4,Jacksonville Jaguars,AFC,South
+Parris,Campbell,WR,6-1,205.0,32 1/4,9 1/2,Philadelphia Eagles,NFC,East
+Phillip,Dorsett,WR,5-10,192.0,30 1/4,9 1/2,Atlanta Falcons,NFC,South
+Praise,Olatoke,WR,6-2,197.0,,,Carolina Panthers,NFC,South
+Puka,Nacua,WR,6-2,212.0,31 1/2,9 1/2,Los Angeles Rams,NFC,West
+Qadir,Ismail,WR,6-6,232.0,,,Baltimore Ravens,AFC,North
+Quentin,Johnston,WR,6-4,215.0,33 3/4,9 3/4,Los Angeles Chargers,AFC,West
+Quez,Watkins,WR,6-0,193.0,33,9,Pittsburgh Steelers,AFC,North
+Quintez,Cephus,WR,6-1,208.0,32 1/4,8 3/4,Los Angeles Rams,NFC,West
+Rakim,Jarrett,WR,6-0,192.0,31 1/2,9 1/2,Tampa Bay Buccaneers,NFC,South
+Ramel,Keyton,WR,6-2,191.0,,,Las Vegas Raiders,AFC,West
+Rashee,Rice,WR,6-1,203.0,32 3/4,9 1/2,Kansas City Chiefs,AFC,West
+Rashid,Shaheed,WR,6-0,180.0,,,New Orleans Saints,NFC,South
+Rashod,Bateman,WR,6-1,195.0,33,9 1/2,Baltimore Ravens,AFC,North
+Ray-Ray,McCloud,WR,5-9,190.0,30 1/4,9 1/4,Atlanta Falcons,NFC,South
+Ricky,Pearsall,WR,6-1,192.0,31,9 1/4,San Francisco 49ers,NFC,NFC
+River,Cracraft,WR,6-0,198.0,,,Miami Dolphins,AFC,East
+Robbie,Chosen,WR,6-3,190.0,,,Miami Dolphins,AFC,East
+Robert,Woods,WR,6-0,193.0,31,9 1/4,Houston Texans,AFC,South
+Roman,Wilson,WR,5-10,186.0,30 1/2,9 1/2,Pittsburgh Steelers,AFC,North
+Rome,Odunze,WR,6-3,215.0,32 1/4,9 1/4,Chicago Bears,NFC,North
+Romeo,Doubs,WR,6-2,204.0,32 1/4,10,Green Bay Packers,NFC,North
+Rondale,Moore,WR,5-7,180.0,28 1/4,8 3/4,Atlanta Falcons,NFC,South
+Ronnie,Bell,WR,6-0,190.0,31,9 1/2,San Francisco 49ers,NFC,NFC
+Russell,Gage,WR,6-0,184.0,,,San Francisco 49ers,NFC,NFC
+Ryan,Flournoy,WR,6-1,200.0,31 3/4,10 1/4,Dallas Cowboys,NFC,East
+Sam,Pinckney,WR,6-4,200.0,,,Carolina Panthers,NFC,South
+Samori,Toure,WR,6-1,191.0,,,Chicago Bears,NFC,North
+Scott,Miller,WR,5-9,174.0,,,Pittsburgh Steelers,AFC,North
+Shaquan,Davis,WR,6-5,215.0,,,Pittsburgh Steelers,AFC,North
+Shedrick,Jackson,WR,6-1,195.0,,,Cincinnati Bengals,AFC,North
+Shedrick,Jackson,WR,6-1,195.0,,,Las Vegas Raiders,AFC,West
+Simi,Fehoko,WR,6-4,218.0,31 3/4,10 1/4,Los Angeles Chargers,AFC,West
+Skyy,Moore,WR,5-10,195.0,31,10 1/4,Kansas City Chiefs,AFC,West
+Stanley,Morgan,WR,6-0,205.0,32 1/2,10,Tennessee Titans,AFC,South
+Stefon,Diggs,WR,6-0,191.0,31 1/4,10,Houston Texans,AFC,South
+Sterling,Shepard,WR,5-10,196.0,30 1/2,9 3/4,Tampa Bay Buccaneers,NFC,South
+Steven,Sims,WR,5-10,176.0,,,Baltimore Ravens,AFC,North
+Steven,Sims,WR,5-10,176.0,,,Houston Texans,AFC,South
+Tahj,Washington,WR,5-10,175.0,29 1/4,8 1/2,Miami Dolphins,AFC,East
+Tank,Dell,WR,5-10,165.0,30 1/2,8 3/4,Houston Texans,AFC,South
+Tanner,Knue,WR,5-11,178.0,,,Tampa Bay Buccaneers,NFC,South
+Tarik,Black,WR,6-3,217.0,,,Miami Dolphins,AFC,East
+Tay,Martin,WR,6-3,186.0,,,Tennessee Titans,AFC,South
+Tee,Higgins,WR,6-4,219.0,34 1/4,9 1/4,Cincinnati Bengals,AFC,North
+Tejhaun,Palmer,WR,6-2,210.0,,,Arizona Cardinals,NFC,West
+Terique,Owens,WR,6-3,200.0,,,San Francisco 49ers,NFC,NFC
+Terry,McLaurin,WR,6-0,210.0,31 1/2,9 1/4,Washington Commanders,NFC,East
+Thayer,Thomas,WR,6-0,195.0,,,Minnesota Vikings,NFC,North
+Tim,Patrick,WR,6-4,212.0,,,Detroit Lions,NFC,North
+Tom,Kennedy,WR,5-10,195.0,,,Detroit Lions,NFC,North
+Tre,Tucker,WR,5-9,185.0,29,8 3/4,Las Vegas Raiders,AFC,West
+Trent,Sherfield,WR,6-1,206.0,,,Minnesota Vikings,NFC,North
+Trent,Taylor,WR,5-8,180.0,28 3/4,8 1/4,San Francisco 49ers,NFC,NFC
+Trenton,Irwin,WR,6-2,204.0,,,Carolina Panthers,NFC,South
+Trenton,Irwin,WR,6-2,204.0,,,Cincinnati Bengals,AFC,North
+Trey,Palmer,WR,6-1,190.0,32,9 3/4,Tampa Bay Buccaneers,NFC,South
+Treylon,Burks,WR,6-2,225.0,33 1/2,10,Tennessee Titans,AFC,South
+Trishton,Jackson,WR,6-1,191.0,32 1/2,9 3/4,Minnesota Vikings,NFC,North
+Troy,Franklin,WR,6-3,180.0,32,8 3/4,Denver Broncos,AFC,West
+Tutu,Atwell,WR,5-9,165.0,29 1/4,9,Los Angeles Rams,NFC,West
+Tylan,Wallace,WR,5-11,202.0,30 1/2,9 1/2,Baltimore Ravens,AFC,North
+Tyler,Johnson,WR,6-1,208.0,31,9,Los Angeles Rams,NFC,West
+Tyler,Lockett,WR,5-10,182.0,30,8 1/2,Seattle Seahawks,NFC,West
+Tyler,Boyd,WR,6-2,203.0,32,9 3/4,Tennessee Titans,AFC,South
+Tyquan,Thornton,WR,6-2,185.0,33 1/4,8 1/4,Kansas City Chiefs,AFC,West
+Tyquan,Thornton,WR,6-2,185.0,33 1/4,8 1/4,New England Patriots,AFC,East
+Tyreek,Hill,WR,5-10,191.0,,,Miami Dolphins,AFC,East
+Tyreik,McAllister,WR,5-10,185.0,,,Las Vegas Raiders,AFC,West
+Tyrell,Shavers,WR,6-4,211.0,,,Buffalo Bills,AFC,East
+Van,Jefferson,WR,6-1,200.0,32 3/4,9 1/4,Pittsburgh Steelers,AFC,North
+Xavier,Weaver,WR,6-1,180.0,31 1/4,9,Arizona Cardinals,NFC,West
+Xavier,Legette,WR,6-3,227.0,32,9,Carolina Panthers,NFC,South
+Xavier,Hutchinson,WR,6-3,210.0,31 1/2,9 1/2,Houston Texans,AFC,South
+Xavier,Johnson,WR,6-1,210.0,,,Houston Texans,AFC,South
+Xavier,Worthy,WR,5-11,165.0,31 1/4,8 3/4,Kansas City Chiefs,AFC,West
+Xavier,Smith,WR,5-9,174.0,,,Los Angeles Rams,NFC,West
+Xavier,Gipson,WR,5-9,189.0,,,New York Jets,AFC,East
+Zach,Pascal,WR,6-2,215.0,32,10,Arizona Cardinals,NFC,West
+Zavier,Scott,WR,6-1,219.0,,,Minnesota Vikings,NFC,North
+Zay,Jones,WR,6-2,200.0,32 1/2,9,Arizona Cardinals,NFC,West
+Zay,Flowers,WR,5-9,175.0,29 1/4,9 1/4,Baltimore Ravens,AFC,North
