@@ -1,116 +1,118 @@
-Pos.,Team,Ht.,Wt.,Last Name,First Name,ID,Abbreviation,Conference,Division
-QB,Falcons,6'3,230,Torgersen,Alek,2.0,ATL,NFC,South
-QB,Broncos,6-2,224,Kelly,Chad,10.0,DEN,AFC,West
-QB,Chiefs,6-3,230,Mahomes,Patrick,16.0,KC,AFC,West
-QB,Texans,6-2,221,Watson,Deshaun,13.0,HOU,AFC,South
-QB,Lions,6-4,215,Kaaya,Brad,11.0,DET,NFC,North
-QB,49ers,6-1,187,Mullens,Nick,27.0,SF,NFC,West
-QB,Bears,6-3,220,Trubisky,Mitch,6.0,CHI,NFC,North
-QB,Rams,6-4,223,Goff,Jared,29.0,LAR,NFC,West
-QB,Giants,6-5,229,Webb,Davis,21.0,NYG,NFC,East
-QB,Jets,6-4,228,Hackenberg,Christian,22.0,NYJ,AFC,East
-QB,Steelers,6-3,216,Dobbs,Joshua,25.0,PIT,AFC,North
-QB,Chargers,6-2,210,Jenkins,Eli,26.0,LAC,AFC,West
-QB,Colts,5-11,214,Walker,Phillip,14.0,IND,AFC,South
-QB,Buccaneers,6-3,232,Liufau,Sefo,30.0,TB,NFC,South
-QB,Broncos,6-4,218,Sloter,Kyle,10.0,DEN,AFC,West
-QB,Cardinals,6-1,215,Knight,Trevor,1.0,ARI,NFC,West
-QB,Broncos,6-7,244,Lynch,Paxton,10.0,DEN,AFC,West
-QB,Bills,6-2,226,Peterman,Nathan,4.0,BUF,AFC,East
-QB,Seahawks,6-0,213,Boykin,Trevone,28.0,SEA,NFC,West
-QB,Commanders,6-6,227,Sudfeld,Nate,,,,
-QB,Vikings,6-5,225,Lunt,Wes,18.0,MIN,NFC,North
-QB,49ers,6-2,219,Beathard,C.J.,27.0,SF,NFC,West
-QB,Buccaneers,6-4,231,Winston,Jameis,30.0,TB,NFC,South
-QB,Cowboys,6-2,238,Prescott,Dak,9.0,DAL,NFC,East
-QB,Titans,6-2,224,Ferguson,Tyler,31.0,TEN,AFC,South
-QB,Cowboys,6-3,228,Rush,Cooper,9.0,DAL,NFC,East
-QB,Packers,6-3,226,Hundley,Brett,12.0,GB,NFC,North
-QB,Titans,6-4,222,Mariota,Marcus,31.0,TEN,AFC,South
-QB,Jaguars,6-2,214,Allen,Brandon,15.0,JAX,AFC,South
-QB,Eagles,6-5,237,Wentz,Carson,24.0,PHI,NFC,East
-QB,Lions,6-3,208,Rudock,Jake,11.0,DET,NFC,North
-QB,Raiders,6-4,217,Cook,Connor,23.0,LV,AFC,West
-QB,Vikings,6-2,215,Bridgewater,Teddy,18.0,MIN,NFC,North
-QB,Bengals,6-4,231,Driskel,Jeff,7.0,CIN,AFC,North
-QB,Browns,6-1,215,Kessler,Cody,8.0,CLE,AFC,North
-QB,Packers,6-1,216,Callahan,Joe,12.0,GB,NFC,North
-QB,Vikings,6-1,210,Heinicke,Taylor,18.0,MIN,NFC,North
-QB,Chargers,6-0,204,Bercovici,Mike,26.0,LAC,AFC,West
-QB,Bills,6-5,250,Jones,Cardale,4.0,BUF,AFC,East
-QB,Patriots,6-4,235,Brissett,Jacoby,19.0,NE,AFC,East
-QB,Colts,6-2,218,Morris,Stephen,14.0,IND,AFC,South
-QB,Browns,6-3,218,Hogan,Kevin,8.0,CLE,AFC,North
-QB,Steelers,6-4,235,Houston,Bart,25.0,PIT,AFC,North
-QB,Patriots,6-2,225,Garoppolo,Jimmy,19.0,NE,AFC,East
-QB,Broncos,6-3,220,Siemian,Trevor,10.0,DEN,AFC,West
-QB,Rams,6-6,231,Mannion,Sean,29.0,LAR,NFC,West
-QB,Rams,6-3,218,Thompson,Dylan,29.0,LAR,NFC,West
-QB,Panthers,6-4,230,Gilbert,Garrett,5.0,CAR,NFC,South
-QB,Jaguars,6-5,236,Bortles,Blake,15.0,JAX,AFC,South
-QB,Seahawks,6-1,217,Heaps,Jake,28.0,SEA,NFC,West
-QB,Dolphins,6-3,217,Doughty,Brandon,17.0,MIA,AFC,East
-QB,Chiefs,6-4,230,Stave,Joel,16.0,KC,AFC,West
-QB,Bears,6-1,210,Shaw,Connor,6.0,CHI,NFC,North
-QB,Chiefs,6-6,215,Bray,Tyler,16.0,KC,AFC,West
-QB,Browns,6-8,235,Osweiler,Brock,8.0,CLE,AFC,North
-QB,Saints,6-2,220,Grayson,Garrett,20.0,NO,NFC,South
-QB,Ravens,6-5,220,Vaughan,Dustin,3.0,BAL,AFC,North
-QB,Giants,6-3,221,Smith,Geno,21.0,NYG,NFC,East
-QB,Raiders,6-3,214,Carr,Derek,23.0,LV,AFC,West
-QB,Bengals,6-3,220,McCarron,AJ,7.0,CIN,AFC,North
-QB,49ers,6-2,227,Barkley,Matt,27.0,SF,NFC,West
-QB,Packers,6-2,221,Hill,Taysom,12.0,GB,NFC,North
-QB,Jets,6-3,230,Petty,Bryce,22.0,NYJ,AFC,East
-QB,Dolphins,6-1,212,Fales,David,17.0,MIA,AFC,East
-QB,Colts,6-4,240,Luck,Andrew,14.0,IND,AFC,South
-QB,Cowboys,6-0,200,Moore,Kellen,9.0,DAL,NFC,East
-QB,Cowboys,6-3,223,Dysert,Zac,9.0,DAL,NFC,East
-QB,Texans,6-4,230,Savage,Tom,13.0,HOU,AFC,South
-QB,Raiders,6-4,237,Manuel,EJ,23.0,LV,AFC,West
-QB,Eagles,6-1,210,McGloin,Matt,24.0,PHI,NFC,East
-QB,Buccaneers,6-5,210,Griffin,Ryan,30.0,TB,NFC,South
-QB,Bills,6-1,210,Taylor,Tyrod,4.0,BUF,AFC,East
-QB,Cardinals,6-4,235,Gabbert,Blaine,1.0,ARI,NFC,West
-QB,Bears,6-6,225,Glennon,Mike,6.0,CHI,NFC,North
-QB,Panthers,6-5,245,Newton,Cam,5.0,CAR,NFC,South
-QB,Dolphins,6-4,216,Tannehill,Ryan,17.0,MIA,AFC,East
-QB,Steelers,6-4,225,Jones,Landry,25.0,PIT,AFC,North
-QB,Seahawks,5-11,215,Wilson,Russell,28.0,SEA,NFC,West
-QB,Falcons,6-3,210,Simms,Matt,2.0,ATL,NFC,South
-QB,Commanders,6-3,202,Cousins,Kirk,,,,
-QB,Eagles,6-6,243,Foles,Nick,24.0,PHI,NFC,East
-QB,Titans,6-4,220,Tanney,Alex,31.0,TEN,AFC,South
-QB,Bengals,6-2,220,Dalton,Andy,7.0,CIN,AFC,North
-QB,Ravens,6-6,250,Mallett,Ryan,3.0,BAL,AFC,North
-QB,Colts,6-2,213,Tolzien,Scott,14.0,IND,AFC,South
-QB,Vikings,6-1,205,Keenum,Case,18.0,MIN,NFC,North
-QB,Vikings,6-4,224,Bradford,Sam,18.0,MIN,NFC,North
-QB,Lions,6-3,226,Stafford,Matthew,11.0,DET,NFC,North
-QB,Saints,6-0,225,Daniel,Chase,20.0,NO,NFC,South
-QB,Commanders,6-1,215,McCoy,Colt,,,,
-QB,Panthers,6-4,230,Webb,Joe,5.0,CAR,NFC,South
-QB,Bears,6-2,225,Sanchez,Mark,6.0,CHI,NFC,North
-QB,Bills,6-4,217,Yates,T.J.,4.0,BUF,AFC,East
-QB,49ers,6-2,215,Hoyer,Brian,27.0,SF,NFC,West
-QB,Jaguars,6-3,222,Henne,Chad,15.0,JAX,AFC,South
-QB,Giants,6-3,215,Johnson,Josh,21.0,NYG,NFC,East
-QB,Falcons,6-4,217,Ryan,Matt,2.0,ATL,NFC,South
-QB,Ravens,6-6,245,Flacco,Joe,3.0,BAL,AFC,North
-QB,Dolphins,6-3,225,Moore,Matt,17.0,MIA,AFC,East
-QB,Chiefs,6-4,217,Smith,Alex,16.0,KC,AFC,West
-QB,Packers,6-2,225,Rodgers,Aaron,12.0,GB,NFC,North
-QB,Panthers,6-6,235,Anderson,Derek,5.0,CAR,NFC,South
-QB,Cardinals,6-3,243,Stanton,Drew,1.0,ARI,NFC,West
-QB,Texans,6-4,230,Weeden,Brandon,13.0,HOU,AFC,South
-QB,Chargers,6-2,220,Clemens,Kellen,26.0,LAC,AFC,West
-QB,Buccaneers,6-2,223,Fitzpatrick,Ryan,30.0,TB,NFC,South
-QB,Titans,6-4,228,Cassel,Matt,31.0,TEN,AFC,South
-QB,Chargers,6-5,228,Rivers,Philip,26.0,LAC,AFC,West
-QB,Steelers,6-5,240,Roethlisberger,Ben,25.0,PIT,AFC,North
-QB,Falcons,6-6,245,Schaub,Matt,2.0,ATL,NFC,South
-QB,Giants,6-4,218,Manning,Eli,21.0,NYG,NFC,East
-QB,Jets,6-4,218,McCown,Josh,22.0,NYJ,AFC,East
-QB,Cardinals,6-5,235,Palmer,Carson,1.0,ARI,NFC,West
-QB,Saints,6-0,209,Brees,Drew,20.0,NO,NFC,South
-QB,Patriots,6-4,225,Brady,Tom,19.0,NE,AFC,East
+First Name,Last Name,Position,Height,Weight,Arms,Hands,Team,Conference,Division
+Aaron,Rodgers,QB,6-2,223.0,,,New York Jets,AFC,East
+Alex,McGough,QB,6-3,214.0,,,Green Bay Packers,NFC,North
+Andy,Dalton,QB,6-2,220.0,31 3/4,9 1/2,Carolina Panthers,NFC,South
+Anthony,Richardson,QB,6-4,244.0,32 3/4,10 1/2,Indianapolis Colts,AFC,South
+Austin,Reed,QB,6-1,220.0,30 1/4,10,Chicago Bears,NFC,North
+Bailey,Zappe,QB,6-1,215.0,31 1/2,9 3/4,Cleveland Browns,AFC,North
+Bailey,Zappe,QB,6-1,215.0,31 1/2,9 3/4,Kansas City Chiefs,AFC,West
+Baker,Mayfield,QB,6-1,215.0,30 1/4,9 1/4,Tampa Bay Buccaneers,NFC,South
+Ben,DiNucci,QB,6-3,209.0,,,New Orleans Saints,NFC,South
+Bo,Nix,QB,6-2,217.0,32,10 1/4,Denver Broncos,AFC,West
+Brandon,Allen,QB,6-2,209.0,31 1/4,9,San Francisco 49ers,NFC,NFC
+Brett,Rypien,QB,6-2,210.0,30 1/2,9,Minnesota Vikings,NFC,North
+Brock,Purdy,QB,6-1,220.0,29,9 1/4,San Francisco 49ers,NFC,NFC
+Bryce,Young,QB,5-10,204.0,30 1/2,9 3/4,Carolina Panthers,NFC,South
+Caleb,Williams,QB,6-1,215.0,32,9 3/4,Chicago Bears,NFC,North
+Carson,Wentz,QB,6-5,237.0,33 1/4,10,Kansas City Chiefs,AFC,West
+Carter,Bradley,QB,6-3,213.0,,,Las Vegas Raiders,AFC,West
+Case,Keenum,QB,6-1,215.0,31,9 1/4,Houston Texans,AFC,South
+Chris,Oladokun,QB,6-1,213.0,,,Kansas City Chiefs,AFC,West
+Clayton,Tune,QB,6-3,220.0,31 1/2,9 1/2,Arizona Cardinals,NFC,West
+Cooper,Rush,QB,6-3,225.0,32 1/2,9 1/4,Dallas Cowboys,NFC,East
+Dak,Prescott,QB,6-2,238.0,32 1/4,10,Dallas Cowboys,NFC,East
+Daniel,Jones,QB,6-5,230.0,32 1/2,9 3/4,Minnesota Vikings,NFC,North
+Daniel,Jones,QB,6-5,230.0,32 1/2,9 3/4,New York Giants,NFC,East
+Davis,Mills,QB,6-4,225.0,31 1/2,9 1/2,Houston Texans,AFC,South
+Derek,Carr,QB,6-3,215.0,31 1/2,9 1/4,New Orleans Saints,NFC,South
+Deshaun,Watson,QB,6-3,223.0,33,9 3/4,Cleveland Browns,AFC,North
+Desmond,Ridder,QB,6-3,207.0,32 3/4,10,Arizona Cardinals,NFC,West
+Desmond,Ridder,QB,6-3,207.0,32 3/4,10,Las Vegas Raiders,AFC,West
+Devin,Leary,QB,6-1,215.0,31,9 1/2,Baltimore Ravens,AFC,North
+Dorian,Thompson-Robinson,QB,6-2,203.0,30 3/4,10,Cleveland Browns,AFC,North
+Drake,Maye,QB,6-4,225.0,32 1/4,9 1/4,New England Patriots,AFC,East
+Drew,Lock,QB,6-4,228.0,32 1/2,9,New York Giants,NFC,East
+Easton,Stick,QB,6-1,224.0,32 1/4,9 1/4,Los Angeles Chargers,AFC,West
+Emory,Jones,QB,6-2,210.0,,,Atlanta Falcons,NFC,South
+Gardner,Minshew,QB,6-1,225.0,31 3/4,10 1/4,Las Vegas Raiders,AFC,West
+Geno,Smith,QB,6-3,221.0,32 1/2,9 1/4,Seattle Seahawks,NFC,West
+Hendon,Hooker,QB,6-3,221.0,33,10 1/2,Detroit Lions,NFC,North
+Ian,Book,QB,6-0,206.0,31 1/2,10,Philadelphia Eagles,NFC,East
+Jack,Plummer,QB,6-5,215.0,,,Carolina Panthers,NFC,South
+Jacoby,Brissett,QB,6-4,235.0,32 1/4,9 3/4,New England Patriots,AFC,East
+Jake,Browning,QB,6-2,210.0,32 1/2,9,Cincinnati Bengals,AFC,North
+Jake,Fromm,QB,6-2,215.0,31 1/4,9,Detroit Lions,NFC,North
+Jake,Luton,QB,6-6,224.0,31 3/4,10 1/2,Las Vegas Raiders,AFC,West
+Jake,Haener,QB,6-1,200.0,29 3/4,9 1/2,New Orleans Saints,NFC,South
+Jalen,Hurts,QB,6-1,223.0,31 3/4,9 3/4,Philadelphia Eagles,NFC,East
+Jameis,Winston,QB,6-4,231.0,32,9 1/2,Cleveland Browns,AFC,North
+Jared,Goff,QB,6-4,217.0,32 3/4,9,Detroit Lions,NFC,North
+Jaren,Hall,QB,6-0,207.0,29 3/4,9 1/2,Seattle Seahawks,NFC,West
+Jarrett,Stidham,QB,6-3,215.0,32,9 1/4,Denver Broncos,AFC,West
+Jason,Bean,QB,6-2,196.0,,,Indianapolis Colts,AFC,South
+Jayden,Daniels,QB,6-4,210.0,,,Washington Commanders,NFC,East
+Jeff,Driskel,QB,6-4,231.0,33,9 3/4,Washington Commanders,NFC,East
+Jimmy,Garoppolo,QB,6-2,225.0,31,9 1/4,Los Angeles Rams,NFC,West
+Joe,Burrow,QB,6-4,215.0,31,9,Cincinnati Bengals,AFC,North
+Joe,Flacco,QB,6-6,230.0,33 1/4,9 3/4,Indianapolis Colts,AFC,South
+Joe,Milton III,QB,6-5,246.0,33 1/2,10 1/4,New England Patriots,AFC,East
+John,Rhys Plumlee,QB,6-0,200.0,,,Jacksonville Jaguars,AFC,South
+John,Wolford,QB,6-1,218.0,,,Jacksonville Jaguars,AFC,South
+John,Rhys Plumlee,QB,6-0,200.0,,,Seattle Seahawks,NFC,West
+Jordan,Love,QB,6-4,219.0,32 3/4,10 1/2,Green Bay Packers,NFC,North
+Jordan,Travis,QB,6-1,200.0,31 1/2,9,New York Jets,AFC,East
+Josh,Johnson,QB,6-3,214.0,33,9,Baltimore Ravens,AFC,North
+Josh,Allen,QB,6-5,237.0,33 1/4,10 1/4,Buffalo Bills,AFC,East
+Joshua,Dobbs,QB,6-3,220.0,32 3/4,9 1/4,San Francisco 49ers,NFC,NFC
+Justin,Herbert,QB,6-6,236.0,33,10,Los Angeles Chargers,AFC,West
+Justin,Fields,QB,6-3,227.0,32 1/2,9 1/4,Pittsburgh Steelers,AFC,North
+Kedon,Slovis,QB,6-3,215.0,31 1/4,10,Houston Texans,AFC,South
+Kenny,Pickett,QB,6-3,220.0,31,8 1/2,Philadelphia Eagles,NFC,East
+Kirk,Cousins,QB,6-3,205.0,31 3/4,10,Atlanta Falcons,NFC,South
+Kyle,Allen,QB,6-3,210.0,,,Pittsburgh Steelers,AFC,North
+Kyle,Trask,QB,6-5,236.0,33,10 1/4,Tampa Bay Buccaneers,NFC,South
+Kyler,Murray,QB,5-10,207.0,28 1/2,9 1/2,Arizona Cardinals,NFC,West
+Lamar,Jackson,QB,6-2,205.0,33 1/4,9 1/2,Atlanta Falcons,NFC,South
+Lamar,Jackson,QB,6-2,205.0,33 1/4,9 1/2,Baltimore Ravens,AFC,North
+Logan,Woodside,QB,6-1,213.0,31,9 3/4,Cincinnati Bengals,AFC,North
+Mac,Jones,QB,6-3,220.0,32 3/4,9 3/4,Jacksonville Jaguars,AFC,South
+Malik,Willis,QB,6-1,225.0,31 3/4,9 1/2,Green Bay Packers,NFC,North
+Marcus,Mariota,QB,6-4,222.0,32,10,Washington Commanders,NFC,East
+Mason,Rudolph,QB,6-5,235.0,32 1/2,9 1/4,Tennessee Titans,AFC,South
+Matthew,Stafford,QB,6-3,214.0,33 1/4,10,Los Angeles Rams,NFC,West
+Michael,Pratt,QB,6-3,220.0,30 3/4,9 1/4,Tampa Bay Buccaneers,NFC,South
+Mike,White,QB,6-5,216.0,32,9 1/2,Buffalo Bills,AFC,East
+Mitchell,Trubisky,QB,6-3,222.0,32,9 1/2,Buffalo Bills,AFC,East
+Nate,Davis,QB,6-1,226.0,32,9 1/2,Chicago Bears,NFC,North
+Nathan,Peterman,QB,6-2,225.0,32,10,Atlanta Falcons,NFC,South
+Nick,Mullens,QB,6-1,210.0,,,Minnesota Vikings,NFC,North
+Patrick,Mahomes,QB,6-2,225.0,33 1/4,9 1/4,Kansas City Chiefs,AFC,West
+Russell,Wilson,QB,5-11,206.0,31,10 1/4,Pittsburgh Steelers,AFC,North
+Sam,Ehlinger,QB,6-2,225.0,30 1/2,9 3/4,Indianapolis Colts,AFC,South
+Sam,Darnold,QB,6-3,225.0,31,9 1/2,Minnesota Vikings,NFC,North
+Sam,Howell,QB,6-1,220.0,30 3/4,9 1/4,Seattle Seahawks,NFC,West
+Sam,Hartman,QB,6-1,209.0,31 1/2,9 3/4,Washington Commanders,NFC,East
+Sean,Clifford,QB,6-2,217.0,,,Green Bay Packers,NFC,North
+Shane,Buechele,QB,6-0,210.0,30 1/4,9 1/2,Buffalo Bills,AFC,East
+Skylar,Thompson,QB,6-2,210.0,31,8 3/4,Miami Dolphins,AFC,East
+Spencer,Rattler,QB,6-0,211.0,31,10,New Orleans Saints,NFC,South
+Stetson,Bennett,QB,5-11,190.0,29,10,Los Angeles Rams,NFC,West
+Tanner,McKee,QB,6-6,230.0,33,9 1/2,Philadelphia Eagles,NFC,East
+Tanner,Mordecai,QB,6-2,218.0,,,San Francisco 49ers,NFC,NFC
+Taylor,Heinicke,QB,6-1,210.0,,,Los Angeles Chargers,AFC,West
+Teddy,Bridgewater,QB,6-2,212.0,33,9 1/4,Detroit Lions,NFC,North
+Tim,Boyle,QB,6-4,232.0,,,Miami Dolphins,AFC,East
+Tim,Boyle,QB,6-4,232.0,,,New York Giants,NFC,East
+Tommy,DeVito,QB,6-2,210.0,,,New York Giants,NFC,East
+Trevor,Lawrence,QB,6-6,220.0,31 1/2,10,Jacksonville Jaguars,AFC,South
+Trevor,Siemian,QB,6-3,220.0,,,Tennessee Titans,AFC,South
+Trey,Lance,QB,6-4,226.0,31 1/2,9 1/4,Dallas Cowboys,NFC,East
+Tua,Tagovailoa,QB,6-1,225.0,30 1/2,10,Miami Dolphins,AFC,East
+Tyler,Huntley,QB,6-1,204.0,,,Baltimore Ravens,AFC,North
+Tyler,Huntley,QB,6-1,204.0,,,Miami Dolphins,AFC,East
+Tyrod,Taylor,QB,6-1,217.0,32 1/4,10,New York Jets,AFC,East
+Tyson,Bagent,QB,6-3,213.0,30 1/4,9 1/2,Chicago Bears,NFC,North
+Will,Grier,QB,6-1,220.0,31 1/2,9 1/2,Dallas Cowboys,NFC,East
+Will,Grier,QB,6-1,220.0,31 1/2,9 1/2,Philadelphia Eagles,NFC,East
+Will,Levis,QB,6-4,229.0,32,10 3/4,Tennessee Titans,AFC,South
+Zach,Wilson,QB,6-2,214.0,30 3/4,9 1/2,Denver Broncos,AFC,West
