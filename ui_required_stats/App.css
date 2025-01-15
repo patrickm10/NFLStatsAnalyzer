@@ -22,32 +22,17 @@ header {
   z-index: 10;
 }
 
-/* Side Menu */
-nav {
-  background-color: #585858;
-  color: white;
-  width: 265px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding-top: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
 /* Side Menu Tabs */
 .side-menu {
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px;
+  width: 100%; /* Use the full width of the screen */
   display: flex;
   font-size: 0.8em;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding: 290px 0 30px;
+  flex-direction: row; /* Change to horizontal layout */
+  justify-content: space-between; /* Evenly distribute buttons */
+  padding: 80px 20px 20px; /* Adjust padding to account for space */
   background-color: #585858;
   height: 100vh;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -58,18 +43,19 @@ nav {
 button {
   background: linear-gradient(135deg, rgb(237, 32, 32), #ff6b6b);
   color: white;
-  padding: 15px;
+  padding: 20px;
   text-align: center;
   border: none;
   cursor: pointer;
-  width: 260px;
-  margin-top: 35px;
+  width: 12%; /* Make buttons take 13% of the width */
+  gap: 40px;
   font-size: .75em;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
   min-height: 10%;
 }
+
 
 button:hover {
   background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32));
@@ -86,8 +72,8 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  margin-left: 280px;
-  width: calc(100% - 280px);
+  margin-left: 100px;
+  width: calc(100% - 150px);
 }
 
 table th, table td {
