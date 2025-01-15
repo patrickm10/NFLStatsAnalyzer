@@ -22,21 +22,16 @@ header {
   z-index: 10;
 }
 
-/* Side Menu Tabs */
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%; /* Use the full width of the screen */
+/* Regular Menu Tabs (Horizontal) */
+.menu {
   display: flex;
   font-size: 0.8em;
-  flex-direction: row; /* Change to horizontal layout */
-  justify-content: space-between; /* Evenly distribute buttons */
-  padding: 80px 20px 20px; /* Adjust padding to account for space */
+  flex-direction: row; /* Horizontal layout */
+  justify-content: space-between; /* Space between the tabs */
+  padding: 20px 50px; /* Adjust padding for spacing around */
   background-color: #585858;
-  height: 100vh;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Add margin at the bottom */
 }
 
 /* Header and Tabs Button */
@@ -47,16 +42,17 @@ button {
   text-align: center;
   border: none;
   cursor: pointer;
-  width: 12%; /* Make buttons take 13% of the width */
-  gap: 40px;
+  width: 12%; /* Make buttons take 12% of the width */
   font-size: .75em;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
   min-height: 10%;
+  margin: 0 15px; /* Add space between buttons */
+  margin-bottom: 25px;
 }
 
-
+/* Hover Effect for Buttons */
 button:hover {
   background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32));
   transform: translateY(-5px);
@@ -100,7 +96,7 @@ table tr:hover {
 /* Search Input */
 .search-container input {
   padding: 8px;
-  font-size: 1em;
+  font-size: .8em;
   border-radius: 4px;
   width: 250px;
   margin: 10px 0;
