@@ -325,7 +325,7 @@ const App = () => {
                     <button onClick={() => { setActiveTab("kickerStats"); setSearchQuery(""); }}>Kicker Rankings</button>
                     <button onClick={() => { setActiveTab("defenseStats"); setSearchQuery(""); }}>Defense Rankings</button>
                     <button onClick={() => { setActiveTab("schedule"); setSearchQuery(""); }}>2024-2025 Schedule</button>
-                    <button onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Depth Chart</button>
+                    <button onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
                 </nav>
 
                 <div className="search-container">
@@ -365,7 +365,7 @@ const App = () => {
                                 activeTab === "kickerStats" ? "Kicker Stats" :
                                     activeTab === "defenseStats" ? "Defense Stats" :
                                         activeTab === "schedule" ? "2024-2025 Schedule" :
-                                            activeTab === "roster" ? "NFL Depth Chart" :
+                                            activeTab === "roster" ? "NFL Roster" :
                                                 "Schedule"}
                 </h3>
             </header>
