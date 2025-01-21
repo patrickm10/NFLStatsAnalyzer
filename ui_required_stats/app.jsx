@@ -285,6 +285,11 @@ const App = () => {
     const renderWeeklyStats = () => (
         <div>
             <button onClick={handleBackClick}>Back to stats</button>
+            <img 
+            src={`/data/headshots/${playerName.replace(" ", "_")}_headshot.png`} 
+            alt={`${playerName} Headshot`} 
+            className="player-headshot" 
+        />
             <h2>{playerName}'s Weekly Stats</h2>
             {weeklyStats.length > 0 ? (
                 <table>
