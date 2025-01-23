@@ -21,6 +21,7 @@ const App = () => {
     const [selectedDivision, setSelectedDivision] = useState("");
     const [teams, setTeams] = useState([]);
     const [selectedTeam, setSelectedTeam] = useState("");
+    const [playerRosterData, setPlayerRosterData] = useState(null);
 
     const fetchStats = (fileName) => {
         console.log(`Fetching data for: ${fileName}`);
@@ -187,7 +188,36 @@ const App = () => {
     const handleTeamChange = (event) => {
         setSelectedTeam(event.target.value);
     };
-
+    
+    const renderPlayerDetails = () => (
+            <div className="container">
+                {playerRosterData && (
+                    <div className="physical-details">
+                        <h3>Player Information</h3>
+                        <p><strong>Position:</strong> {playerRosterData.Position}</p>
+                        <p><strong>Height:</strong> {playerRosterData.Height}</p>
+                        <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
+                        <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
+                        <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
+                        <p><strong>Team:</strong> {playerRosterData.Team}</p>
+                        <p><strong>Conference:</strong> {playerRosterData.Conference}</p>
+                        <p><strong>Division:</strong> {playerRosterData.Division}</p>
+                    </div>
+                )}
+            </div>
+        );
+    
+        const renderArmDetails = () => (
+            <div className="container">
+                {playerRosterData && (
+                    <div className="arm-details">
+                        <p><strong>Arms:</strong> {playerRosterData.Arms}"</p>
+                        <p><strong>Hands:</strong> {playerRosterData.Hands}"</p>
+                    </div>
+                )}
+            </div>
+        );
+    
     const handlePlayerClick = (player) => {
         let playerFileName = "";
         let careerFilePath = "";
@@ -282,14 +312,43 @@ const App = () => {
         </div>
     );
 
-    const renderWeeklyStats = () => (
+    const renderWeeklyStats = () => {
+       
+        return(
         <div>
-            <button onClick={handleBackClick}>Back to stats</button>
-            <img 
-            src={`/data/headshots/${playerName.replace(" ", "_")}_headshot.png`} 
-            alt={`${playerName} Headshot`} 
-            className="player-headshot" 
-        />
+            <div className="back-button-container">
+                <button className="back" onClick={handleBackClick}>
+                    Back to stats
+                </button>
+            </div>
+            <h2>{playerName}</h2>
+            {renderPlayerDetails()} {/* Display player details */}
+            {renderArmDetails()}
+            <div className="player-images">
+                <div className="image-container">
+                    <img 
+                        src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
+                        alt={`Headshot Not Found`} 
+                        className="player-headshot" 
+                    />
+                    <img 
+                        src={`/data/images/body.png`} 
+                        alt={`Body Image Not Found`} 
+                        className="player-body" 
+                    />
+                    <img 
+                        src={`/data/logos/${playerRosterData.Team.replace(" ", "_").toLowerCase()}.png`} 
+                        alt={`Team Logo Not Found`} 
+                        className="team-logo" 
+                    />
+                    <img 
+                        src={`/data/logos/${playerRosterData.Conference}.png`} 
+                        alt={`Conference Logo Not Found`} 
+                        className="conference-logo" 
+                    />
+                    
+                </div>
+            </div>
             <h2>{playerName}'s Weekly Stats</h2>
             {weeklyStats.length > 0 ? (
                 <table>
@@ -318,6 +377,7 @@ const App = () => {
             )}
         </div>
     );
+}
 
     return (
         <div>
