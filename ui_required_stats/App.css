@@ -124,3 +124,68 @@ button.back {
 button.back:hover {
   background-color: #e53b3b;
 }
+
+.player-images {
+  display: flex;
+  justify-content: center; /* Center the images horizontally */
+  align-items: center; /* Center the images vertically */
+}
+
+.image-container {
+  position: relative; /* Position the images relative to this container */
+}
+
+.player-headshot {
+  top: -130px; /* Adjust this value to move the headshot vertically */
+  left: -500px; /* Center the headshot horizontally */
+  width: 300px; /* Adjust size as needed */
+  height: auto;
+}
+
+.player-body {
+  left: -100px; /* Default position, you can change this to move the body */
+  top: -100px;
+  width: 300px;
+  height: 300px;
+}
+
+.height-chart {
+  left: -600px; /* Default position, you can change this to move the body */
+  top: -500px;
+  height: 300px;
+  width: 300px;
+}
+
+.team-logo {
+  width: 200px; /* Adjust size as needed */
+  height: auto;
+  left: -500px; /* Default position, you can change this to move the body */
+  top: 50px;
+}
+
+.conference-logo {
+  width: 200px; /* Adjust size as needed */
+  height: auto;
+  left: -500px; /* Default position, you can change this to move the body */
+  top: 50px;
+}
+
+.physical-details {
+  position: absolute;
+  top: 500px;
+  left: 300px;
+  z-index: 10;
+}
+
+.arm-details {
+  position: absolute;
+  top: 633px;
+  left: 610px;
+  z-index: 10;
+}
+
+
+h2 {
+  text-align: center; /* Centers the text horizontally */
+  margin-top: 20px; /* Optional: adds space above the heading */
+}
