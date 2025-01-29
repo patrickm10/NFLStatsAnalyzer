@@ -5,7 +5,45 @@ Author: Patrick Mejia
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
- 
+import os
+import csv
+
+nfl_teams = [
+    "Arizona Cardinals",
+    "Atlanta Falcons",
+    "Baltimore Ravens",
+    "Buffalo Bills",
+    "Carolina Panthers",
+    "Chicago Bears",
+    "Cincinnati Bengals",
+    "Cleveland Browns",
+    "Dallas Cowboys",
+    "Denver Broncos",
+    "Detroit Lions",
+    "Green Bay Packers",
+    "Houston Texans",
+    "Indianapolis Colts",
+    "Jacksonville Jaguars",
+    "Kansas City Chiefs",
+    "Las Vegas Raiders",
+    "Los Angeles Chargers",
+    "Los Angeles Rams",
+    "Miami Dolphins",
+    "Minnesota Vikings",
+    "New England Patriots",
+    "New Orleans Saints",
+    "New York Giants",
+    "New York Jets",
+    "Philadelphia Eagles",
+    "Pittsburgh Steelers",
+    "San Francisco 49ers",
+    "Seattle Seahawks",
+    "Tampa Bay Buccaneers",
+    "Tennessee Titans",
+    "Washington Commanders",
+]
+
+
 def get_team_td_stats():
     """
     Function to scrape kicking stats from the NFL website.
@@ -33,10 +71,10 @@ def find_best_team_td(df):
     Returns:
         best_kickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
     """
-   
+
     # Initialize the weighted score column and ensure FGM and Att are integers
     df["Weighted Score"] = 0
-    #print(df.columns)
+    # print(df.columns)
     df["Team"] = df["Team"].str.split().str[0]
     df["Rsh TD"] = df["Rsh TD"].astype(int)
     df["Rec TD"] = df["Rec TD"].astype(int)
@@ -44,10 +82,10 @@ def find_best_team_td(df):
     df["2-PT"] = df["2-PT"].astype(int)
 
     df["Score"] = (
-        (df["Rsh TD"] * .25)
-        + (df["Rec TD"] * .25)
-        + (df["Tot TD"] * .4)
-        + (df["2-PT"] * .1)
+        (df["Rsh TD"] * 0.25)
+        + (df["Rec TD"] * 0.25)
+        + (df["Tot TD"] * 0.4)
+        + (df["2-PT"] * 0.1)
     )
 
     df["Weighted Score"] = (
@@ -55,16 +93,17 @@ def find_best_team_td(df):
     ) * 100
 
     # Sort quarterbacks by the composite score in descending order
-    best_team_td = df.sort_values(by="Weighted Score", ascending=False,ignore_index=True).head(25)
+    best_team_td = df.sort_values(
+        by="Weighted Score", ascending=False, ignore_index=True
+    ).head(25)
 
     # Print the top quarterbacks
     # print(best_team_td)
 
     # Optionally, save the top quarterbacks to a new CSV file
-    best_team_td.to_csv('official_team_td_stats.csv', index=False)
+    best_team_td.to_csv("official_team_td_stats.csv", index=False)
 
     return best_team_td
-
 
 def get_schedule(csv_file):
     """
@@ -76,63 +115,279 @@ def get_schedule(csv_file):
     """
     # Read the CSV file into a pandas DataFrame
     df = pd.read_csv(csv_file)
-    
+
     # Extract home and away teams and their respective scores from the 'Result' column
-    df[['Home Score', 'Away Score']] = df['Result'].str.split(' - ', expand=True)
-    df['Home Score'] = pd.to_numeric(df['Home Score'], errors='coerce')
-    df['Away Score'] = pd.to_numeric(df['Away Score'], errors='coerce')
-    
+    df[["Home Score", "Away Score"]] = df["Result"].str.split(" - ", expand=True)
+    df["Home Score"] = pd.to_numeric(df["Home Score"], errors="coerce")
+    df["Away Score"] = pd.to_numeric(df["Away Score"], errors="coerce")
+
     # Initialize the team statistics dictionary
     team_stats = {}
 
     # Loop through each match and update the stats for home and away teams
     for _, row in df.iterrows():
-        home_team = row['Home Team']
-        away_team = row['Away Team']
-        home_score = row['Home Score']
-        away_score = row['Away Score']
-        
+        home_team = row["Home Team"]
+        away_team = row["Away Team"]
+        home_score = row["Home Score"]
+        away_score = row["Away Score"]
+
         # Update home team stats
         if home_team not in team_stats:
-            team_stats[home_team] = {'Wins': 0, 'Losses': 0, 'Total Points': 0, 'Games Played': 0}
-        team_stats[home_team]['Games Played'] += 1
-        team_stats[home_team]['Total Points'] += home_score
+            team_stats[home_team] = {
+                "Wins": 0,
+                "Losses": 0,
+                "Total Points": 0,
+                "Games Played": 0,
+            }
+        team_stats[home_team]["Games Played"] += 1
+        team_stats[home_team]["Total Points"] += home_score
         if home_score > away_score:
-            team_stats[home_team]['Wins'] += 1
+            team_stats[home_team]["Wins"] += 1
         else:
-            team_stats[home_team]['Losses'] += 1
+            team_stats[home_team]["Losses"] += 1
 
         # Update away team stats
         if away_team not in team_stats:
-            team_stats[away_team] = {'Wins': 0, 'Losses': 0, 'Total Points': 0, 'Games Played': 0}
-        team_stats[away_team]['Games Played'] += 1
-        team_stats[away_team]['Total Points'] += away_score
+            team_stats[away_team] = {
+                "Wins": 0,
+                "Losses": 0,
+                "Total Points": 0,
+                "Games Played": 0,
+            }
+        team_stats[away_team]["Games Played"] += 1
+        team_stats[away_team]["Total Points"] += away_score
         if away_score > home_score:
-            team_stats[away_team]['Wins'] += 1
+            team_stats[away_team]["Wins"] += 1
         else:
-            team_stats[away_team]['Losses'] += 1
+            team_stats[away_team]["Losses"] += 1
 
     # Convert the stats into a DataFrame
     stats_data = []
     for team, stats in team_stats.items():
-        stats_data.append([team, stats['Games Played'], stats['Wins'], stats['Losses'], stats['Total Points']])
+        stats_data.append(
+            [
+                team,
+                stats["Games Played"],
+                stats["Wins"],
+                stats["Losses"],
+                stats["Total Points"],
+            ]
+        )
 
-    stats_df = pd.DataFrame(stats_data, columns=['Team', 'Games Played', 'Wins', 'Losses', 'Total Points'])
-    
+    stats_df = pd.DataFrame(
+        stats_data, columns=["Team", "Games Played", "Wins", "Losses", "Total Points"]
+    )
+
     # Calculate a weighted score for each team (this is a basic example, feel free to adjust the weights)
-    stats_df['Score'] = (stats_df['Wins'] * 0.5) + (stats_df['Total Points'] * 0.3) - (stats_df['Losses'] * 0.2)
-    
+    stats_df["Score"] = (
+        (stats_df["Wins"] * 0.5)
+        + (stats_df["Total Points"] * 0.3)
+        - (stats_df["Losses"] * 0.2)
+    )
+
     # Normalize the score (0 to 100 scale)
-    stats_df['Normalized Score'] = (stats_df['Score'] - stats_df['Score'].min()) / (stats_df['Score'].max() - stats_df['Score'].min()) * 100
+    stats_df["Normalized Score"] = (
+        (stats_df["Score"] - stats_df["Score"].min())
+        / (stats_df["Score"].max() - stats_df["Score"].min())
+        * 100
+    )
 
     # Sort teams by the normalized score in descending order
-    best_teams = stats_df.sort_values(by='Normalized Score', ascending=False, ignore_index=True)
+    best_teams = stats_df.sort_values(
+        by="Normalized Score", ascending=False, ignore_index=True
+    )
 
     # Optionally, save the top teams to a CSV file
-    best_teams.to_csv('best_team_td_stats.csv', index=False)
+    best_teams.to_csv("best_team_td_stats.csv", index=False)
 
     return best_teams
 
+def get_nfl_records():
+    """
+    Function to scrape NFL team records from the NFL website.
+    Returns: df (DataFrame): A pandas DataFrame containing the scraped NFL team records.
+    """
+    url = "https://www.nfl.com/standings/league/2024/REG"
+    response = requests.get(url, timeout=10)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    team_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        team = [td.get_text().strip() for td in row.find_all("td")]
+        team_data.append(team)
+    df = pd.DataFrame(team_data, columns=headers)
+    return df
+
+
+def add_divisions_to_teams(df, df2):
+    """
+    Function to add divisions to the team stats DataFrame.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the team stats.
+        df2 (DataFrame): A pandas DataFrame containing the team divisions.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the team stats with divisions.
+    """
+    # Merge the two DataFrames on the 'NFL Team' column
+    df = df.merge(df2, on="Team", how="left")
+    df.to_csv("nfl_official_team_roster.csv", index=False)
+    return df
+
+def separate_names(df):
+    """
+    Function to separate the first and last names in a DataFrame column.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the player names.
+    Returns:
+        df (DataFrame): A pandas DataFrame with separate columns for first and last names.
+    """
+    # Split the 'Name' column into 'First Name' and 'Last Name'
+    df[["First Name", "Last Name"]] = df["Name"].str.split(" ", 1, expand=True)
+    df["First Name"] = df["First Name"].str.strip().str.replace(",", "")
+    return df
+
+def reorganize_columns(df):
+
+    """
+    Function to reorganize the columns in a DataFrame.
+    Args:
+        df (DataFrame): A pandas DataFrame to reorganize.
+        Returns:
+        df (DataFrame): The reorganized DataFrame.
+    """
+    # Reorganize the columns as needed
+    # Ensure the columns exist before reorganizing
+    required_columns = [
+        "Team",
+        "First Name",
+        "Last Name",
+        "Pos.",
+        "Ht.",
+        "Wt.",
+        "ID",
+        "Conference",
+        "Division",
+    ]
+    for col in required_columns:
+        if col not in df.columns:
+            df[col] = None  # Add missing columns with None values
+
+    df = df[required_columns]
+    return df
+
+def read_folder(folder_path):
+    """
+    Function to read all CSV files in a folder and combine them into a single DataFrame.
+    Args:
+        folder_path (str): Path to the folder containing the CSV files.
+    Returns:
+        combined_df (DataFrame): A pandas DataFrame containing the combined data from all CSV files.
+    """
+    all_files = [
+        os.path.join(folder_path, f)
+        for f in os.listdir(folder_path)
+        if f.endswith(".csv")
+    ]
+    df_list = [pd.read_csv(file) for file in all_files]
+    combined_df = pd.concat(df_list, ignore_index=True)
+    return combined_df
+
+def organize_rushing_stats():
+    """
+    Function to combine rushing stats for quarterbacks, running backs, and wide receivers.
+    """
+
+    qb_rushing_stats = read_folder("data/qb_stats/qb_career_rushing_stats")
+    rb_rushing_stats = read_folder("data/rb_stats/rb_career_rushing_stats")
+    wr_rushing_stats = read_folder("data/wr_stats/wr_career_rushing_stats")
+
+    # Combine the rushing stats for all positions
+    all_rushing_stats = pd.concat(
+        [qb_rushing_stats, rb_rushing_stats, wr_rushing_stats], ignore_index=True
+    )
+    print(all_rushing_stats)
+
+    # Save the combined rushing stats to a new CSV file
+    all_rushing_stats.to_csv("all_career_rushing_stats.csv", index=False)
+
+def organize_receiving_stats():
+    """
+    Function to combine receiving stats for wide receivers and tight ends.
+    """
+    wr_receiving_stats = pd.read_csv("data/wr_career_receiving_stats.csv")
+    rb_receiving_stats = pd.read_csv("data/rb_career_receiving_stats.csv")
+
+    # Combine the receiving stats for wide receivers and tight ends
+    top_receiving_stats = pd.concat(
+        [wr_receiving_stats, rb_receiving_stats], ignore_index=True
+    )
+    print(top_receiving_stats)
+
+    # Save the combined receiving stats to a new CSV file
+    top_receiving_stats.to_csv("top_receiving_stats.csv", index=False)
+
+def find_best_teams(df):
+    """
+    Function to find the best teams based on wins, losses, and points scored.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the team stats.
+        Returns:
+        best_teams (DataFrame): A pandas DataFrame containing the top teams ranked by a composite score.
+    """
+    # Convert relevant columns to numeric values
+    df["NFL Team"] = df["NFL Team"].str.split().str[:3].str.join(" ")
+    df["W"] = pd.to_numeric(df["W"], errors="coerce").fillna(0).astype(int)
+    df["L"] = pd.to_numeric(df["L"], errors="coerce").fillna(0).astype(int)
+    df["PF"] = pd.to_numeric(df["PF"], errors="coerce").fillna(0).astype(int)
+    df["PA"] = pd.to_numeric(df["PA"], errors="coerce").fillna(0).astype(int)
+    df["Net Pts"] = pd.to_numeric(df["Net Pts"], errors="coerce").fillna(0).astype(int)
+    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+    df["Score"] = (
+        (df["W"] * 0.5)
+        + (df["PF"] * 0.3)
+        + (df["Net Pts"] * 0.2)
+        - (df["PA"] * 0.1)
+        - (df["L"] * 0.2)
+    )
+
+    df["Weighted Score"] = (
+        (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
+    ) * 100
+
+    # Sort teams by the composite score in descending order
+    best_teams = df.sort_values(by="Weighted Score", ascending=False).head(32)
+
+    # Print the top teams
+    # print(best_teams)
+
+    # Optionally, save the top teams to a new CSV file
+    best_teams.to_csv("nfl_official_team_stats.csv", index=False)
+
+    return best_teams
+
+def get_team_roster(team_name):
+    """
+    Function to scrape the roster
+    Args:
+        team_name (str): The name of the team to scrape the roster for.
+    Returns:
+        df (DataFrame): A pandas DataFrame containing the scraped roster.
+    """
+    team_name = team_name.lower().replace(" ", "-")
+    url = f"https://www.nfl.com/teams/{team_name}/roster"
+    response = requests.get(url, timeout=10)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table", class_="d3-o-table")
+    headers = [th.get_text().strip() for th in table.find_all("th")]
+    player_data = []
+    for row in table.find_all("tr")[1:]:  # Skip the header row
+        player = [td.get_text().strip() for td in row.find_all("td")]
+        player_data.append(player)
+    df = pd.DataFrame(player_data, columns=headers)
+    team_name = team_name.replace("-", " ").title()
+    df["Team"] = team_name  # Add team_name as Team in the dataframe
+    return df
 
 def get_kicking_stats():
     """
@@ -150,7 +405,6 @@ def get_kicking_stats():
         player_data.append(player)
     df = pd.DataFrame(player_data, columns=headers)
     return df
-
 
 def find_best_kickers(df):
     """
@@ -211,28 +465,9 @@ def find_best_kickers(df):
     best_kickers = df.nlargest(32, "Weighted Score")
 
     # Save the top kickers to a new CSV file
-    best_kickers.to_csv('official_kicker_stats.csv', index=False)
+    best_kickers.to_csv("official_kicker_stats.csv", index=False)
 
     return best_kickers
-
-
-def get_weekly_passing_stats_2024():
-    """
-    Function to scrape passing stats from the NFL website.
-    Returns:
-        df (DataFrame): A pandas DataFrame containing the scraped passing stats.
-    """
-    url = "https://www.nfl.com/stats/player-stats/category/passing/2024/reg/all/passingyards/desc"
-    response = requests.get(url, timeout=10)
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find("table", class_="d3-o-table")
-    headers = [th.get_text().strip() for th in table.find_all("th")]
-    player_data = []
-    for row in table.find_all("tr")[1:]:  # Skip the header row
-        player = [td.get_text().strip() for td in row.find_all("td")]
-        player_data.append(player)
-    df = pd.DataFrame(player_data, columns=headers)
-    return df
 
 def get_passing_stats():
     """
@@ -252,7 +487,6 @@ def get_passing_stats():
     df = pd.DataFrame(player_data, columns=headers)
     return df
 
-
 def find_best_qbs(df):
     """
     Function to find the best quarterbacks based on passing yards, touchdowns, yards per attempt, and completion percentage.
@@ -263,11 +497,17 @@ def find_best_qbs(df):
     """
     # Convert passing yards and touchdowns to numeric values
     # Convert relevant columns to numeric values
-    df["Pass Yards"] = pd.to_numeric(df["Pass Yds"].str.replace(",", ""), errors='coerce').fillna(0).astype(int)
-    df["TD"] = pd.to_numeric(df["TD"], errors='coerce').fillna(0).astype(int)
-    df["Yds/Att"] = pd.to_numeric(df["Yds/Att"], errors='coerce').fillna(0).astype(float)
-    df["Cmp %"] = pd.to_numeric(df["Cmp %"], errors='coerce').fillna(0).astype(float)
-    df["INT"] = pd.to_numeric(df["INT"], errors='coerce').fillna(0).astype(int)
+    df["Pass Yards"] = (
+        pd.to_numeric(df["Pass Yds"].str.replace(",", ""), errors="coerce")
+        .fillna(0)
+        .astype(int)
+    )
+    df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+    df["Yds/Att"] = (
+        pd.to_numeric(df["Yds/Att"], errors="coerce").fillna(0).astype(float)
+    )
+    df["Cmp %"] = pd.to_numeric(df["Cmp %"], errors="coerce").fillna(0).astype(float)
+    df["INT"] = pd.to_numeric(df["INT"], errors="coerce").fillna(0).astype(int)
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df["Score"] = (
@@ -283,16 +523,15 @@ def find_best_qbs(df):
     ) * 100
 
     # Sort quarterbacks by the composite score in descending order
-    best_qbs = df.sort_values(by="Weighted Score", ascending=False).head(25)
+    best_qbs = df.sort_values(by="Weighted Score", ascending=False).head(32)
 
     # Print the top quarterbacks
     # print(best_qbs)
 
     # Optionally, save the top quarterbacks to a new CSV file
-    best_qbs.to_csv('official_qb_stats.csv', index=False)
+    best_qbs.to_csv("official_qb_stats.csv", index=False)
 
     return best_qbs
-
 
 def get_rushing_stats():
     """
@@ -355,7 +594,6 @@ def get_rushing_stats():
     )
     return df
 
-
 def find_best_rbs(df):
     """
     Function to find the best running backs based on rushing yards, touchdowns, yards per carry, and fumbles.
@@ -383,16 +621,15 @@ def find_best_rbs(df):
     ) * 100
 
     # Sort running backs by the composite score in descending order
-    best_rbs = df.sort_values(by="Weighted Score", ascending=False).head(35)
+    best_rbs = df.sort_values(by="Weighted Score", ascending=False).head(50)
 
     # Print the top running backs
     # print(best_rbs)
 
     # Optionally, save the top running backs to a new CSV file
-    best_rbs.to_csv('official_rb_stats.csv', index=False)
+    best_rbs.to_csv("official_rb_stats.csv", index=False)
 
     return best_rbs
-
 
 def get_receiving_stats():
     """
@@ -456,7 +693,6 @@ def get_receiving_stats():
     )
     return df
 
-
 def find_best_wrs(df):
     """
     Function to find the best wide receivers based on receiving yards, receptions, yards per reception, and touchdowns.
@@ -467,21 +703,19 @@ def find_best_wrs(df):
     """
     # Convert receiving yards, receptions, and touchdowns to numeric values
     # Convert relevant columns to numeric values
-    df["Tgts"] = pd.to_numeric(df["Tgts"], errors='coerce').fillna(0).astype(int)
-    df["Rec"] = pd.to_numeric(df["Rec"], errors='coerce').fillna(0).astype(int)
-    df["Yds"] = pd.to_numeric(df["Yds"].str.replace(",", ""), errors='coerce').fillna(0).astype(float)
-    df["TD"] = pd.to_numeric(df["TD"], errors='coerce').fillna(0).astype(int)
-    df["20+"] = pd.to_numeric(df["20+"], errors='coerce').fillna(0).astype(int)
-    df["40+"] = pd.to_numeric(df["40+"], errors='coerce').fillna(0).astype(int)
+    df["Rec"] = pd.to_numeric(df["Rec"], errors="coerce").fillna(0).astype(int)
+    df["Yds"] = (
+        pd.to_numeric(df["Yds"].str.replace(",", ""), errors="coerce")
+        .fillna(0)
+        .astype(float)
+    )
+    df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
 
     # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
     df["Score"] = (
         (df["Rec"] * 0.35)
         + (df["Yds"] * 0.25)
         + (df["TD"] * 0.5)
-        + (df["Tgts"] * 0.1)
-        + (df["20+"] * 0.2)
-        + (df["40+"] * 0.1)
     )
 
     df["Weighted Score"] = (
@@ -489,15 +723,88 @@ def find_best_wrs(df):
     ) * 100
 
     # Sort wide receivers by the composite score in descending order
-    best_wrs = df.sort_values(by="Weighted Score", ascending=False).head(35)
+    best_wrs = df.sort_values(by="Weighted Score", ascending=False, ignore_index=True).head(35)
 
     # Print the top wide receivers
     # print(best_wrs)
 
     # Optionally, save the top wide receivers to a new CSV file
-    best_wrs.to_csv('official_wr_stats.csv', index=False)
+    best_wrs.to_csv("official_wr_stats.csv", index=False)
 
     return best_wrs
+
+def find_best_tes():
+    """
+    Function to find the best tight ends based on receiving stats.
+    
+    Returns:
+        best_tes (DataFrame): A pandas DataFrame containing the top tight ends ranked by a composite score.
+    """
+    url = "https://www.fantasypros.com/nfl/stats/te.php"
+    
+    try:
+        # Fetch the page content
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate the table
+        table = soup.find("table", {"class": "table"})
+        if not table:
+            print("Table not found on the page.")
+            return None
+
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            if len(player) == len(headers):  # Ensure row matches header count
+                player_data.append(player)
+
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        print(df.head(50))
+
+        # Check if there are duplicate "YDS" columns and drop the second one
+        if df.columns.tolist().count("YDS") > 1:
+            print("Duplicate 'YDS' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]  # Keep only the first occurrence of each column
+
+        print("Cleaned DataFrame columns:", df.columns)
+
+        # Remove commas from YDS column (ensure we're working with the correct one)
+        df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
+
+        # Convert relevant columns to numeric
+        df["REC"] = pd.to_numeric(df["REC"], errors="coerce").fillna(0).astype(int)
+        df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
+        df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+
+        # Calculate composite score
+        df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
+
+        # Sort and select top players
+        best_tes = df.sort_values(by="Score", ascending=False, ignore_index=True).head(50)
+
+        # Save to CSV
+        best_tes.to_csv("official_te_stats.csv", index=False)
+        print("Top TE stats saved to 'official_te_stats.csv'.")
+
+        return best_tes
+
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    return None
 
 
 # TODO: Change function to use schedule vs defense stats
@@ -530,7 +837,7 @@ def find_best_wr_defense_matchups(df1, df2):
     # print(best_matchups)
 
     # Optionally, save the top matchups to a new CSV file
-    best_matchups.to_csv('official_matchup_stats.csv', index=False)
+    best_matchups.to_csv("official_matchup_stats.csv", index=False)
 
     return best_matchups
 
@@ -565,65 +872,151 @@ def find_best_rb_defense_matchups(df1, df2):
     # print(best_matchups)
 
     # Optionally, save the top matchups to a new CSV file
-    best_matchups.to_csv('official_matchup_stats.csv', index=False)
+    best_matchups.to_csv("official_matchup_stats.csv", index=False)
 
     return best_matchups
 
+def get_offensive_stats():
+    """
+    Function to combine all offensive stats for quarterbacks, running backs, wide receivers, and tight ends.
+    """
+    kicking_df = get_kicking_stats()
+    passing_df = get_passing_stats()
+    rushing_df = get_rushing_stats()
+    receiving_df = get_receiving_stats()
+    te_df = get_te_stats()
+
+    top_kickers = find_best_kickers(kicking_df)
+    top_qbs = find_best_qbs(passing_df)
+    top_rbs = find_best_rbs(rushing_df)
+    top_wrs = find_best_wrs(receiving_df)
+    top_tes = find_best_tes(te_df)
+
+    print(top_kickers)
+    print(top_qbs)
+    print(top_rbs)
+    print(top_wrs)
+    print(top_tes)
 
 def main():
     """
     Main function to scrape and analyze NFL player and team stats.
     """
     # Scrape kicking stats
-    print("Scraping kicking stats...")
-    kicking_df = get_kicking_stats()
-    top_kickers = find_best_kickers(kicking_df)
-    print(top_kickers)  # Print the top kickers
-    print("\n")
+    # print("Scraping kicking stats...")
+    # kicking_df = get_kicking_stats()
+    # top_kickers = find_best_kickers(kicking_df)
+    # print(top_kickers)  # Print the top kickers
+    # # # print("\n")
 
-    print("Scraping passing stats...")
-    passing_df = get_passing_stats()
-    top_qbs = find_best_qbs(passing_df)
-    print(top_qbs)  # Print the top quarterbacks
-    print("\n")
+    # # # print("Scraping passing stats...")
+    # passing_df = get_passing_stats()
+    # top_qbs = find_best_qbs(passing_df)
+    # print(top_qbs)  # Print the top quarterbacks
+    # # # print("\n")
 
-    print("Scraping rushing stats...")
-    rushing_df = get_rushing_stats()
-    top_rbs = find_best_rbs(rushing_df)
-    print(top_rbs)  # Print the top running backs
-    print("\n")
+    # # # print("Scraping rushing stats...")
+    # rushing_df = get_rushing_stats()
+    # top_rbs = find_best_rbs(rushing_df)
+    # print(top_rbs)  # Print the top running backs
+    # # print("\n")
 
-    print("Scraping receiving stats...")
-    receiving_df = get_receiving_stats()
-    top_wrs = find_best_wrs(receiving_df)
-    print(top_wrs)  # Print the top wide receivers
-    print("\n")
+    # # # print("Scraping receiving stats...")
+    # receiving_df = get_receiving_stats()
+    # top_wrs = find_best_wrs(receiving_df)
+    # print(top_wrs)  # Print the top wide receivers
+    # # # print("\n")
 
-    print("Scraping Team TD stats...")
-    team_td_df = get_team_td_stats()
-    top_team_td = find_best_team_td(team_td_df)
-    print(top_team_td)  # Print the top wide receivers
-    print("\n")
-
-    csv_file = 'schedule.csv'
+    # # print("Scraping receiving stats...")
+    # # te_receiving_df = pd.read_csv("data/te_stats/te_stats.csv")
+    top_tes = find_best_tes()
+    print(top_tes)  # Print the top tight ends
     
+    # get_all_stats = get_offensive_stats()
+    # print(get_all_stats)
+    
+    # print("Scraping Team TD stats...")
+    # team_td_df = get_team_td_stats()
+    # top_team_td = find_best_team_td(team_td_df)
+    # print(top_team_td)  # Print the top wide receivers
+    # print("\n")
+
+    # csv_file = "schedule.csv"
+
     # Get the team stats from the CSV file
-    top_teams = get_schedule(csv_file)
+    # top_teams = get_schedule(csv_file)
+    # top_teams.to_csv('official_team_stats.csv', index=False)
+
+    # # Print the top teams based on the computed scores
+    # print(top_teams)
+
+    # team_standings = get_nfl_records()
+    # best_teams = find_best_teams(team_standings)
+    # print(best_teams)
+
+    # division_df = pd.read_csv("data/division_teams.csv")
+
+    # separate_names(nfl_roster)
+    # Organize rushing stats for all positions
+    # organize_rushing_stats()
+
+    # Organize receiving stats for wide receivers and tight ends
+    # organize_receiving_stats()
+
+    # nfl_roster2 = read_folder('2024_roster')
+    # print(nfl_roster2)
+    # nfl_official_roster = read_folder('2024_roster')
+    # separate_names(nfl_official_roster)
+    # add_divisions_to_teams(nfl_roster, division_df)
+    # print(nfl_roster)
+    # nfl_roster.to_csv('nfl_official_team_roster.csv', index=False)
+
+    # for team in nfl_teams:
+    #     team_roster = get_team_roster(team)
+    #     team_roster.to_csv('nfl_official_team_roster.csv', index=False)
+    #     # print(team_roster)
+
+    # hand_arm_df = read_folder('h&a_roster')
+    # print(hand_arm_df)
+    # hand_arm_df.dropna(subset=['Name'], inplace=True) # Drop rows with missing player names
+    # hand_arm_df = separate_names(hand_arm_df)
+    # hand_arm_df.to_csv('hand_arm_stats_nfl_roster.csv', index=False)
     
-    # Print the top teams based on the computed scores
-    print(top_teams)
+    # nfl_teams_roster2 = pd.read_csv("nfl_official_team_roster.csv")
+    # nfl_full_roster = pd.read_csv("nfl_official_team_roster_merged.csv")
+    # hand_arm_df = pd.read_csv("hand_arm_stats_nfl_roster.csv")
+
+    # # Add hand/arm stats to the player roster
+    # nfl_merged_roster = nfl_full_roster.merge(
+    #     nfl_teams_roster2,
+    #     on=[
+    #         "Last Name",
+    #         "First Name",
+    #     ],
+    #     how="left",
+    # )
+    # nfl_merged_roster.to_csv("nfl_teams_full_roster.csv", index=False)
+
+    # Get scores for week 1-18
+    # for week in range(1, 18):
+    #     nfl_scores = []
+    #     nfl_scores = get_nfl_scores(week)
+    #     print(nfl_scores)
+    #     nfl_scores.to_csv('nfl_official_scores.csv', index=False)
+    # nfl_week1 = get_nfl_scores(1)
+    # print(nfl_week1)
 
     # Find the best wide receiver versus defense matchups
-    #best_matchups = find_best_wr_defense_matchups(top_wrs, top_defenses_receiving)
-    #print("Best Wide Receiver vs. Defense Matchups:")
-    #print(best_matchups)  # Print the top matchups
-    #print("\n")
+    # best_matchups = find_best_wr_defense_matchups(top_wrs, top_defenses_receiving)
+    # print("Best Wide Receiver vs. Defense Matchups:")
+    # print(best_matchups)  # Print the top matchups
+    # print("\n")
 
     # Find the best running back versus defense matchups
-    #best_rb_matchups = find_best_rb_defense_matchups(top_rbs, top_defenses_rushing)
-    #print("Best Running Back vs. Defense Matchups:")
-    #print(best_rb_matchups)  # Print the top matchups
-    #print("\n")
+    # best_rb_matchups = find_best_rb_defense_matchups(top_rbs, top_defenses_rushing)
+    # print("Best Running Back vs. Defense Matchups:")
+    # print(best_rb_matchups)  # Print the top matchups
+    # print("\n")
 
 
 if __name__ == "__main__":
