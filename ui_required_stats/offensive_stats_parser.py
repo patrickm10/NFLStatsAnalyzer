@@ -72,7 +72,7 @@ def find_best_team_td(df):
         best_kickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
     """
 
-    # Initialize the weighted score column and ensure FGM and Att are integers
+    # Initialize the weighted score column and ensure FG and Att are integers
     df["Weighted Score"] = 0
     # print(df.columns)
     df["Team"] = df["Team"].str.split().str[0]
@@ -389,24 +389,7 @@ def get_team_roster(team_name):
     df["Team"] = team_name  # Add team_name as Team in the dataframe
     return df
 
-def get_kicking_stats():
-    """
-    Function to scrape kicking stats from the NFL website.
-    Returns: df (DataFrame): A pandas DataFrame containing the scraped kicking stats.
-    """
-    url = "https://www.nfl.com/stats/player-stats/category/field-goals/2024/reg/all/kickingfgmade/desc"
-    response = requests.get(url, timeout=10)
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find("table", class_="d3-o-table")
-    headers = [th.get_text().strip() for th in table.find_all("th")]
-    player_data = []
-    for row in table.find_all("tr")[1:]:  # Skip the header row
-        player = [td.get_text().strip() for td in row.find_all("td")]
-        player_data.append(player)
-    df = pd.DataFrame(player_data, columns=headers)
-    return df
-
-def find_best_kickers(df):
+def find_best_kickers():
     """
     Function to find the best kicker based on a kicker score that incorporates field goal percentage,
     distance ranges, and field goal attempts as a percentage of the top kicker's attempts.
@@ -415,79 +398,100 @@ def find_best_kickers(df):
     Returns:
         best_kickers (DataFrame): A pandas DataFrame containing the top kickers ranked by their kicker score.
     """
-    # List of distance ranges with corresponding weights
-    distance_ranges = {
-        "20-29": 3.0,
-        "30-39": 2.0,
-        "40-49": 1.0,
-        "50-59": 0.5,
-        "60+": 0.25,
-    }
-
-    # Initialize the weighted score column and ensure FGM and Att are integers
-    df["Weighted Score"] = 0
-    df["FGM"] = df["FGM"].astype(int)
-    df["Att"] = df["Att"].astype(int)
-
-    # Iterate through the distance ranges and calculate weighted scores
-    for distance, weight in distance_ranges.items():
-        made_col = f"{distance} > A-M"
-
-        # Split made/attempted values into separate columns for made and attempted
-        made_values = (
-            df[made_col].str.split("/", expand=True)[0].astype(float).fillna(0)
+    url = "https://www.fantasypros.com/nfl/stats/k.php?scoring=PPR"
+    
+    try:
+        # Fetch the page content
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        soup = BeautifulSoup(response.content, "html.parser")
+        
+        # Locate the table
+        table = soup.find("table", {"class": "table"})
+        if not table:
+            print("Table not found on the page.")
+            return None
+        
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+        
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            if len(player) == len(headers):
+                player_data.append(player)
+                
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+        
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        # print(df.columns)
+        # print(df.head(50))
+        
+        # Check if there are duplicate "FG" columns and drop the second one
+        if df.columns.tolist().count("FG") > 1:
+            # print("Duplicate 'FG' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]
+            
+        # print("Cleaned DataFrame columns:", df.columns)
+        
+        # Convert relevant columns to numeric
+        df["FG"] = pd.to_numeric(df["FG"], errors="coerce").fillna(0).astype(int)
+        df["FGA"] = pd.to_numeric(df["FGA"], errors="coerce").fillna(0).astype(int)
+        df["PCT"] = pd.to_numeric(df["PCT"], errors="coerce").fillna(0).astype(float)
+        df["1-19"] = pd.to_numeric(df["1-19"], errors="coerce").fillna(0).astype(int)
+        df["20-29"] = pd.to_numeric(df["20-29"], errors="coerce").fillna(0).astype(int)
+        df["30-39"] = pd.to_numeric(df["30-39"], errors="coerce").fillna(0).astype(int)
+        df["40-49"] = pd.to_numeric(df["40-49"], errors="coerce").fillna(0).astype(int)
+        df["50+"] = pd.to_numeric(df["50+"], errors="coerce").fillna(0).astype(int)
+        df["FPTS/G"] = pd.to_numeric(df["FPTS/G"], errors="coerce").fillna(0).astype(float)
+        df["FPTS"] = pd.to_numeric(df["FPTS"], errors="coerce").fillna(0).astype(float)
+        
+        # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
+        df["Score"] = (
+            (df["FG"] * 0.5)
+            + (df["FGA"] * 0.3)
+            + (df["PCT"] * 0.2)
+            + (df["1-19"] * 0.1)
+            + (df["20-29"] * 0.1)
+            + (df["30-39"] * 0.1)
+            + (df["40-49"] * 0.1)
+            + (df["50+"] * 0.1)
+            + (df["FPTS/G"] * 0.3)
+            + (df["FPTS"] * 0.2)
         )
-        att_values = df[made_col].str.split("/", expand=True)[1].astype(float).fillna(0)
-
-        # Calculate the weighted score: made/attempted ratio * weight
-        df["Weighted Score"] += (made_values / att_values.replace(0, 1)) * weight
-
-    # Normalize the weighted score to a 0-100 scale
-    score_range = df["Weighted Score"].max() - df["Weighted Score"].min()
-    if score_range != 0:
+        
+        # Sort kickers by the composite score in descending order
+        best_kickers = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
+        
+        df["Score"] = df["Score"].astype(float)
         df["Weighted Score"] = (
-            (df["Weighted Score"] - df["Weighted Score"].min()) / score_range
+            (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
         ) * 100
-    else:
-        df["Weighted Score"] = 100  # Default value if all scores are the same
+        
+        df["Weighted Score"] = df["Weighted Score"].astype(float)
+        
+        # Print the top kickers
+        # print(best_kickers)
+        
+        # Save to CSV
+        best_kickers.to_csv("official_kicker_stats.csv", index=False)
+        print("Top kicker stats saved to 'official_kicker_stats.csv'.")
+        
+        return best_kickers
+    
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        
+    return None
 
-    # Find the top kicker based on total field goal attempts
-    top_kicker_att = df["Att"].max()
-    if top_kicker_att != 0:
-        df["FG Attempts % of Top"] = df["Att"] / top_kicker_att * 100
-    else:
-        df["FG Attempts % of Top"] = 0  # If no attempts, set to 0
 
-    # Adjust the weighted score to include the percentage of top kicker's attempts
-    df["Weighted Score"] += df["FG Attempts % of Top"]
-
-    # Rank the top kickers by Weighted Score
-    best_kickers = df.nlargest(32, "Weighted Score")
-
-    # Save the top kickers to a new CSV file
-    best_kickers.to_csv("official_kicker_stats.csv", index=False)
-
-    return best_kickers
-
-def get_passing_stats():
-    """
-    Function to scrape passing stats from the NFL website.
-    Returns:
-        df (DataFrame): A pandas DataFrame containing the scraped passing stats.
-    """
-    url = "https://www.nfl.com/stats/player-stats/category/passing/2024/reg/all/passingyards/desc"
-    response = requests.get(url, timeout=10)
-    soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find("table", class_="d3-o-table")
-    headers = [th.get_text().strip() for th in table.find_all("th")]
-    player_data = []
-    for row in table.find_all("tr")[1:]:  # Skip the header row
-        player = [td.get_text().strip() for td in row.find_all("td")]
-        player_data.append(player)
-    df = pd.DataFrame(player_data, columns=headers)
-    return df
-
-def find_best_qbs(df):
+def find_best_qbs():
     """
     Function to find the best quarterbacks based on passing yards, touchdowns, yards per attempt, and completion percentage.
     Args:
@@ -497,104 +501,77 @@ def find_best_qbs(df):
     """
     # Convert passing yards and touchdowns to numeric values
     # Convert relevant columns to numeric values
-    df["Pass Yards"] = (
-        pd.to_numeric(df["Pass Yds"].str.replace(",", ""), errors="coerce")
-        .fillna(0)
-        .astype(int)
-    )
-    df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
-    df["Yds/Att"] = (
-        pd.to_numeric(df["Yds/Att"], errors="coerce").fillna(0).astype(float)
-    )
-    df["Cmp %"] = pd.to_numeric(df["Cmp %"], errors="coerce").fillna(0).astype(float)
-    df["INT"] = pd.to_numeric(df["INT"], errors="coerce").fillna(0).astype(int)
-
-    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
-    df["Score"] = (
-        (df["Pass Yards"] * 0.45)
-        + (df["TD"] * 0.4)
-        + (df["Yds/Att"] * 0.15)
-        + (df["Cmp %"] * 0.15)
-        + (df["INT"] * 0.2)
-    )
-
-    df["Weighted Score"] = (
-        (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
-    ) * 100
-
-    # Sort quarterbacks by the composite score in descending order
-    best_qbs = df.sort_values(by="Weighted Score", ascending=False).head(32)
-
-    # Print the top quarterbacks
-    # print(best_qbs)
-
-    # Optionally, save the top quarterbacks to a new CSV file
-    best_qbs.to_csv("official_qb_stats.csv", index=False)
-
-    return best_qbs
-
-def get_rushing_stats():
-    """
-    Function to scrape rushing stats from the NFL website.
-    Returns:
-        df (DataFrame): A pandas DataFrame containing the scraped rushing stats.
-    """
-    base_url = "https://www.nfl.com/stats/player-stats/category/rushing/2024/reg/all/rushingyards/desc"
-    player_data = []
-    headers = []
-
-    aftercursor = None
-    pages_scraped = 0
-    max_pages = 3  # Limit to the first 3 pages
-
-    while pages_scraped < max_pages:
-        # Construct URL with aftercursor if it's available
-        url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
-
-        # Make the request
+    url = "https://www.fantasypros.com/nfl/stats/qb.php?scoring=PPR"
+    
+    try:
         response = requests.get(url, timeout=10)
-        if response.status_code != 200:
-            print(
-                f"Failed to retrieve data from {url}. Status code: {response.status_code}"
-            )
-            break
-
+        response.raise_for_status()  # Raise an error for HTTP issues
         soup = BeautifulSoup(response.content, "html.parser")
-
+        
         # Locate the table
-        table = soup.find("table", class_="d3-o-table")
+        table = soup.find("table", {"class": "table"})
         if not table:
-            print(f"No table found on {url}.")
-            break
-
-        # Extract headers (only once)
-        if not headers:
-            headers = [th.get_text().strip() for th in table.find_all("th")]
-
-        # Extract player data
-        for row in table.find_all("tr")[1:]:  # Skip the header row
+            print("Table not found on the page.")
+            return None
+        
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+        
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
             player = [td.get_text().strip() for td in row.find_all("td")]
-            player_data.append(player)
+            if len(player) == len(headers):
+                player_data.append(player)
+                
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+        
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        # print(df.head(50))
+        
+        # Check if there are duplicate "YDS" columns and drop the second one
+        if df.columns.tolist().count("YDS") > 1:
+            # print("Duplicate 'YDS' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]
+            
+        # print("Cleaned DataFrame columns:", df.columns)
+        
+        # Remove commas from YDS column (ensure we're working with the correct one)
+        df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
+        
+        # Convert relevant columns to numeric
+        df["CMP"] = pd.to_numeric(df["CMP"], errors="coerce").fillna(0).astype(int)
+        df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
+        df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+        df["Y/A"] = pd.to_numeric(df["Y/A"], errors="coerce").fillna(0).astype(float)
+        df["INT"] = pd.to_numeric(df["INT"], errors="coerce").fillna(0).astype(int)
+        df["FPTS/G"] = pd.to_numeric(df["FPTS/G"], errors="coerce").fillna(0).astype(float)
+        df["FPTS"] = pd.to_numeric(df["FPTS"], errors="coerce").fillna(0).astype(float)
 
-        # Find the aftercursor value for the next page
-        next_button = soup.find("a", class_="nfl-o-table-pagination__next")
-        if next_button:
-            aftercursor = next_button.get("href").split("aftercursor=")[-1]
-        else:
-            print("No more pages to scrape.")
-            break
+        # Calculate composite score
+        df["Score"] = (df["YDS"] * 0.45) + (df["TD"] * 0.4) + (df["Y/A"] * 0.15) - (df["INT"] * 0.2) + (df["FPTS/G"] * 0.3) + (df["FPTS"] * 0.2)
+        + (df["CMP"] * 0.1)
 
-        pages_scraped += 1
+        # Sort and select top players
+        best_qbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
 
-    # Create a DataFrame
-    df = (
-        pd.DataFrame(player_data, columns=headers)
-        if headers
-        else pd.DataFrame(player_data)
-    )
-    return df
+        # Save to CSV
+        best_qbs.to_csv("official_qb_stats.csv", index=False)
+        print("Top QB stats saved to 'official_qb_stats.csv'.")
 
-def find_best_rbs(df):
+        return best_qbs
+    
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        
+    return None
+
+def find_best_rbs():    
     """
     Function to find the best running backs based on rushing yards, touchdowns, yards per carry, and fumbles.
     Args:
@@ -602,136 +579,80 @@ def find_best_rbs(df):
         Returns:
         best_rbs (DataFrame): A pandas DataFrame containing the top running backs ranked by a composite score.
     """
-    # Convert rushing yards and touchdowns to numeric values
-    df["Rush Yds"] = df["Rush Yds"].str.replace(",", "").astype(int)
-    df["TD"] = df["TD"].astype(int)
-    df["Att"] = df["Att"].astype(int)
-    df["Rush FUM"] = df["Rush FUM"].astype(int)
-
-    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
-    df["Score"] = (
-        (df["Rush Yds"] * 0.35)
-        + (df["TD"] * 0.6)
-        + (df["Att"] * 0.1)
-        + (df["Rush FUM"] * 0.2)
-    )
-
-    df["Weighted Score"] = (
-        (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
-    ) * 100
-
-    # Sort running backs by the composite score in descending order
-    best_rbs = df.sort_values(by="Weighted Score", ascending=False).head(50)
-
-    # Print the top running backs
-    # print(best_rbs)
-
-    # Optionally, save the top running backs to a new CSV file
-    best_rbs.to_csv("official_rb_stats.csv", index=False)
-
-    return best_rbs
-
-def get_receiving_stats():
-    """
-    Scrapes receiving stats from the NFL website, handling pagination with aftercursor.
-
-    Returns:
-        pd.DataFrame: A pandas DataFrame containing the receiving stats.
-    """
-    base_url = "https://www.nfl.com/stats/player-stats/category/receiving/2024/REG/all/receivingreceptions/DESC"
-    player_data = []
-    headers = []
-
-    aftercursor = None
-    pages_scraped = 0
-    max_pages = 3  # Limit to the first 3 pages
-
-    while pages_scraped < max_pages:
-        # Construct URL with aftercursor if it's available
-        url = f"{base_url}?aftercursor={aftercursor}" if aftercursor else base_url
-
-        # Make the request
+    url = "https://www.fantasypros.com/nfl/stats/rb.php?scoring=PPR"
+    
+    try:
+        
         response = requests.get(url, timeout=10)
-        if response.status_code != 200:
-            print(
-                f"Failed to retrieve data from {url}. Status code: {response.status_code}"
-            )
-            break
-
+        response.raise_for_status()  # Raise an error for HTTP issues
         soup = BeautifulSoup(response.content, "html.parser")
-
+        
         # Locate the table
-        table = soup.find("table", class_="d3-o-table")
+        table = soup.find("table", {"class": "table"})
         if not table:
-            print(f"No table found on {url}.")
-            break
-
-        # Extract headers (only once)
-        if not headers:
-            headers = [th.get_text().strip() for th in table.find_all("th")]
-
-        # Extract player data
-        for row in table.find_all("tr")[1:]:  # Skip the header row
+            print("Table not found on the page.")
+            return None
+        
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+        
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
             player = [td.get_text().strip() for td in row.find_all("td")]
-            player_data.append(player)
-
-        # Find the aftercursor value for the next page
-        next_button = soup.find("a", class_="nfl-o-table-pagination__next")
-        if next_button:
-            aftercursor = next_button.get("href").split("aftercursor=")[-1]
-        else:
-            print("No more pages to scrape.")
-            break
-
-        pages_scraped += 1
-
-    # Create a DataFrame
-    df = (
-        pd.DataFrame(player_data, columns=headers)
-        if headers
-        else pd.DataFrame(player_data)
-    )
-    return df
-
-def find_best_wrs(df):
-    """
-    Function to find the best wide receivers based on receiving yards, receptions, yards per reception, and touchdowns.
-    Args:
-        df (DataFrame): A pandas DataFrame containing the receiving stats.
-    Returns:
-        best_wrs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
-    """
-    # Convert receiving yards, receptions, and touchdowns to numeric values
-    # Convert relevant columns to numeric values
-    df["Rec"] = pd.to_numeric(df["Rec"], errors="coerce").fillna(0).astype(int)
-    df["Yds"] = (
-        pd.to_numeric(df["Yds"].str.replace(",", ""), errors="coerce")
-        .fillna(0)
-        .astype(float)
-    )
-    df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
-
-    # Calculate a composite score based on weighted stats (you can adjust the weights as needed)
-    df["Score"] = (
-        (df["Rec"] * 0.35)
-        + (df["Yds"] * 0.25)
-        + (df["TD"] * 0.5)
-    )
-
-    df["Weighted Score"] = (
-        (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
-    ) * 100
-
-    # Sort wide receivers by the composite score in descending order
-    best_wrs = df.sort_values(by="Weighted Score", ascending=False, ignore_index=True).head(35)
-
-    # Print the top wide receivers
-    # print(best_wrs)
-
-    # Optionally, save the top wide receivers to a new CSV file
-    best_wrs.to_csv("official_wr_stats.csv", index=False)
-
-    return best_wrs
+            if len(player) == len(headers):
+                player_data.append(player)
+                
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+        
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        print(df.columns)
+        
+        print(df.head(50))
+        
+        # Check if there are duplicate "YDS" columns and drop the second one
+        if df.columns.tolist().count("YDS") > 1:
+            # print("Duplicate 'YDS' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]
+            
+        # print("Cleaned DataFrame columns:", df.columns)
+        
+        # Remove commas from YDS column (ensure we're working with the correct one)
+        df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
+        
+        # Convert relevant columns to numeric
+        df["ATT"] = pd.to_numeric(df["ATT"], errors="coerce").fillna(0).astype(int)
+        df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
+        df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+        df["Y/A"] = pd.to_numeric(df["Y/A"], errors="coerce").fillna(0).astype(float)
+        df["FPTS/G"] = pd.to_numeric(df["FPTS/G"], errors="coerce").fillna(0).astype(float)
+        df["FPTS"] = pd.to_numeric(df["FPTS"], errors="coerce").fillna(0).astype(float)
+        df["FL"] = pd.to_numeric(df["FL"], errors="coerce").fillna(0).astype(int)
+        df["REC"] = pd.to_numeric(df["REC"], errors="coerce").fillna(0).astype(int)
+        # Calculate composite score
+        df["Score"] = (df["YDS"] * 0.45) + (df["TD"] * 0.4) + (df["Y/A"] * 0.15) + (df["FPTS/G"] * 0.3) + (df["FPTS"] * 0.2)
+        + (df["ATT"] * 0.1)
+        - (df["FL"] * 0.1)
+        + (df["REC"] * 0.1)
+        
+        # Sort and select top players
+        best_rbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
+        
+        # Save to CSV
+        best_rbs.to_csv("official_rb_stats.csv", index=False)
+        print("Top RB stats saved to 'official_rb_stats.csv'.")
+        
+        return best_rbs
+    
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        
+    return None
 
 def find_best_tes():
     """
@@ -786,6 +707,11 @@ def find_best_tes():
         df["REC"] = pd.to_numeric(df["REC"], errors="coerce").fillna(0).astype(int)
         df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
         df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+        df["Y/R"] = pd.to_numeric(df["Y/R"], errors="coerce").fillna(0).astype(float)
+        df["LG"] = pd.to_numeric(df["LG"], errors="coerce").fillna(0).astype(int)
+        df["20+"] = pd.to_numeric(df["20+"], errors="coerce").fillna(0).astype(int)
+        df["FPTS/G"] = pd.to_numeric(df["FPTS/G"], errors="coerce").fillna(0).astype(float)
+        df["FPTS"] = pd.to_numeric(df["FPTS"], errors="coerce").fillna(0).astype(float)
 
         # Calculate composite score
         df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
@@ -798,6 +724,178 @@ def find_best_tes():
         print("Top TE stats saved to 'official_te_stats.csv'.")
 
         return best_tes
+
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    return None
+
+def find_best_wrs():
+    """
+    Function to find the best wide receivers based on receiving yards, receptions, yards per reception, and touchdowns.
+    Args:
+        df (DataFrame): A pandas DataFrame containing the receiving stats.
+    Returns:
+        best_wrs (DataFrame): A pandas DataFrame containing the top wide receivers ranked by a composite score.
+    """
+    url = "https://www.fantasypros.com/nfl/stats/wr.php?scoring=PPR"
+    try:
+        # Fetch the page content
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        soup = BeautifulSoup(response.content, "html.parser")
+        
+        # Locate the table
+        table = soup.find("table", {"class": "table"})
+        if not table:
+            print("Table not found on the page.")
+            return None
+        
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+        
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            if len(player) == len(headers):
+                player_data.append(player)
+                
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+        
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        # print(df.head(50))
+        
+        # Check if there are duplicate "YDS" columns and drop the second one
+        if df.columns.tolist().count("YDS") > 1:
+            # print("Duplicate 'YDS' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]
+            
+        # print("Cleaned DataFrame columns:", df.columns)
+        
+        # Remove commas from YDS column (ensure we're working with the correct one)
+        df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
+        
+        # Convert relevant columns to numeric
+        df["REC"] = pd.to_numeric(df["REC"], errors="coerce").fillna(0).astype(int)
+        df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
+        df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+        df["Y/R"] = pd.to_numeric(df["Y/R"], errors="coerce").fillna(0).astype(float)
+        df["LG"] = pd.to_numeric(df["LG"], errors="coerce").fillna(0).astype(int)
+        df["20+"] = pd.to_numeric(df["20+"], errors="coerce").fillna(0).astype(int)
+        
+        # Calculate composite score
+        df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
+        + (df["Y/R"] * 0.15)
+        + (df["LG"] * 0.1)
+        + (df["20+"] * 0.1)
+        
+        # Sort and select top players
+        best_wrs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(50)
+        
+        # Save to CSV
+        best_wrs.to_csv("official_wr_stats.csv", index=False)
+        print("Top WR stats saved to 'official_wr_stats.csv'.")
+        
+        return best_wrs
+    
+    except requests.RequestException as e:
+        print(f"Error fetching the webpage: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        
+    return None
+
+
+def find_top_players(position):
+    """
+    Function to find the top players based on a given position.
+    Args:
+        position (str): The position to find the top players for.
+        Returns:
+        best_players (DataFrame): A pandas DataFrame containing the top players for the given position.
+        """
+    url = f"https://www.fantasypros.com/nfl/stats/{position}.php"
+
+    try:
+        # Fetch the page content
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate the table
+        table = soup.find("table", {"class": "table"})
+        if not table:
+            print("Table not found on the page.")
+            return None
+
+        # Extract headers and rows
+        headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
+
+        player_data = []
+        for row in table.find("tbody").find_all("tr"):
+            player = [td.get_text().strip() for td in row.find_all("td")]
+            if len(player) == len(headers):  # Ensure row matches header count
+                player_data.append(player)
+
+        # Create DataFrame only if player_data is not empty
+        if not player_data:
+            print("No player data found.")
+            return None
+
+        df = pd.DataFrame(player_data, columns=headers)
+        df.columns = df.columns.str.strip()  # Clean column names
+        print(df.head(50))
+
+        # Check if there are duplicate "YDS" columns and drop the second one
+        if df.columns.tolist().count("YDS") > 1:
+            print("Duplicate 'YDS' columns found. Keeping the first one.")
+            df = df.loc[:, ~df.columns.duplicated()]
+
+        print("Cleaned DataFrame columns:", df.columns)
+
+        # Remove commas from YDS column (ensure we're working with the correct one)
+        df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
+
+        # Convert relevant columns to numeric
+        df["REC"] = pd.to_numeric(df["REC"], errors="coerce").fillna(0).astype(int)
+        df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
+        df["TD"] = pd.to_numeric(df["TD"], errors="coerce").fillna(0).astype(int)
+        df["Y/R"] = pd.to_numeric(df["Y/R"], errors="coerce").fillna(0).astype(float)
+        df["LG"] = pd.to_numeric(df["LG"], errors="coerce").fillna(0).astype(int)
+        df["20+"] = pd.to_numeric
+        df["FPTS/G"] = pd.to_numeric(df["FPTS/G"], errors="coerce").fillna(0).astype(float)
+        df["FPTS"] = pd.to_numeric(df["FPTS"], errors="coerce").fillna(0).astype(float)
+
+        # Calculate composite score
+        if position == "QB":
+            df["Score"] = (df["YDS"] * 0.45) + (df["TD"] * 0.4) + (df["YDS/ATT"] * 0.15)
+        elif position == "RB":
+            df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
+        elif position == "WR":
+            df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
+        elif position == "TE":
+            df["Score"] = (df["REC"] * 0.35) + (df["YDS"] * 0.25) + (df["TD"] * 0.5)
+        elif position == "K":
+            df["Score"] = (df["FG"] * 0.5) + (df["Att"] * 0.3) + (df["PCT"] * 0.2)
+        else:
+            print("Invalid position specified.")
+            return None
+
+
+        df["Normalized_Score"] = (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min()) * 100
+        # Sort and select top players
+        best_players = df.sort_values(by="Score", ascending=False, ignore_index=True).head(50)
+
+        # Save to CSV
+        best_players.to_csv(f"official_{position}_stats.csv", index=False)
+
+        return best_players
 
     except requests.RequestException as e:
         print(f"Error fetching the webpage: {e}")
@@ -904,33 +1002,69 @@ def main():
     """
     # Scrape kicking stats
     # print("Scraping kicking stats...")
-    # kicking_df = get_kicking_stats()
     # top_kickers = find_best_kickers(kicking_df)
     # print(top_kickers)  # Print the top kickers
     # # # print("\n")
+    
+    # Scraping Kicking stats
+    # print("Scraping kicking stats...")
+    top_kickers = find_best_kickers()
+    print(top_kickers)  # Print the top kickers
+    print("\n") 
+    # print("Scraping passing stats...")
+    top_qbs = find_best_qbs()
+    print(top_qbs)  # Print the top quarterbacks
+    print("\n")
 
-    # # # print("Scraping passing stats...")
-    # passing_df = get_passing_stats()
-    # top_qbs = find_best_qbs(passing_df)
-    # print(top_qbs)  # Print the top quarterbacks
-    # # # print("\n")
+    # print("Scraping rushing stats...")
+    top_rbs = find_best_rbs()
+    print(top_rbs)  # Print the top running backs
+    print("\n")
+
+    top_tes = find_best_tes()
+    print(top_tes)  # Print the top tight ends
+    print("\n")
+
+    # print("Scraping receiving stats...")
+    top_wrs = find_best_wrs()
+    print(top_wrs)  # Print the top wide receivers
+    print("\n")
+
+    # print("Finding top QBs in NFL...")
+    # top_qbs = find_top_players("QB")
+    # print(top_qbs)
+    
+    # print("Finding top RBs in NFL...")
+    # top_rbs = find_top_players("RB")
+    # print(top_rbs)
+    
+    # print("Finding top WRs in NFL...")
+    # top_wrs = find_top_players("WR")
+    # print(top_wrs)
+
+    # print("Finding top TEs in NFL...")
+    # top_tes = find_top_players("TE")
+    # print(top_tes)
+
+    # print("Finding top Ks in NFL...")
+    # top_ks = find_top_players("K")
+    # print(top_ks)
+
 
     # # # print("Scraping rushing stats...")
-    # rushing_df = get_rushing_stats()
     # top_rbs = find_best_rbs(rushing_df)
     # print(top_rbs)  # Print the top running backs
     # # print("\n")
 
     # # # print("Scraping receiving stats...")
-    # receiving_df = get_receiving_stats()
     # top_wrs = find_best_wrs(receiving_df)
     # print(top_wrs)  # Print the top wide receivers
     # # # print("\n")
 
     # # print("Scraping receiving stats...")
     # # te_receiving_df = pd.read_csv("data/te_stats/te_stats.csv")
-    top_tes = find_best_tes()
-    print(top_tes)  # Print the top tight ends
+    # top_tes = find_best_tes()
+    # print(top_tes)  # Print the top tight ends
     
     # get_all_stats = get_offensive_stats()
     # print(get_all_stats)
