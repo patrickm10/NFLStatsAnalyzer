@@ -7,6 +7,11 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 import csv
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationChain
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import LLMChain
+from langchain.chains import PromptTemplate
 
 nfl_teams = [
     "Arizona Cardinals",
@@ -43,7 +48,6 @@ nfl_teams = [
     "Washington Commanders",
 ]
 
-
 def get_team_td_stats():
     """
     Function to scrape kicking stats from the NFL website.
@@ -60,7 +64,6 @@ def get_team_td_stats():
         player_data.append(player)
     df = pd.DataFrame(player_data, columns=headers)
     return df
-
 
 def find_best_team_td(df):
     """
@@ -218,7 +221,6 @@ def get_nfl_records():
         team_data.append(team)
     df = pd.DataFrame(team_data, columns=headers)
     return df
-
 
 def add_divisions_to_teams(df, df2):
     """
@@ -811,7 +813,6 @@ def find_best_wrs():
         
     return None
 
-
 def find_top_players(position):
     """
     Function to find the top players based on a given position.
@@ -904,7 +905,6 @@ def find_top_players(position):
 
     return None
 
-
 # TODO: Change function to use schedule vs defense stats
 def find_best_wr_defense_matchups(df1, df2):
     """
@@ -938,7 +938,6 @@ def find_best_wr_defense_matchups(df1, df2):
     best_matchups.to_csv("official_matchup_stats.csv", index=False)
 
     return best_matchups
-
 
 # TODO: Change function to use schedule vs defense stats
 def find_best_rb_defense_matchups(df1, df2):
@@ -995,6 +994,47 @@ def get_offensive_stats():
     print(top_rbs)
     print(top_wrs)
     print(top_tes)
+
+# Initialize OpenAI LLM
+llm = ChatOpenAI(model_name="gpt-4", temperature=0)
+
+# Function to generate AI-powered NFL insights
+def analyze_nfl_stats(question, df):
+    """Uses an LLM to analyze NFL stats based on a CSV dataset."""
+    # Convert the dataframe to a string (for small datasets)
+    csv_data = df.to_string(index=False)
+
+    # Create a prompt to analyze the CSV data
+    prompt = PromptTemplate(
+        input_variables=["question", "data"],
+        template="""
+        Based on the NFL statistics provided below, answer the question:
+        {question}
+
+        Data:
+        {data}
+        
+        Provide a structured response.
+        """,
+    )
+
+    # Run the prompt through LangChain
+    chain = LLMChain(llm=llm, prompt=prompt)
+    return chain.run({"question": question, "data": csv_data})
+
+def query_nfl_stats(question, df):
+    """Filters the dataset using Pandas before passing it to LangChain."""
+    if "passing yards" in question.lower():
+        top_player = df[df["Passing Yards"] == df["Passing Yards"].max()]
+    elif "rushing yards" in question.lower():
+        top_player = df[df["Rushing Yards"] == df["Rushing Yards"].max()]
+    elif "receiving yards" in question.lower():
+        top_player = df[df["Receiving Yards"] == df["Receiving Yards"].max()]
+    else:
+        return analyze_nfl_stats(question)  # Fallback to full dataset processing
+
+    return analyze_nfl_stats(f"Summarize the performance of {top_player.iloc[0]['Player']}.")
+
 
 def main():
     """
