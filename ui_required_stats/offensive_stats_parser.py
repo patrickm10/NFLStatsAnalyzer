@@ -4,6 +4,7 @@ Author: Patrick Mejia
 """
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 import pandas as pd
 import os
 import csv
@@ -12,6 +13,7 @@ from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from langchain.chains import PromptTemplate
+from langchain.llms import OpenAI
 
 nfl_teams = [
     "Arizona Cardinals",
@@ -491,7 +493,6 @@ def find_best_kickers():
         print(f"An error occurred: {e}")
         
     return None
-
 
 def find_best_qbs():
     """
@@ -977,30 +978,42 @@ def get_offensive_stats():
     """
     Function to combine all offensive stats for quarterbacks, running backs, wide receivers, and tight ends.
     """
-    kicking_df = get_kicking_stats()
-    passing_df = get_passing_stats()
-    rushing_df = get_rushing_stats()
-    receiving_df = get_receiving_stats()
-    te_df = get_te_stats()
 
-    top_kickers = find_best_kickers(kicking_df)
-    top_qbs = find_best_qbs(passing_df)
-    top_rbs = find_best_rbs(rushing_df)
-    top_wrs = find_best_wrs(receiving_df)
-    top_tes = find_best_tes(te_df)
+    # top_kickers = find_best_kickers(kicking_df)
+    # top_qbs = find_best_qbs(passing_df)
+    # top_rbs = find_best_rbs(rushing_df)
+    # top_wrs = find_best_wrs(receiving_df)
+    # top_tes = find_best_tes(te_df)
 
-    print(top_kickers)
-    print(top_qbs)
-    print(top_rbs)
-    print(top_wrs)
-    print(top_tes)
+    # print(top_kickers)
+    # print(top_qbs)
+    # print(top_rbs)
+    # print(top_wrs)
+    # print(top_tes)
+
+
+
+# Loads api key
+load_dotenv()
+open_api_key = os.getenv("OPENAI_API_KEY")
+
+# Error handling for api not found
+if not open_api_key:
+    raise ValueError("API key not found in the environment. Please set OPENAI_API_KEY.")
 
 # Initialize OpenAI LLM
-llm = ChatOpenAI(model_name="gpt-4", temperature=0)
+llm = OpenAI(api_key=open_api_key, model="gpt-4", temperature=0)
 
-# Function to generate AI-powered NFL insights
-def analyze_nfl_stats(question, df):
-    """Uses an LLM to analyze NFL stats based on a CSV dataset."""
+# Function to generate AI-powered NFL insights from CSV
+def analyze_nfl_stats(question, csv_file_path):
+    """Uses an LLM to analyze NFL stats based on a CSV dataset.
+    params:
+        question: The question to analyze.
+        csv_file_path: The path to the CSV file containing the NFL stats.
+    """
+    # Load the CSV file into a DataFrame
+    df = pd.read_csv(csv_file_path)
+
     # Convert the dataframe to a string (for small datasets)
     csv_data = df.to_string(index=False)
 
@@ -1013,7 +1026,7 @@ def analyze_nfl_stats(question, df):
 
         Data:
         {data}
-        
+
         Provide a structured response.
         """,
     )
@@ -1023,7 +1036,11 @@ def analyze_nfl_stats(question, df):
     return chain.run({"question": question, "data": csv_data})
 
 def query_nfl_stats(question, df):
-    """Filters the dataset using Pandas before passing it to LangChain."""
+    """Filters the dataset using Pandas before passing it to LangChain.
+    params:
+        question: The question to analyze.
+        df: The DataFrame containing the NFL stats.
+    """
     if "passing yards" in question.lower():
         top_player = df[df["Passing Yards"] == df["Passing Yards"].max()]
     elif "rushing yards" in question.lower():
@@ -1034,6 +1051,24 @@ def query_nfl_stats(question, df):
         return analyze_nfl_stats(question)  # Fallback to full dataset processing
 
     return analyze_nfl_stats(f"Summarize the performance of {top_player.iloc[0]['Player']}.")
+
+def create_player_profile(df, player_name):
+    """
+    Creates a player profile based on the player's stats.
+    params:
+        df: DataFrame containing the player stats.
+        player_name: Name of the player to create a profile for.
+    """
+    player_profile = df[df["Player"] == player_name]
+    llm_input = f"Create a player profile for {player_name} based on the following stats:"
+    llm_input += player_profile.to_string(index=False)
+    player_profile["Profile"] = analyze_nfl_stats(llm_input)
+
+    print(f"Player Profile for {player_name}:")
+    print(player_profile["Profile"].values[0])
+    print(player_profile)
+
+    return player_profile
 
 
 def main():
@@ -1070,10 +1105,19 @@ def main():
     print(top_wrs)  # Print the top wide receivers
     print("\n")
 
+    print("Testing Langchain")
+    # Test the LangChain with a sample question
+    if top_qbs is not None:
+        question = "Who is the top quarterback based on passing yards?"
+        print(analyze_nfl_stats(question, "official_qb_stats.csv"))
+        print("\n")
+    else:
+        print("No data available for analysis.")
+
     # print("Finding top QBs in NFL...")
     # top_qbs = find_top_players("QB")
     # print(top_qbs)
-    
+
     # print("Finding top RBs in NFL...")
     # top_rbs = find_top_players("RB")
     # print(top_rbs)
