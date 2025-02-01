@@ -8,12 +8,11 @@ from dotenv import load_dotenv
 import pandas as pd
 import os
 import csv
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import ConversationChain
-from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
-from langchain.chains import PromptTemplate
-from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain_openai import OpenAI
+import logging
+
 
 nfl_teams = [
     "Arizona Cardinals",
@@ -510,13 +509,13 @@ def find_best_qbs():
         response = requests.get(url, timeout=10)
         response.raise_for_status()  # Raise an error for HTTP issues
         soup = BeautifulSoup(response.content, "html.parser")
-        
+
         # Locate the table
         table = soup.find("table", {"class": "table"})
         if not table:
             print("Table not found on the page.")
             return None
-        
+
         # Extract headers and rows
         headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
         
@@ -525,26 +524,26 @@ def find_best_qbs():
             player = [td.get_text().strip() for td in row.find_all("td")]
             if len(player) == len(headers):
                 player_data.append(player)
-                
+
         # Create DataFrame only if player_data is not empty
         if not player_data:
             print("No player data found.")
             return None
-        
+
         df = pd.DataFrame(player_data, columns=headers)
         df.columns = df.columns.str.strip()  # Clean column names
         # print(df.head(50))
-        
+
         # Check if there are duplicate "YDS" columns and drop the second one
         if df.columns.tolist().count("YDS") > 1:
             # print("Duplicate 'YDS' columns found. Keeping the first one.")
             df = df.loc[:, ~df.columns.duplicated()]
-            
+
         # print("Cleaned DataFrame columns:", df.columns)
-        
+
         # Remove commas from YDS column (ensure we're working with the correct one)
         df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
-        
+
         # Convert relevant columns to numeric
         df["CMP"] = pd.to_numeric(df["CMP"], errors="coerce").fillna(0).astype(int)
         df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
@@ -571,7 +570,6 @@ def find_best_qbs():
         print(f"Error fetching the webpage: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
-        
     return None
 
 def find_best_rbs():    
@@ -583,22 +581,21 @@ def find_best_rbs():
         best_rbs (DataFrame): A pandas DataFrame containing the top running backs ranked by a composite score.
     """
     url = "https://www.fantasypros.com/nfl/stats/rb.php?scoring=PPR"
-    
+
     try:
-        
         response = requests.get(url, timeout=10)
         response.raise_for_status()  # Raise an error for HTTP issues
         soup = BeautifulSoup(response.content, "html.parser")
-        
+
         # Locate the table
         table = soup.find("table", {"class": "table"})
         if not table:
             print("Table not found on the page.")
             return None
-        
+
         # Extract headers and rows
         headers = [th.get_text().strip() for th in table.find("thead").find_all("th")]
-        
+
         player_data = []
         for row in table.find("tbody").find_all("tr"):
             player = [td.get_text().strip() for td in row.find_all("td")]
@@ -609,23 +606,22 @@ def find_best_rbs():
         if not player_data:
             print("No player data found.")
             return None
-        
+
         df = pd.DataFrame(player_data, columns=headers)
         df.columns = df.columns.str.strip()  # Clean column names
-        print(df.columns)
-        
-        print(df.head(50))
-        
+        # print(df.columns)
+        # print(df.head(50))
+
         # Check if there are duplicate "YDS" columns and drop the second one
         if df.columns.tolist().count("YDS") > 1:
             # print("Duplicate 'YDS' columns found. Keeping the first one.")
             df = df.loc[:, ~df.columns.duplicated()]
-            
+
         # print("Cleaned DataFrame columns:", df.columns)
-        
+
         # Remove commas from YDS column (ensure we're working with the correct one)
         df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
-        
+
         # Convert relevant columns to numeric
         df["ATT"] = pd.to_numeric(df["ATT"], errors="coerce").fillna(0).astype(int)
         df["YDS"] = pd.to_numeric(df["YDS"], errors="coerce").fillna(0).astype(int)
@@ -640,32 +636,32 @@ def find_best_rbs():
         + (df["ATT"] * 0.1)
         - (df["FL"] * 0.1)
         + (df["REC"] * 0.1)
-        
+
         # Sort and select top players
         best_rbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
-        
+
         # Save to CSV
         best_rbs.to_csv("official_rb_stats.csv", index=False)
         print("Top RB stats saved to 'official_rb_stats.csv'.")
-        
+
         return best_rbs
-    
+
     except requests.RequestException as e:
         print(f"Error fetching the webpage: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
-        
+
     return None
 
 def find_best_tes():
     """
     Function to find the best tight ends based on receiving stats.
-    
+
     Returns:
         best_tes (DataFrame): A pandas DataFrame containing the top tight ends ranked by a composite score.
     """
     url = "https://www.fantasypros.com/nfl/stats/te.php"
-    
+
     try:
         # Fetch the page content
         response = requests.get(url, timeout=10)
@@ -694,14 +690,14 @@ def find_best_tes():
 
         df = pd.DataFrame(player_data, columns=headers)
         df.columns = df.columns.str.strip()  # Clean column names
-        print(df.head(50))
+        # print(df.head(50))
 
         # Check if there are duplicate "YDS" columns and drop the second one
         if df.columns.tolist().count("YDS") > 1:
-            print("Duplicate 'YDS' columns found. Keeping the first one.")
+            # print("Duplicate 'YDS' columns found. Keeping the first one.")
             df = df.loc[:, ~df.columns.duplicated()]  # Keep only the first occurrence of each column
 
-        print("Cleaned DataFrame columns:", df.columns)
+        # print("Cleaned DataFrame columns:", df.columns)
 
         # Remove commas from YDS column (ensure we're working with the correct one)
         df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
@@ -856,10 +852,10 @@ def find_top_players(position):
 
         # Check if there are duplicate "YDS" columns and drop the second one
         if df.columns.tolist().count("YDS") > 1:
-            print("Duplicate 'YDS' columns found. Keeping the first one.")
+            # print("Duplicate 'YDS' columns found. Keeping the first one.")
             df = df.loc[:, ~df.columns.duplicated()]
 
-        print("Cleaned DataFrame columns:", df.columns)
+        # print("Cleaned DataFrame columns:", df.columns)
 
         # Remove commas from YDS column (ensure we're working with the correct one)
         df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
@@ -991,33 +987,57 @@ def get_offensive_stats():
     # print(top_wrs)
     # print(top_tes)
 
+def remove_team_from_player_name(df):
+    """
+    Function to remove the team name from the player name.
+    Args:
+        player_name (str): The player name.
+        team_name (str): The team name.
+    Returns:
+        player_name (str): The player name without the team name.
+    """
+    df["Player"] = df["Player"].str.replace(r"\(.*?\)", "", regex=True).str.strip()
+    return df
 
+# Set up logging for better error tracking and debugging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Loads api key
 load_dotenv()
 open_api_key = os.getenv("OPENAI_API_KEY")
 
-# Error handling for api not found
-if not open_api_key:
-    raise ValueError("API key not found in the environment. Please set OPENAI_API_KEY.")
+# # Check for the API key and raise an error if missing
+# if not open_api_key:
+#     logger.error("API key not found in the environment. Please set OPENAI_API_KEY.")
+#     raise ValueError("API key not found in the environment. Please set OPENAI_API_KEY.")
+# else:
+#     logger.info("API key successfully loaded.")
 
-# Initialize OpenAI LLM
-llm = OpenAI(api_key=open_api_key, model="gpt-4", temperature=0)
+# # Function to initialize OpenAI LLM
+# def initialize_llm(api_key: str):
+#     try:
+#         llm = OpenAI(api_key=api_key, temperature=0)
+#         logger.info("Successfully connected to OpenAI API.")
+#         return llm
+#     except Exception as e:
+#         logger.error(f"Error connecting to OpenAI API: {e}")
+#         raise
+
+# # Initialize OpenAI LLM
+# llm = initialize_llm(open_api_key)
 
 # Function to generate AI-powered NFL insights from CSV
-def analyze_nfl_stats(question, csv_file_path):
+def analyze_nfl_stats(question: str, csv_data: str) -> str:
     """Uses an LLM to analyze NFL stats based on a CSV dataset.
-    params:
-        question: The question to analyze.
-        csv_file_path: The path to the CSV file containing the NFL stats.
+    
+    Args:
+        question (str): The question to analyze.
+        csv_data (str): A string representation of the CSV data to be analyzed.
+
+    Returns:
+        str: The LLM-generated response based on the data and question.
     """
-    # Load the CSV file into a DataFrame
-    df = pd.read_csv(csv_file_path)
-
-    # Convert the dataframe to a string (for small datasets)
-    csv_data = df.to_string(index=False)
-
-    # Create a prompt to analyze the CSV data
     prompt = PromptTemplate(
         input_variables=["question", "data"],
         template="""
@@ -1028,131 +1048,128 @@ def analyze_nfl_stats(question, csv_file_path):
         {data}
 
         Provide a structured response.
-        """,
+        """
     )
 
-    # Run the prompt through LangChain
     chain = LLMChain(llm=llm, prompt=prompt)
-    return chain.run({"question": question, "data": csv_data})
+    try:
+        response = chain.run({"question": question, "data": csv_data})
+        return response
+    except Exception as e:
+        logger.error(f"Error generating insights from LLM: {e}")
+        return f"Error generating insights: {e}"
 
-def query_nfl_stats(question, df):
+# Function to filter and process NFL stats based on the question
+def query_nfl_stats(question: str, df: pd.DataFrame) -> str:
     """Filters the dataset using Pandas before passing it to LangChain.
-    params:
-        question: The question to analyze.
-        df: The DataFrame containing the NFL stats.
-    """
-    if "passing yards" in question.lower():
-        top_player = df[df["Passing Yards"] == df["Passing Yards"].max()]
-    elif "rushing yards" in question.lower():
-        top_player = df[df["Rushing Yards"] == df["Rushing Yards"].max()]
-    elif "receiving yards" in question.lower():
-        top_player = df[df["Receiving Yards"] == df["Receiving Yards"].max()]
-    else:
-        return analyze_nfl_stats(question)  # Fallback to full dataset processing
 
-    return analyze_nfl_stats(f"Summarize the performance of {top_player.iloc[0]['Player']}.")
+    Args:
+        question (str): The question to analyze.
+        df (pd.DataFrame): The DataFrame containing the NFL stats.
 
-def create_player_profile(df, player_name):
+    Returns:
+        str: The LLM-generated response.
     """
-    Creates a player profile based on the player's stats.
-    params:
-        df: DataFrame containing the player stats.
-        player_name: Name of the player to create a profile for.
+    # Check if question contains a reference to yards (YDS)
+    if "YDS" in question.upper():
+        logger.info("Filtering the dataset to find the top player based on YDS...")
+        top_player = df[df["YDS"] == df["YDS"].max()]
+        return analyze_nfl_stats(f"Summarize the performance of {top_player.iloc[0]['Player']}.", df.to_string(index=False))
+
+    # If not related to YDS, fallback to processing full dataset
+    return analyze_nfl_stats(question, df.to_string(index=False))
+
+# Function to create a player profile based on stats
+def create_player_profile(df: pd.DataFrame, player_name: str) -> pd.DataFrame:
+    """Creates a player profile based on the player's stats.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the player stats.
+        player_name (str): Name of the player to create a profile for.
+
+    Returns:
+        pd.DataFrame: DataFrame with the player profile.
     """
     player_profile = df[df["Player"] == player_name]
-    llm_input = f"Create a player profile for {player_name} based on the following stats:"
+
+    if player_profile.empty:
+        logger.error(f"Player '{player_name}' not found in the dataset.")
+        return pd.DataFrame()  # Return empty DataFrame if player not found
+
+    # Create LLM input string for profile generation
+    llm_input = f"Create a player profile for {player_name} based on the following stats:\n"
     llm_input += player_profile.to_string(index=False)
-    player_profile["Profile"] = analyze_nfl_stats(llm_input)
 
-    print(f"Player Profile for {player_name}:")
-    print(player_profile["Profile"].values[0])
-    print(player_profile)
+    try:
+        player_profile["Profile"] = analyze_nfl_stats(llm_input, player_profile.to_string(index=False))
+        logger.info(f"Player Profile for {player_name} created successfully.")
+    except Exception as e:
+        logger.error(f"Error generating profile for player '{player_name}': {e}")
 
+    # Display and return the player profile
+    logger.info(f"Generated Player Profile for {player_name}:")
+    logger.info(player_profile["Profile"].values[0])
     return player_profile
 
-
-def main():
+if __name__ == "__main__":
     """
     Main function to scrape and analyze NFL player and team stats.
     """
-    # Scrape kicking stats
-    # print("Scraping kicking stats...")
-    # top_kickers = find_best_kickers(kicking_df)
-    # print(top_kickers)  # Print the top kickers
-    # # # print("\n")
-    
+    print("\n")
+    print("NFL Stats Analysis")
+    print("*****************")
+    print("\n")
+
     # Scraping Kicking stats
     # print("Scraping kicking stats...")
     top_kickers = find_best_kickers()
+    remove_team_from_player_name(top_kickers)
     print(top_kickers)  # Print the top kickers
-    print("\n") 
-    # print("Scraping passing stats...")
+    # print("\n") 
+    # # print("Scraping passing stats...")
     top_qbs = find_best_qbs()
+    remove_team_from_player_name(top_qbs)
     print(top_qbs)  # Print the top quarterbacks
-    print("\n")
+    # print("\n")
 
-    # print("Scraping rushing stats...")
+    # # print("Scraping rushing stats...")
     top_rbs = find_best_rbs()
+    remove_team_from_player_name(top_rbs)
     print(top_rbs)  # Print the top running backs
-    print("\n")
+    # print("\n")
 
     top_tes = find_best_tes()
+    remove_team_from_player_name(top_tes)
     print(top_tes)  # Print the top tight ends
-    print("\n")
-
-    # print("Scraping receiving stats...")
-    top_wrs = find_best_wrs()
-    print(top_wrs)  # Print the top wide receivers
-    print("\n")
-
-    print("Testing Langchain")
-    # Test the LangChain with a sample question
-    if top_qbs is not None:
-        question = "Who is the top quarterback based on passing yards?"
-        print(analyze_nfl_stats(question, "official_qb_stats.csv"))
-        print("\n")
-    else:
-        print("No data available for analysis.")
-
-    # print("Finding top QBs in NFL...")
-    # top_qbs = find_top_players("QB")
-    # print(top_qbs)
-
-    # print("Finding top RBs in NFL...")
-    # top_rbs = find_top_players("RB")
-    # print(top_rbs)
-    
-    # print("Finding top WRs in NFL...")
-    # top_wrs = find_top_players("WR")
-    # print(top_wrs)
-
-    # print("Finding top TEs in NFL...")
-    # top_tes = find_top_players("TE")
-    # print(top_tes)
-
-    # print("Finding top Ks in NFL...")
-    # top_ks = find_top_players("K")
-    # print(top_ks)
-
-
-    # # # print("Scraping rushing stats...")
-    # top_rbs = find_best_rbs(rushing_df)
-    # print(top_rbs)  # Print the top running backs
-    # # print("\n")
-
-    # # # print("Scraping receiving stats...")
-    # top_wrs = find_best_wrs(receiving_df)
-    # print(top_wrs)  # Print the top wide receivers
-    # # # print("\n")
+    # print("\n")
 
     # # print("Scraping receiving stats...")
-    # # te_receiving_df = pd.read_csv("data/te_stats/te_stats.csv")
-    # top_tes = find_best_tes()
-    # print(top_tes)  # Print the top tight ends
+    top_wrs = find_best_wrs()
+    remove_team_from_player_name(top_wrs)
+    print(top_wrs)  # Print the top wide receivers
+    # print("\n")
+
+    # Testing Lanchain with a sample question
+    # try:
+    #     # Load NFL stats CSV
+    #     nfl_stats_df = pd.read_csv("official_qb_stats.csv")
+
+    #     # Query stats (example)
+    #     question = "Who had the most passing yards in the 2023 season?"
+    #     result = query_nfl_stats(question, nfl_stats_df)
+    #     logger.info(result)
+
+    #     # Create player profile (example)
+    #     player_name = "Josh Allen"
+    #     player_profile = create_player_profile(nfl_stats_df, player_name)
+
+    #     # Print the player profile
+    #     print(player_profile)
     
-    # get_all_stats = get_offensive_stats()
-    # print(get_all_stats)
-    
+    # # exception handling
+    # except Exception as e:
+    #     logger.error(f"An error occurred during execution: {e}")
+
     # print("Scraping Team TD stats...")
     # team_td_df = get_team_td_stats()
     # top_team_td = find_best_team_td(team_td_df)
@@ -1160,60 +1177,6 @@ def main():
     # print("\n")
 
     # csv_file = "schedule.csv"
-
-    # Get the team stats from the CSV file
-    # top_teams = get_schedule(csv_file)
-    # top_teams.to_csv('official_team_stats.csv', index=False)
-
-    # # Print the top teams based on the computed scores
-    # print(top_teams)
-
-    # team_standings = get_nfl_records()
-    # best_teams = find_best_teams(team_standings)
-    # print(best_teams)
-
-    # division_df = pd.read_csv("data/division_teams.csv")
-
-    # separate_names(nfl_roster)
-    # Organize rushing stats for all positions
-    # organize_rushing_stats()
-
-    # Organize receiving stats for wide receivers and tight ends
-    # organize_receiving_stats()
-
-    # nfl_roster2 = read_folder('2024_roster')
-    # print(nfl_roster2)
-    # nfl_official_roster = read_folder('2024_roster')
-    # separate_names(nfl_official_roster)
-    # add_divisions_to_teams(nfl_roster, division_df)
-    # print(nfl_roster)
-    # nfl_roster.to_csv('nfl_official_team_roster.csv', index=False)
-
-    # for team in nfl_teams:
-    #     team_roster = get_team_roster(team)
-    #     team_roster.to_csv('nfl_official_team_roster.csv', index=False)
-    #     # print(team_roster)
-
-    # hand_arm_df = read_folder('h&a_roster')
-    # print(hand_arm_df)
-    # hand_arm_df.dropna(subset=['Name'], inplace=True) # Drop rows with missing player names
-    # hand_arm_df = separate_names(hand_arm_df)
-    # hand_arm_df.to_csv('hand_arm_stats_nfl_roster.csv', index=False)
-    
-    # nfl_teams_roster2 = pd.read_csv("nfl_official_team_roster.csv")
-    # nfl_full_roster = pd.read_csv("nfl_official_team_roster_merged.csv")
-    # hand_arm_df = pd.read_csv("hand_arm_stats_nfl_roster.csv")
-
-    # # Add hand/arm stats to the player roster
-    # nfl_merged_roster = nfl_full_roster.merge(
-    #     nfl_teams_roster2,
-    #     on=[
-    #         "Last Name",
-    #         "First Name",
-    #     ],
-    #     how="left",
-    # )
-    # nfl_merged_roster.to_csv("nfl_teams_full_roster.csv", index=False)
 
     # Get scores for week 1-18
     # for week in range(1, 18):
@@ -1235,7 +1198,3 @@ def main():
     # print("Best Running Back vs. Defense Matchups:")
     # print(best_rb_matchups)  # Print the top matchups
     # print("\n")
-
-
-if __name__ == "__main__":
-    main()
