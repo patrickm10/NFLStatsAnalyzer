@@ -2,12 +2,6 @@ import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import "./App.css";
 
-.text-outline {
-    color: white;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-}
-
-
 const App = () => {
     
     const [activeTab, setActiveTab] = useState("stats");
@@ -446,7 +440,7 @@ const App = () => {
     return (
         <div>
             <header> 
-                <h1>NFL Statistics Analyzer</h1> 
+                <h1 class ="text-outline">NFL Statistics Analyzer</h1> 
                
                 <nav className="tabs-nav">
                     <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Player Data</button>
@@ -455,17 +449,7 @@ const App = () => {
                 </nav>
 
                 
-                <h3>
-                    {activeTab === "stats" ? "Quarterback Stats" :
-                        activeTab === "rbStats" ? "Running Back Stats" :
-                            activeTab === "wrStats" ? "Wide Receiver Stats" :
-                                activeTab === "teStats" ? "Tight End Stats" :
-                                    activeTab === "kickerStats" ? "Kicker Stats" :
-                                        activeTab === "defenseStats" ? "Defense Stats" :
-                                            activeTab === "schedule" ? "2024-2025 Schedule" :
-                                                activeTab === "roster" ? "NFL Roster" :
-                                                    "Schedule"}
-                </h3>
+                
             </header>
             
             <div>
@@ -482,41 +466,15 @@ const App = () => {
                 )}
                 {!isCareerStats && !isWeeklyStats && (
                     <div>
-                        <div className="search-container">
-                            {activeTab === "schedule" && (
-                                <div>
-                                    <label htmlFor="matchNumber">Select Week: </label>
-                                    <select
-                                        id="matchNumber"
-                                        value={selectedMatchNumber}
-                                        onChange={handleMatchNumberChange}
-                                    >
-                                        <option value="">All Weeks</option>
-                                        {matchNumbers.map((matchNumber, index) => (
-                                            <option key={index} value={matchNumber}>
-                                                Week {matchNumber}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-
-                            {activeTab !== "schedule" && (
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                        placeholder="Search ..."
-                                    />
-                                </div>
-                            )}
-                        </div>
-                        < select 
-                            value={activeTab} 
-                            onChange={(e) => setActiveTab(e.target.value)} 
+                        
+                    {/* Container for search bar and dropdown */}
+                    {activeTab !== "schedule" && activeTab !== "roster" && (
+                        <div className="controls-container">
+                            {/* Dropdown tab for selecting active tab */}
+                        <select
+                            value={activeTab}
+                            onChange={(e) => setActiveTab(e.target.value)}
                             className="tab"
-                            
                         >
                             <option value="stats">QB Stats</option>
                             <option value="rbStats">RB Stats</option>
@@ -525,8 +483,34 @@ const App = () => {
                             <option value="kickerStats">Kicker Stats</option>
                             <option value="defenseStats">Defense Stats</option>
                         </select>
-                        {data.length > 0 ? renderTable() : <p>Loading data...</p>}
-                    </div>
+                        <h3 className="position-name-stats">
+                            {activeTab === "stats" ? "Quarterback Stats" :
+                                activeTab === "rbStats" ? "Running Back Stats" :
+                                    activeTab === "wrStats" ? "Wide Receiver Stats" :
+                                        activeTab === "teStats" ? "Tight End Stats" :
+                                            activeTab === "kickerStats" ? "Kicker Stats" :
+                                                activeTab === "defenseStats" ? "Defense Stats" :
+                                                    activeTab === "schedule" ? "2024-2025 Schedule" :
+                                                        activeTab === "roster" ? "NFL Roster" :
+                                                            "Schedule"}
+                        </h3>
+                        {/* Search bar section */}
+                        
+                            <div className="search-container">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search Player Name ..."
+                            />
+                            </div>
+                        
+                    
+                        
+                        </div>
+                  )}
+                    {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+                  </div>
                 )}
                 
             </div>
