@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import "./App.css";
 
+.text-outline {
+    color: white;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+
 const App = () => {
     
     const [activeTab, setActiveTab] = useState("stats");
