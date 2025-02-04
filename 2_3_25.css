@@ -6,8 +6,7 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-}
-
+} 
 /* Header Styles */
 header {
   background-image: url('data/images/background1.webp'); /* Add your image path here */
@@ -43,7 +42,7 @@ button {
   color: white;
   padding: 20px;
   text-align: center;
-  border: none;
+  border: 1px solid black;
   cursor: pointer;
   width: 12%; /* Make buttons take 12% of the width */
   font-size: .75em;
@@ -99,18 +98,14 @@ table tr:hover {
   background-color: #f1f1f1;
 }
 
-.search-container {
-  display: flex; /* Align items horizontally */
-  gap: 10px; /* Space between the search bar and the dropdown */
-  align-items: center; /* Align the items vertically at the center */
-}
-
 /* Search Input */
 .search-container input {
   padding: 8px;
-  font-size: .8em;
+  font-size: 1.1em;
   border-radius: 4px;
   width: 250px;
+  margin-top: 7%;
+  margin-left: calc(100% + 93px);
 }
 
 /* Main Content */
@@ -158,7 +153,8 @@ button.back:hover {
 
 .physical-details {
   position: absolute;
-  top:87%;
+  margin-top: 10%;
+  top:57%;
   left: 50%;
   transform: translate(-50%, -50%); /* Shifts the element back to center */
   z-index: 10;
@@ -267,6 +263,8 @@ h2_1 {
 
 .tab{
   
+  margin-top: 1%;
+  margin-left: 5%;
   text-align: center;
   padding: 8px;
   color:#ffffff;
@@ -275,4 +273,21 @@ h2_1 {
   border: 1px solid #000000;
   background-color: #7b2121;
     
+}
+
+.controls-container {
+  display: flex; /* Align children horizontally */
+  align-items: center; /* Center them vertically */
+  gap: 10px; /* Add space between the search and dropdown */
+}
+
+.position-name-stats{
+
+  font-size: 2em;
+  margin-left: 30%;
+}
+
+.text-outline {
+  color: #7b2121;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }
