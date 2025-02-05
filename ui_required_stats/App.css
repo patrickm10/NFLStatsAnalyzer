@@ -6,12 +6,14 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-}
-
+} 
 /* Header Styles */
 header {
-  background-color: #585858;
-  color: white;
+  background-image: url('data/images/background1.webp'); /* Add your image path here */
+  background-size: cover; /* Ensures the image covers the entire header */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  color: #7b2121;
   padding: 20px 0;
   text-align: center;
   font-size: 2.0em;
@@ -36,11 +38,11 @@ header {
 
 /* Header and Tabs Button */
 button {
-  background: linear-gradient(135deg, rgb(237, 32, 32), #ff6b6b);
+  background: linear-gradient(135deg, #7b2121, #423c54);
   color: white;
   padding: 20px;
   text-align: center;
-  border: none;
+  border: 1px solid black;
   cursor: pointer;
   width: 12%; /* Make buttons take 12% of the width */
   font-size: .75em;
@@ -54,7 +56,7 @@ button {
 
 /* Hover Effect for Buttons */
 button:hover {
-  background: linear-gradient(135deg, #ff6b6b, rgb(237, 32, 32));
+  background: linear-gradient(135deg,  #df3737, #855bc9);
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -67,7 +69,8 @@ button:focus {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 1%;
+  margin-bottom: 1%;
   margin-left: 100px;
   width: calc(100% - 150px);
 }
@@ -75,12 +78,13 @@ table {
 table th, table td {
   padding: 12px;
   text-align: left;
-  border: 1px solid #ddd;
+  border: 1px solid #7b2121;
   color: black;
 }
 
 table th {
-  background-color: rgb(237, 32, 32);
+  background-color: #7b2121;
+  border: 1px solid #000000;
   color: white;
   cursor: pointer;
 }
@@ -90,16 +94,22 @@ table tr:nth-child(even) {
 }
 
 table tr:hover {
+  
   background-color: #f1f1f1;
 }
 
 /* Search Input */
 .search-container input {
   padding: 8px;
-  font-size: .8em;
+  font-size: 1.1em;
   border-radius: 4px;
-  width: 250px;
-  margin: 10px 0;
+  width: 250px;a
+  margin-top: 7%;
+  margin-left: 85%;
+}
+
+.search-bar {
+  margin-top: 10%;
 }
 
 /* Main Content */
@@ -118,7 +128,16 @@ button.back {
   border-radius: 10px;
   cursor: pointer;
   color: white;
-  margin-top: 10px;
+  display: block; /* Required for margin auto to work */
+}
+
+/* Back Button Container */
+.back-button-container {
+  display: flex;
+  justify-content: flex-start; /* Keep on left side*/
+  align-items: center; /* Center vertically if needed */
+  margin: 20px 0; /* Add some spacing */
+  margin-left: 5%;
 }
 
 button.back:hover {
@@ -135,57 +154,149 @@ button.back:hover {
   position: relative; /* Position the images relative to this container */
 }
 
-.player-headshot {
-  top: -130px; /* Adjust this value to move the headshot vertically */
-  left: -500px; /* Center the headshot horizontally */
-  width: 300px; /* Adjust size as needed */
-  height: auto;
-}
-
-.player-body {
-  left: -100px; /* Default position, you can change this to move the body */
-  top: -100px;
-  width: 300px;
-  height: 300px;
-}
-
-.height-chart {
-  left: -600px; /* Default position, you can change this to move the body */
-  top: -500px;
-  height: 300px;
-  width: 300px;
-}
-
-.team-logo {
-  width: 200px; /* Adjust size as needed */
-  height: auto;
-  left: -500px; /* Default position, you can change this to move the body */
-  top: 50px;
-}
-
-.conference-logo {
-  width: 200px; /* Adjust size as needed */
-  height: auto;
-  left: -500px; /* Default position, you can change this to move the body */
-  top: 50px;
-}
 
 .physical-details {
   position: absolute;
-  top: 500px;
-  left: 300px;
+  margin-top: 10%;
+  top:57%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Shifts the element back to center */
   z-index: 10;
 }
 
-.arm-details {
+h2_1 {
   position: absolute;
-  top: 633px;
-  left: 610px;
+  top:77%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Shifts the element back to center */
   z-index: 10;
+  font-size : 1.2em;
 }
 
 
-h2 {
-  text-align: center; /* Centers the text horizontally */
-  margin-top: 20px; /* Optional: adds space above the heading */
+
+.player-card {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  left: 20%;
+  background-image: url(/data/images/gold_card.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px; /* Adjust as needed */
+  z-index: 10;
+}
+
+.image-container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 45%;
+  height: 45%;
+}
+
+.player-headshot {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.player-selection {
+  font-size: 1.5em;
+}
+
+.card-name {
+  position: absolute;
+  top: 7%;
+  left: 44%;
+  transform: translateX(-50%);
+  font-size: 25px;
+  color: rgb(27, 27, 27);
+  /*text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);*/
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.card-name p {
+  margin: 0;  /* Remove default margin */
+  line-height: 1.2;  /* Adjust line height to make them closer together */
+}
+
+.position {
+  position: absolute;
+  top: 4%;
+  left: 56%;
+  font-size: 30px;
+  /*text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);*/
+  color: rgb(27, 27, 27);
+  padding: 5px 10px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.team-logo-container, .conference-logo-container {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.team-logo-container {
+  top: 20%;
+  left: 36%;
+  width: 25%;
+  height: 25%;
+}
+
+.conference-logo-container {
+  top: 30%;
+  left: 68%;
+  width: 10%;
+  height: 10%;
+}
+
+.team-logo, .conference-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stats-header {
+  text-align: center;
+  margin: 0; /* Remove default margin if any */
+}
+
+.tab{
+  
+  margin-top: 1%;
+  margin-left: 5%;
+  text-align: center;
+  padding: 8px;
+  color:#ffffff;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 1px solid #000000;
+  background-color: #7b2121;
+    
+}
+
+.controls-container {
+  display: flex; /* Align children horizontally */
+  align-items: center; /* Center them vertically */
+  gap: 10px; /* Add space between the search and dropdown */
+}
+
+.position-name-stats{
+
+  font-size: 1.5em;
+  margin-left: 4.4%;
+  margin-bottom: 0;
+}
+
+.text-outline {
+  color: #7b2121;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }
