@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import "./App.css";
 
+
+
 const App = () => {
+    
     const [activeTab, setActiveTab] = useState("stats");
     const [columns, setColumns] = useState([]);
     const [data, setData] = useState([]);
@@ -74,6 +77,7 @@ const App = () => {
             .catch((error) => {
                 console.error("Error loading CSV file:", error);
             });
+            
     };
 
     const fetchCareerStats = (playerName, filePath) => {
@@ -138,6 +142,8 @@ const App = () => {
                 return "official_rb_stats.csv";
             case "wrStats":
                 return "official_wr_stats.csv";
+            case "teStats":
+                return "official_te_stats.csv";
             case "kickerStats":
                 return "official_kicker_stats.csv";
             case "defenseStats":
@@ -188,66 +194,155 @@ const App = () => {
     const handleTeamChange = (event) => {
         setSelectedTeam(event.target.value);
     };
-    
+
     const renderPlayerDetails = () => (
-            <div className="container">
-                {playerRosterData && (
-                    <div className="physical-details">
-                        <h3>Player Information</h3>
-                        <p><strong>Position:</strong> {playerRosterData.Position}</p>
-                        <p><strong>Height:</strong> {playerRosterData.Height}</p>
-                        <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
-                        <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
-                        <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
-                        <p><strong>Team:</strong> {playerRosterData.Team}</p>
-                        <p><strong>Conference:</strong> {playerRosterData.Conference}</p>
-                        <p><strong>Division:</strong> {playerRosterData.Division}</p>
-                    </div>
-                )}
+        <div className="container">
+            {playerRosterData && (
+                <div className="physical-details">
+                    <p><strong>Height:</strong> {playerRosterData.Height}</p>
+                    <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
+                    <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
+                    <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
+                </div>
+            )}
+        </div>
+    );
+
+    const renderArmDetails = () => (
+        <div className="container">
+            {playerRosterData && (
+                <div className="arm-details">
+                    <p><strong>Arms:</strong> {playerRosterData.Arms}"</p>
+                    <p><strong>Hands:</strong> {playerRosterData.Hands}"</p>
+                </div>
+            )}
+        </div>
+    );
+
+    const renderPlayerCard = () => {
+        const nameParts = playerRosterData?.Name.split(" ");
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(" "); // Handles multi-part last names
+    
+        // State to track missing images
+        const [headshotError, setHeadshotError] = React.useState(false);
+        const [teamLogoError, setTeamLogoError] = React.useState(false);
+        const [conferenceLogoError, setConferenceLogoError] = React.useState(false);
+    
+        return (
+            <div className="player-card">
+                {/* Headshot Image or Text */}
+                <div className="image-container" style={{ top: `38.5%`, left: '54%' }}>
+                    {headshotError ? (
+                        <p className="fallback-text">No Headshot Available</p>
+                    ) : (
+                        <img 
+                            src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
+                            alt="Headshot" 
+                            className="player-headshot"
+                            onError={() => setHeadshotError(true)}
+                        />
+                    )}
+                </div>
+    
+                {/* Player Name */}
+                <div className="card-name">
+                    <p><strong>{firstName}</strong></p> {/* First Name */}
+                    <p><strong>{lastName}</strong></p>  {/* Last Name */}
+                </div>
+    
+                {/* Player Position */}
+                <div className="position">
+                    <p><strong>{playerRosterData?.Position}</strong></p>
+                </div>
+    
+                {/* Team Logo or Text */}
+                <div className="team-logo-container">
+                    {teamLogoError ? (
+                        <p className="fallback-text">No Team Logo</p>
+                    ) : (
+                        <img 
+                            src={`/data/logos/${playerRosterData.Team.replace(/ /g, "-").toLowerCase()}.png`} 
+                            alt="Team Logo" 
+                            className="team-logo" 
+                            onError={() => setTeamLogoError(true)}
+                        />
+                    )}
+                </div>
+    
+                {/* Conference Logo or Text */}
+                <div className="conference-logo-container">
+                    {conferenceLogoError ? (
+                        <p className="fallback-text">No Conference Logo</p>
+                    ) : (
+                        <img 
+                            src={`/data/logos/${playerRosterData.Conference}.png`} 
+                            alt="Conference Logo" 
+                            className="conference-logo"
+                            onError={() => setConferenceLogoError(true)}
+                        />
+                    )}
+                </div>
             </div>
         );
-    
-        const renderArmDetails = () => (
-            <div className="container">
-                {playerRosterData && (
-                    <div className="arm-details">
-                        <p><strong>Arms:</strong> {playerRosterData.Arms}"</p>
-                        <p><strong>Hands:</strong> {playerRosterData.Hands}"</p>
-                    </div>
-                )}
-            </div>
-        );
-    
+    };
+
     const handlePlayerClick = (player) => {
         let playerFileName = "";
         let careerFilePath = "";
         let weeklyFilePath = "";
-
+        
+        // Clean the player's name for file path consistency
+        playerFileName = `${player.Player.replace(/ /g, "_").replace("'", "-")}`;
+        
+        // Determine the file paths for the player's career and weekly stats based on the active tab
         if (activeTab === "stats") {
-            playerFileName = `${player.Player.replace(/ /g, "_")}`;
             careerFilePath = `/data/qb_stats/career_stats/${playerFileName}_career_passing_stats.csv`;
             weeklyFilePath = `/data/qb_stats/qb_weekly_stats/${playerFileName}_weekly_stats.csv`;
         } else if (activeTab === "rbStats") {
-            playerFileName = `${player.Player.replace(/ /g, "_")}`;
             careerFilePath = `/data/rb_stats/career_stats/${playerFileName}_career_rushing_stats.csv`;
             weeklyFilePath = `/data/rb_stats/rb_weekly_stats/${playerFileName}_weekly_stats.csv`;
         } else if (activeTab === "wrStats") {
-            playerFileName = `${player.Player.replace(/ /g, "_")}`;
             careerFilePath = `/data/wr_stats/career_stats/${playerFileName}_career_receiving_stats.csv`;
             weeklyFilePath = `/data/wr_stats/wr_weekly_stats/${playerFileName}_weekly_stats.csv`;
+        } 
+        else if (activeTab === "teStats") {
+            careerFilePath = `/data/te_stats/career_stats/${playerFileName}_career_receiving_stats.csv`;
+            weeklyFilePath = `/data/te_stats/te_weekly_stats/${playerFileName}_weekly_stats.csv`;
         } else if (activeTab === "kickerStats") {
-            playerFileName = `${player.Player.replace(/ /g, "_")}`;
             careerFilePath = `/data/kicker_stats/career_stats/${playerFileName}_career_kicking_stats.csv`;
             weeklyFilePath = `/data/kicker_stats/kicker_weekly_stats/${playerFileName}_kicking_stats.csv`;
         }
-
+    
+        // Fetch the player data from the appropriate CSV files
         console.log(`Fetching player data from: ${careerFilePath} and ${weeklyFilePath}`);
         fetchCareerStats(player.Player, careerFilePath);
         fetchWeeklyStats(player.Player, weeklyFilePath);
+    
+        // Set the player name and other states
         setIsCareerStats(true);
         setIsWeeklyStats(true);
         setPlayerName(player.Player);
+    
+        // Fetch player data from the official team roster CSV
+        Papa.parse("/data/nfl_official_team_roster.csv", {
+            download: true,
+            header: true,
+            complete: (result) => {
+                const playerData = result.data.find(
+                    (row) => row.Name?.toLowerCase() === player.Player?.toLowerCase()
+                );
+                if (playerData) {
+                    // Here you can update your state with player data from the roster
+                    setPlayerRosterData(playerData); // Assuming you have a state for player roster data
+                }
+            },
+            error: (error) => {
+                console.error("Error loading player roster data:", error);
+            },
+        });
     };
+    
 
     const handleBackClick = () => {
         setIsCareerStats(false);
@@ -283,7 +378,7 @@ const App = () => {
 
     const renderCareerStats = () => (
         <div>
-            <h2>{playerName}'s Career Stats</h2>
+            <h2 className="stats-header">{playerName}'s Career Stats</h2>
             {careerStats.length > 0 ? (
                 <table>
                     <thead>
@@ -307,12 +402,12 @@ const App = () => {
                     </tbody>
                 </table>
             ) : (
-                <p>No career stats available.</p>
+                <p>No career stats available.</p> 
             )}
         </div>
     );
 
-    const renderWeeklyStats = () => {
+    const renderWeeklyStats = () => { 
        
         return(
         <div>
@@ -321,35 +416,11 @@ const App = () => {
                     Back to stats
                 </button>
             </div>
-            <h2>{playerName}</h2>
-            {renderPlayerDetails()} {/* Display player details */}
-            {renderArmDetails()}
-            <div className="player-images">
-                <div className="image-container">
-                    <img 
-                        src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
-                        alt={`Headshot Not Found`} 
-                        className="player-headshot" 
-                    />
-                    <img 
-                        src={`/data/images/body.png`} 
-                        alt={`Body Image Not Found`} 
-                        className="player-body" 
-                    />
-                    <img 
-                        src={`/data/logos/${playerRosterData.Team.replace(" ", "_").toLowerCase()}.png`} 
-                        alt={`Team Logo Not Found`} 
-                        className="team-logo" 
-                    />
-                    <img 
-                        src={`/data/logos/${playerRosterData.Conference}.png`} 
-                        alt={`Conference Logo Not Found`} 
-                        className="conference-logo" 
-                    />
-                    
-                </div>
-            </div>
-            <h2>{playerName}'s Weekly Stats</h2>
+            <h2_1><strong>{playerName}</strong></h2_1>
+            {renderPlayerDetails()}             
+            {renderPlayerCard()}
+            
+            <h2 className="stats-header">{playerName}'s Weekly Stats</h2>
             {weeklyStats.length > 0 ? (
                 <table>
                     <thead>
@@ -381,64 +452,34 @@ const App = () => {
 
     return (
         <div>
-            <header>
-                <h1>NFL Statistics Analyzer</h1>
+            <header> 
+                <h1>NFL Statistics Analyzer</h1> 
+               
                 <nav className="tabs-nav">
-                    <button onClick={() => { setActiveTab("stats"); setSearchQuery(""); }}>QB Rankings</button>
-                    <button onClick={() => { setActiveTab("rbStats"); setSearchQuery(""); }}>RB Rankings</button>
-                    <button onClick={() => { setActiveTab("wrStats"); setSearchQuery(""); }}>WR Rankings</button>
-                    <button onClick={() => { setActiveTab("kickerStats"); setSearchQuery(""); }}>Kicker Rankings</button>
-                    <button onClick={() => { setActiveTab("defenseStats"); setSearchQuery(""); }}>Defense Rankings</button>
-                    <button onClick={() => { setActiveTab("schedule"); setSearchQuery(""); }}>2024-2025 Schedule</button>
-                    <button onClick={() => { setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
+                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Player Data</button>
+                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("schedule"); setSearchQuery(""); }}>Schedule</button>
+                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
                 </nav>
 
-                <div className="search-container">
-                    {activeTab === "schedule" && (
-                        <div>
-                            <label htmlFor="matchNumber">Select Week: </label>
-                            <select
-                                id="matchNumber"
-                                value={selectedMatchNumber}
-                                onChange={handleMatchNumberChange}
-                            >
-                                <option value="">All Weeks</option>
-                                {matchNumbers.map((matchNumber, index) => (
-                                    <option key={index} value={matchNumber}>
-                                        Week {matchNumber}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-
-                    {activeTab !== "schedule" && (
-                        <div>
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                placeholder="Search ..."
-                            />
-                        </div>
-                    )}
-                </div>
+                
                 <h3>
                     {activeTab === "stats" ? "Quarterback Stats" :
                         activeTab === "rbStats" ? "Running Back Stats" :
                             activeTab === "wrStats" ? "Wide Receiver Stats" :
-                                activeTab === "kickerStats" ? "Kicker Stats" :
-                                    activeTab === "defenseStats" ? "Defense Stats" :
-                                        activeTab === "schedule" ? "2024-2025 Schedule" :
-                                            activeTab === "roster" ? "NFL Roster" :
-                                                "Schedule"}
+                                activeTab === "teStats" ? "Tight End Stats" :
+                                    activeTab === "kickerStats" ? "Kicker Stats" :
+                                        activeTab === "defenseStats" ? "Defense Stats" :
+                                            activeTab === "schedule" ? "2024-2025 Schedule" :
+                                                activeTab === "roster" ? "NFL Roster" :
+                                                    "Schedule"}
                 </h3>
             </header>
-
+            
             <div>
+            
                 {isWeeklyStats && (
                     <div>
-                        {renderWeeklyStats()}
+                        {/* {renderWeeklyStats()} */}
                     </div>
                 )}
                 {isCareerStats && (
@@ -448,9 +489,62 @@ const App = () => {
                 )}
                 {!isCareerStats && !isWeeklyStats && (
                     <div>
+                        <div className="search-container">
+                            {activeTab === "schedule" && (
+                                <div>
+                                    <label className ="position-name-stats" htmlFor="matchNumber">Select Week: </label>
+                                    <select
+                                        id="matchNumber"
+                                        value={selectedMatchNumber}
+                                        onChange={handleMatchNumberChange}
+                                    >
+                                        <option value="">All Weeks</option>
+                                        {matchNumbers.map((matchNumber, index) => (
+                                            <option key={index} value={matchNumber}>
+                                                Week {matchNumber}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                            {activeTab !== "schedule" && (
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={handleSearchChange}
+                                        placeholder="Search ..."
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <h2 className="position-name-stats">Select a Position:</h2>
+                        < select 
+                            value={activeTab} 
+                            onChange={(e) => setActiveTab(e.target.value)} 
+                            className="tab"
+                            
+                        >
+                            <option value="stats">QB</option>
+                            <option value="rbStats">RB</option>
+                            <option value="wrStats">WR</option>
+                            <option value="teStats">TE</option>
+                            <option value="kickerStats">Kicker</option>
+                            <option value="defenseStats">Defense</option>
+                        </select>
                         {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+                        <div>
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={handleSearchChange}
+                                        placeholder="Search ..."
+                                        className="search-bar"
+                                    />
+                                </div>
                     </div>
                 )}
+                
             </div>
         </div>
     );
