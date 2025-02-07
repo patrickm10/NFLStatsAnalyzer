@@ -556,6 +556,11 @@ def find_best_qbs():
         # Calculate composite score
         df["Score"] = (df["YDS"] * 0.45) + (df["TD"] * 0.4) + (df["Y/A"] * 0.15) - (df["INT"] * 0.2) + (df["FPTS/G"] * 0.3) + (df["FPTS"] * 0.2)
         + (df["CMP"] * 0.1)
+        
+        # Calculate normalized score
+        df["Weighted Score"] = (
+            (df["Score"] - df["Score"].min()) / (df["Score"].max() - df["Score"].min())
+        ) * 100
 
         # Sort and select top players
         best_qbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
@@ -563,6 +568,7 @@ def find_best_qbs():
         # Save to CSV
         best_qbs.to_csv("official_qb_stats.csv", index=False)
         print("Top QB stats saved to 'official_qb_stats.csv'.")
+        print(best_qbs)
 
         return best_qbs
     
@@ -620,6 +626,7 @@ def find_best_rbs():
         # print("Cleaned DataFrame columns:", df.columns)
 
         # Remove commas from YDS column (ensure we're working with the correct one)
+        # TODO: Add extra dataframe column for rushing and receiving yards
         df["YDS"] = df["YDS"].str.replace(",", "", regex=True)
 
         # Convert relevant columns to numeric
@@ -1116,38 +1123,63 @@ if __name__ == "__main__":
     Main function to scrape and analyze NFL player and team stats.
     """
     print("\n")
-    print("NFL Stats Analysis")
-    print("*****************")
+    print("----------------------NFL Stats Analysis-----------------------")
     print("\n")
 
-    # Scraping Kicking stats
-    # print("Scraping kicking stats...")
-    top_kickers = find_best_kickers()
-    remove_team_from_player_name(top_kickers)
-    print(top_kickers)  # Print the top kickers
-    # print("\n") 
-    # # print("Scraping passing stats...")
-    top_qbs = find_best_qbs()
-    remove_team_from_player_name(top_qbs)
-    print(top_qbs)  # Print the top quarterbacks
-    # print("\n")
+    # # Scraping Kicking stats
+    # try:
+    #     print("Scraping kicking stats...")
+    #     top_kickers = find_best_kickers()
+    #     if top_kickers is not None:
+    #         top_kickers = remove_team_from_player_name(top_kickers)
+    #         print(top_kickers)  # Print the top kickers
+    #         top_kickers.to_csv("official_kicker_stats.csv", index=False)
+    # except Exception as e:
+    #     print(f"An error occurred while scraping kicking stats: {e}")
 
-    # # print("Scraping rushing stats...")
-    top_rbs = find_best_rbs()
-    remove_team_from_player_name(top_rbs)
-    print(top_rbs)  # Print the top running backs
-    # print("\n")
+    # # Scraping passing stats
+    # try:
+    #     print("Scraping passing stats...")
+    #     top_qbs = find_best_qbs()
+    #     if top_qbs is not None:
+    #         top_qbs = remove_team_from_player_name(top_qbs)
+    #         print(top_qbs)  # Print the top quarterbacks
+    #         top_qbs.to_csv("official_qb_stats.csv", index=False)
+    # except Exception as e:
+    #     print(f"An error occurred while scraping passing stats: {e}")
 
-    top_tes = find_best_tes()
-    remove_team_from_player_name(top_tes)
-    print(top_tes)  # Print the top tight ends
-    # print("\n")
+    # # Scraping rushing stats
+    # try:
+    #     print("Scraping rushing stats...")
+    #     top_rbs = find_best_rbs()
+    #     if top_rbs is not None:
+    #         top_rbs = remove_team_from_player_name(top_rbs)
+    #         print(top_rbs)  # Print the top running backs
+    #         top_rbs.to_csv("official_rb_stats.csv", index=False)
+    # except Exception as e:
+    #     print(f"An error occurred while scraping rushing stats: {e}")
 
-    # # print("Scraping receiving stats...")
-    top_wrs = find_best_wrs()
-    remove_team_from_player_name(top_wrs)
-    print(top_wrs)  # Print the top wide receivers
-    # print("\n")
+    # # Scraping tight end stats
+    # try:
+    #     print("Scraping tight end stats...")
+    #     top_tes = find_best_tes()
+    #     if top_tes is not None:
+    #         top_tes = remove_team_from_player_name(top_tes)
+    #         print(top_tes)  # Print the top tight ends
+    #         top_tes.to_csv("official_te_stats.csv", index=False)
+    # except Exception as e:
+    #     print(f"An error occurred while scraping tight end stats: {e}")
+
+    # # Scraping receiving stats
+    # try:
+    #     print("Scraping receiving stats...")
+    #     top_wrs = find_best_wrs()
+    #     if top_wrs is not None:
+    #         top_wrs = remove_team_from_player_name(top_wrs)
+    #         print(top_wrs)  # Print the top wide receivers
+    #         top_wrs.to_csv("official_wr_stats.csv", index=False)
+    # except Exception as e:
+    #     print(f"An error occurred while scraping receiving stats: {e}")
 
     # Testing Lanchain with a sample question
     # try:
