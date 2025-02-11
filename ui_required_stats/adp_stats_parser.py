@@ -252,10 +252,10 @@ class ADPStatsParser:
                         position_counts[main_position] += 1
                         selected_players.add(player["Player"])
                         break
-            logging.info(f"Selecting best available player for {position}...")
+            logging.info(f"Selecting the best available {position} in Round {round_num + 1}...")
             if best_available_player:
                 mock_draft_top_selections.append((best_available_player, position))
-                logging.info(f"Round {round_num + 1}: {best_available_player}, {position}\n")
+                logging.info(f"{best_available_player}\n")
 
         logging.info(f"-------------------Player Selection Complete---------------------------------\n")
 
