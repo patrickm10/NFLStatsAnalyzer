@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import "./App.css";
 
-
-
 const App = () => {
     
     const [activeTab, setActiveTab] = useState("stats");
@@ -220,72 +218,74 @@ const App = () => {
     );
 
     const renderPlayerCard = () => {
-        const nameParts = playerRosterData?.Name.split(" ");
+        if (!playerRosterData || !playerRosterData.Name) {
+            console.error("playerRosterData is undefined or missing Name property.");
+            return null; // Prevent rendering if data is missing
+        }
+    
+        const nameParts = playerRosterData.Name?.split(" ") || ["Unknown"];
         const firstName = nameParts[0];
-        const lastName = nameParts.slice(1).join(" "); // Handles multi-part last names
+        const lastName = nameParts.slice(1).join(" ") || "";
     
-        // State to track missing images
-        const [headshotError, setHeadshotError] = React.useState(false);
-        const [teamLogoError, setTeamLogoError] = React.useState(false);
-        const [conferenceLogoError, setConferenceLogoError] = React.useState(false);
-    
+        const playerName = playerRosterData.Name || "default_name"; // Ensure playerName exists
         return (
+        <div className="player-card-container">
+            {/* Gold Card Background */}
+            <img 
+                src="/data/images/gold_card.png" 
+                alt="Gold Card" 
+                className="gold-card-bg" 
+            />
+
             <div className="player-card">
-                {/* Headshot Image or Text */}
-                <div className="image-container" style={{ top: `38.5%`, left: '54%' }}>
-                    {headshotError ? (
-                        <p className="fallback-text">No Headshot Available</p>
-                    ) : (
-                        <img 
-                            src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
-                            alt="Headshot" 
-                            className="player-headshot"
-                            onError={() => setHeadshotError(true)}
-                        />
-                    )}
+                {/* Headshot Image */}
+                <div 
+                    className="image-container" 
+                    style={{ top: `38.5%`, left: '54%' }}  
+                >
+                    <img 
+                        src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
+                        alt="Headshot Not Found" 
+                        className="player-headshot" 
+                    />
                 </div>
-    
+
                 {/* Player Name */}
                 <div className="card-name">
-                    <p><strong>{firstName}</strong></p> {/* First Name */}
-                    <p><strong>{lastName}</strong></p>  {/* Last Name */}
+                    <p><strong>{firstName}</strong></p> 
+                    <p><strong>{lastName}</strong></p>  
                 </div>
-    
+
                 {/* Player Position */}
                 <div className="position">
                     <p><strong>{playerRosterData?.Position}</strong></p>
                 </div>
-    
-                {/* Team Logo or Text */}
+
+                {/* Team Logo */}
                 <div className="team-logo-container">
-                    {teamLogoError ? (
-                        <p className="fallback-text">No Team Logo</p>
-                    ) : (
-                        <img 
-                            src={`/data/logos/${playerRosterData.Team.replace(/ /g, "-").toLowerCase()}.png`} 
-                            alt="Team Logo" 
-                            className="team-logo" 
-                            onError={() => setTeamLogoError(true)}
-                        />
-                    )}
+                    <img 
+                        src={`/data/logos/${playerRosterData.Team.replace(/ /g, "-").toLowerCase()}.png`} 
+                        alt="Team Logo Not Found" 
+                        className="team-logo" 
+                    />
                 </div>
-    
-                {/* Conference Logo or Text */}
+
+                {/* Conference Logo */}
                 <div className="conference-logo-container">
-                    {conferenceLogoError ? (
-                        <p className="fallback-text">No Conference Logo</p>
-                    ) : (
-                        <img 
-                            src={`/data/logos/${playerRosterData.Conference}.png`} 
-                            alt="Conference Logo" 
-                            className="conference-logo"
-                            onError={() => setConferenceLogoError(true)}
-                        />
-                    )}
+                    <img 
+                        src={`/data/logos/${playerRosterData.Conference}.png`} 
+                        alt="Conference Logo Not Found" 
+                        className="conference-logo" 
+                    />
                 </div>
             </div>
+        </div>
         );
-    };
+};
+
+    
+    
+
 
     const handlePlayerClick = (player) => {
         let playerFileName = "";
@@ -407,9 +407,8 @@ const App = () => {
         </div>
     );
 
-    const renderWeeklyStats = () => { 
+    const renderWeeklyStats = () => ( 
        
-        return(
         <div>
             <div className="back-button-container">
                 <button className="back" onClick={handleBackClick}>
@@ -447,39 +446,32 @@ const App = () => {
                 <p>No weekly stats available.</p>
             )}
         </div>
-    );
-}
+    )
+
+
+
 
     return (
         <div>
             <header> 
-                <h1>NFL Statistics Analyzer</h1> 
+                <h1 class ="text-outline">NFL Statistics Analyzer</h1> 
                
                 <nav className="tabs-nav">
                     <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Player Data</button>
+                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Draft Hub</button>
                     <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("schedule"); setSearchQuery(""); }}>Schedule</button>
                     <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
                 </nav>
 
                 
-                <h3>
-                    {activeTab === "stats" ? "Quarterback Stats" :
-                        activeTab === "rbStats" ? "Running Back Stats" :
-                            activeTab === "wrStats" ? "Wide Receiver Stats" :
-                                activeTab === "teStats" ? "Tight End Stats" :
-                                    activeTab === "kickerStats" ? "Kicker Stats" :
-                                        activeTab === "defenseStats" ? "Defense Stats" :
-                                            activeTab === "schedule" ? "2024-2025 Schedule" :
-                                                activeTab === "roster" ? "NFL Roster" :
-                                                    "Schedule"}
-                </h3>
+                
             </header>
             
             <div>
             
                 {isWeeklyStats && (
                     <div>
-                        {/* {renderWeeklyStats()} */}
+                        {renderWeeklyStats()}
                     </div>
                 )}
                 {isCareerStats && (
@@ -489,60 +481,51 @@ const App = () => {
                 )}
                 {!isCareerStats && !isWeeklyStats && (
                     <div>
-                        <div className="search-container">
-                            {activeTab === "schedule" && (
-                                <div>
-                                    <label className ="position-name-stats" htmlFor="matchNumber">Select Week: </label>
-                                    <select
-                                        id="matchNumber"
-                                        value={selectedMatchNumber}
-                                        onChange={handleMatchNumberChange}
-                                    >
-                                        <option value="">All Weeks</option>
-                                        {matchNumbers.map((matchNumber, index) => (
-                                            <option key={index} value={matchNumber}>
-                                                Week {matchNumber}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-                            {activeTab !== "schedule" && (
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                        placeholder="Search ..."
-                                    />
-                                </div>
-                            )}
-                        </div>
-                        <h2 className="position-name-stats">Select a Position:</h2>
-                        < select 
-                            value={activeTab} 
-                            onChange={(e) => setActiveTab(e.target.value)} 
+                        
+                    {/* Container for search bar and dropdown */}
+                    {activeTab !== "schedule" && activeTab !== "roster" && (
+                        <div className="controls-container">
+                            {/* Dropdown tab for selecting active tab */}
+                        <select
+                            value={activeTab}
+                            onChange={(e) => setActiveTab(e.target.value)}
                             className="tab"
-                            
                         >
-                            <option value="stats">QB</option>
-                            <option value="rbStats">RB</option>
-                            <option value="wrStats">WR</option>
-                            <option value="teStats">TE</option>
-                            <option value="kickerStats">Kicker</option>
-                            <option value="defenseStats">Defense</option>
+                            <option value="stats">QB Stats</option>
+                            <option value="rbStats">RB Stats</option>
+                            <option value="wrStats">WR Stats</option>
+                            <option value="teStats">TE Stats</option>
+                            <option value="kickerStats">Kicker Stats</option>
+                            <option value="defenseStats">Defense Stats</option>
                         </select>
-                        {data.length > 0 ? renderTable() : <p>Loading data...</p>}
-                        <div>
-                                    <input
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                        placeholder="Search ..."
-                                        className="search-bar"
-                                    />
-                                </div>
-                    </div>
+                        <h3 className="position-name-stats">
+                            {activeTab === "stats" ? "Quarterback Stats" :
+                                activeTab === "rbStats" ? "Running Back Stats" :
+                                    activeTab === "wrStats" ? "Wide Receiver Stats" :
+                                        activeTab === "teStats" ? "Tight End Stats" :
+                                            activeTab === "kickerStats" ? "Kicker Stats" :
+                                                activeTab === "defenseStats" ? "Defense Stats" :
+                                                    activeTab === "schedule" ? "2024-2025 Schedule" :
+                                                        activeTab === "roster" ? "NFL Roster" :
+                                                            "Schedule"}
+                        </h3>
+                        {/* Search bar section */}
+                        
+                            <div className="search-container">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search Player Name ..."
+                            />
+                            </div>
+                        
+                    
+                        
+                        </div>
+                  )}
+                    {data.length > 0 ? renderTable() : <p>Loading data...</p>}
+                  </div>
                 )}
                 
             </div>
