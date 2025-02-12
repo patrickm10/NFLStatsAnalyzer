@@ -37,46 +37,52 @@ const App = () => {
                 const parsedData = Papa.parse(csvText, { header: true });
                 setColumns(parsedData.meta.fields || []);
                 let fetchedData = parsedData.data || [];
-
+    
                 if (fileName === "schedule.csv") {
                     const uniqueMatchNumbers = [...new Set(fetchedData.map(row => row["Match Number"]))];
                     setMatchNumbers(uniqueMatchNumbers);
                 }
-
+    
                 if (fileName === "nfl_official_team_roster.csv") {
                     const uniqueConferences = [...new Set(fetchedData.map(row => row.Conference))];
                     setConferences(uniqueConferences);
-
+    
                     const uniqueDivisions = [...new Set(fetchedData.map(row => row.Division))];
                     setDivisions(uniqueDivisions);
-
+    
                     const uniqueTeams = [...new Set(fetchedData.map(row => row.Team))];
                     setTeams(uniqueTeams);
                 }
-
+    
                 if (selectedMatchNumber && fileName === "schedule.csv") {
                     fetchedData = fetchedData.filter(row => row["Match Number"] === selectedMatchNumber);
                 }
-
+    
                 if (selectedConference && fileName === "nfl_official_team_roster.csv") {
                     fetchedData = fetchedData.filter(row => row.Conference === selectedConference);
                 }
-
+    
                 if (selectedDivision && fileName === "nfl_official_team_roster.csv") {
                     fetchedData = fetchedData.filter(row => row.Division === selectedDivision);
                 }
-
+    
                 if (selectedTeam && fileName === "nfl_official_team_roster.csv") {
                     fetchedData = fetchedData.filter(row => row.Team === selectedTeam);
                 }
-
+    
+                // Filter out empty rows (rows where all values are null, undefined, or "")
+                const columns = parsedData.meta.fields || [];
+                fetchedData = fetchedData.filter(row =>
+                    columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
+                );
+    
                 setData(fetchedData);
             })
             .catch((error) => {
                 console.error("Error loading CSV file:", error);
             });
-            
     };
+    
 
     const fetchCareerStats = (playerName, filePath) => {
         console.log(`Fetching career stats for: ${playerName}`);
@@ -193,18 +199,7 @@ const App = () => {
         setSelectedTeam(event.target.value);
     };
 
-    const renderPlayerDetails = () => (
-        <div className="container">
-            {playerRosterData && (
-                <div className="physical-details">
-                    <p><strong>Height:</strong> {playerRosterData.Height}</p>
-                    <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
-                    <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
-                    <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
-                </div>
-            )}
-        </div>
-    );
+   
 
     const renderArmDetails = () => (
         <div className="container">
@@ -278,6 +273,17 @@ const App = () => {
                         className="conference-logo" 
                     />
                 </div>
+                <div className="container">
+                    {/*Player Physical Details*/ }
+                    {playerRosterData && (
+                        <div className="player-details">
+                            <p><strong>Height:</strong> {playerRosterData.Height}</p>
+                            <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
+                            <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
+                            <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
         );
@@ -341,6 +347,9 @@ const App = () => {
                 console.error("Error loading player roster data:", error);
             },
         });
+
+        // Scroll to the top of the page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     
 
@@ -376,14 +385,25 @@ const App = () => {
         </table>
     );
 
-    const renderCareerStats = () => (
-        <div>
-            <h2 className="stats-header">{playerName}'s Career Stats</h2>
-            {careerStats.length > 0 ? (
+    const renderCareerStats = () => {
+        if (careerStats.length === 0) return <p>No career stats available.</p>;
+    
+        const columns = Object.keys(careerStats[0]); // Ensure consistent columns
+    
+        // Remove empty rows (rows where all values are undefined, null, or empty)
+        const filteredStats = careerStats.filter(row =>
+            columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
+        );
+    
+        if (filteredStats.length === 0) return <p>No career stats available.</p>;
+    
+        return (
+            <div>
+                <h2 className="stats-header">{playerName}'s Career Stats</h2>
                 <table>
                     <thead>
                         <tr>
-                            {Object.keys(careerStats[0]).map((col, index) => (
+                            {columns.map((col, index) => (
                                 <th key={index} onClick={() => handleSort(col)}>
                                     {col}
                                     {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
@@ -392,39 +412,46 @@ const App = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {careerStats.map((row, rowIndex) => (
+                        {filteredStats.map((row, rowIndex) => (
                             <tr key={rowIndex}>
-                                {Object.values(row).map((val, colIndex) => (
-                                    <td key={colIndex}>{val}</td>
+                                {columns.map((col, colIndex) => (
+                                    <td key={colIndex}>{row[col] !== undefined ? row[col] : ""}</td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            ) : (
-                <p>No career stats available.</p> 
-            )}
-        </div>
-    );
-
-    const renderWeeklyStats = () => ( 
-       
-        <div>
-            <div className="back-button-container">
-                <button className="back" onClick={handleBackClick}>
-                    Back to stats
-                </button>
             </div>
-            <h2_1><strong>{playerName}</strong></h2_1>
-            {renderPlayerDetails()}             
-            {renderPlayerCard()}
-            
-            <h2 className="stats-header">{playerName}'s Weekly Stats</h2>
-            {weeklyStats.length > 0 ? (
+        );
+    };
+    
+
+    const renderWeeklyStats = () => {
+        if (weeklyStats.length === 0) return <p>No weekly stats available.</p>;
+    
+        const columns = Object.keys(weeklyStats[0]); // Ensure consistent columns
+    
+        // Remove empty rows (rows where all values are undefined, null, or empty)
+        const filteredStats = weeklyStats.filter(row =>
+            columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
+        );
+    
+        if (filteredStats.length === 0) return <p>No weekly stats available.</p>;
+    
+        return (
+            <div>
+                <div className="back-button-container">
+                    <button className="back" onClick={handleBackClick}>
+                        Back to stats
+                    </button>
+                </div>          
+                {renderPlayerCard()}
+                
+                <h2 className="stats-header">{playerName}'s Weekly Stats</h2>
                 <table>
                     <thead>
                         <tr>
-                            {Object.keys(weeklyStats[0]).map((col, index) => (
+                            {columns.map((col, index) => (
                                 <th key={index} onClick={() => handleSort(col)}>
                                     {col}
                                     {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
@@ -433,20 +460,19 @@ const App = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {weeklyStats.map((row, rowIndex) => (
+                        {filteredStats.map((row, rowIndex) => (
                             <tr key={rowIndex}>
-                                {Object.values(row).map((val, colIndex) => (
-                                    <td key={colIndex}>{val}</td>
+                                {columns.map((col, colIndex) => (
+                                    <td key={colIndex}>{row[col] !== undefined ? row[col] : ""}</td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            ) : (
-                <p>No weekly stats available.</p>
-            )}
-        </div>
-    )
+            </div>
+        );
+    };
+    
 
 
 
