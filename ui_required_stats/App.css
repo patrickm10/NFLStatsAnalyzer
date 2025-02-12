@@ -70,7 +70,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1%;
-  margin-bottom: 1%;
+  margin-bottom: 2%;
   margin-left: 100px;
   width: calc(100% - 150px);
 }
@@ -132,7 +132,8 @@ button.back {
   display: flex;
   justify-content: flex-start; /* Keep on left side*/
   align-items: center; /* Center vertically if needed */
-  margin: 20px 0; /* Add some spacing */
+  margin-top: 1%; /* Add some spacing */
+  margin-bottom: 0%;
   margin-left: 5%;
 }
 
@@ -151,23 +152,15 @@ button.back:hover {
 }
 
 
-.physical-details {
+.player-details {
   position: absolute;
   margin-top: 10%;
-  top:57%;
-  left: 50%;
+  top:62%;
+  left: 53%;
   transform: translate(-50%, -50%); /* Shifts the element back to center */
   z-index: 10;
 }
 
-h2_1 {
-  position: absolute;
-  top:77%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Shifts the element back to center */
-  z-index: 10;
-  font-size : 1.2em;
-}
 
 
 
@@ -178,7 +171,8 @@ h2_1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px;
+  margin-left: 40%;
+  margin-bottom: 3%;
   z-index: 10;
 }
 
