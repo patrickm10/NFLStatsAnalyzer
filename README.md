@@ -4,8 +4,7 @@ NFLStatsAnalyzer is a Python-based tool designed to scrape and analyze weekly NF
 
 ## Features
 ### User-Friendly GUI:
-Built with Tkinter for seamless interaction.
-Options to filter data by team, position, and week.
+React Web Application where you can view the rankings and player statistics.
 
 ### Comprehensive Data Retrieval:
 Scrapes stats for all NFL positional players, including QBs, RBs, WRs, and more.
