@@ -23,7 +23,7 @@ Python Version: Python 3.8 or higher.
 requests
 beautifulsoup4
 pandas
-tkinter (pre-installed with Python)
+react
 
 ## Install dependencies:
 pip install -r requirements.txt  
