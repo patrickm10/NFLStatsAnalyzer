@@ -6,13 +6,18 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-} 
+}
+
 /* Header Styles */
 header {
-  background-image: url('data/images/background1.webp'); /* Add your image path here */
-  background-size: cover; /* Ensures the image covers the entire header */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-image: url('data/images/background1.webp');
+  /* Add your image path here */
+  background-size: cover;
+  /* Ensures the image covers the entire header */
+  background-position: center;
+  /* Centers the image */
+  background-repeat: no-repeat;
+  /* Prevents the image from repeating */
   color: #7b2121;
   padding: 20px 0;
   text-align: center;
@@ -28,12 +33,16 @@ header {
 .menu {
   display: flex;
   font-size: 0.8em;
-  flex-direction: row; /* Horizontal layout */
-  justify-content: space-between; /* Space between the tabs */
-  padding: 20px 50px; /* Adjust padding for spacing around */
+  flex-direction: row;
+  /* Horizontal layout */
+  justify-content: space-between;
+  /* Space between the tabs */
+  padding: 20px 50px;
+  /* Adjust padding for spacing around */
   background-color: #585858;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px; /* Add margin at the bottom */
+  margin-bottom: 30px;
+  /* Add margin at the bottom */
 }
 
 /* Header and Tabs Button */
@@ -44,19 +53,21 @@ button {
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
-  width: 12%; /* Make buttons take 12% of the width */
+  width: 200px;
+  /* Make buttons take 12% of the width */
   font-size: .75em;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
   min-height: 10%;
-  margin: 0 15px; /* Add space between buttons */
+  margin: 0 15px;
+  /* Add space between buttons */
   margin-bottom: 25px;
 }
 
 /* Hover Effect for Buttons */
 button:hover {
-  background: linear-gradient(135deg,  #df3737, #855bc9);
+  background: linear-gradient(135deg, #df3737, #855bc9);
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -64,6 +75,7 @@ button:hover {
 button:focus {
   outline: none;
 }
+
 /*buttons for weekly and career stats*/
 button2 {
   background: linear-gradient(135deg, #7b2121, #4f4f4f);
@@ -72,19 +84,21 @@ button2 {
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
-  width: 8%; /* Make buttons take 12% of the width */
+  width: 8%;
+  /* Make buttons take 12% of the width */
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
   min-height: 10%;
-  margin: 0 15px; /* Add space between buttons */
+  margin: 0 15px;
+  /* Add space between buttons */
   margin-bottom: 25px;
   font-size: 0.8em;
 }
 
 /* Hover Effect for Buttons */
 button2:hover {
-  background: linear-gradient(135deg,  #df3737, #855bc9);
+  background: linear-gradient(135deg, #df3737, #855bc9);
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -96,21 +110,26 @@ button2:focus {
 /* Back Button */
 button2.back {
   background-color: #ff6b6b;
-  padding: 5px;
+  padding: 7px;
   font-size: 1em;
   border-radius: 5px;
   cursor: pointer;
   color: white;
-  width: 5%;
-  display: block; /* Required for margin auto to work */
+  width: 50px;
+  display: block;
+  height: 20px;
+  /* Required for margin auto to work */
 }
 
 /* Back Button Container */
 .back-button-container {
   display: flex;
-  justify-content: flex-start; /* Keep on left side*/
-  align-items: center; /* Center vertically if needed */
-  margin-top: 4%; /* Add some spacing */
+  justify-content: flex-start;
+  /* Keep on left side*/
+  align-items: center;
+  /* Center vertically if needed */
+  margin-top: 3%;
+  /* Add some spacing */
   margin-bottom: 0%;
   margin-left: 5%;
 }
@@ -129,7 +148,8 @@ table {
   width: calc(100% - 150px);
 }
 
-table th, table td {
+table th,
+table td {
   padding: 12px;
   text-align: left;
   border: 1px solid #7b2121;
@@ -148,7 +168,7 @@ table tr:nth-child(even) {
 }
 
 table tr:hover {
-  
+
   background-color: #f1f1f1;
 }
 
@@ -159,7 +179,7 @@ table tr:hover {
   border-radius: 4px;
   width: 250px;
   margin-top: 7%;
-  margin-left: calc(100% + 93px);
+  margin-left: calc(100% + 300px);
 }
 
 /* Main Content */
@@ -174,21 +194,25 @@ table tr:hover {
 
 .player-images {
   display: flex;
-  justify-content: center; /* Center the images horizontally */
-  align-items: center; /* Center the images vertically */
+  justify-content: center;
+  /* Center the images horizontally */
+  align-items: center;
+  /* Center the images vertically */
 }
 
 .image-container {
-  position: relative; /* Position the images relative to this container */
+  position: relative;
+  /* Position the images relative to this container */
 }
 
 
 .player-details {
   position: absolute;
   margin-top: 10%;
-  top:62%;
+  top: 62%;
   left: 53%;
-  transform: translate(-50%, -50%); /* Shifts the element back to center */
+  transform: translate(-50%, -50%);
+  /* Shifts the element back to center */
   z-index: 10;
 }
 
@@ -212,7 +236,8 @@ table tr:hover {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 1; /* Ensures it stays in the background */
+  z-index: 1;
+  /* Ensures it stays in the background */
 }
 
 .player-card {
@@ -222,7 +247,8 @@ table tr:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2; /* Ensures content stays above the background */
+  z-index: 2;
+  /* Ensures content stays above the background */
 }
 
 
@@ -252,9 +278,12 @@ table tr:hover {
   border-radius: 5px;
   text-align: center;
 }
+
 .card-name p {
-  margin: 0;  /* Remove default margin */
-  line-height: 1.2;  /* Adjust line height to make them closer together */
+  margin: 0;
+  /* Remove default margin */
+  line-height: 1.2;
+  /* Adjust line height to make them closer together */
 }
 
 .position {
@@ -269,7 +298,8 @@ table tr:hover {
   text-align: center;
 }
 
-.team-logo-container, .conference-logo-container {
+.team-logo-container,
+.conference-logo-container {
   position: absolute;
   transform: translateX(-50%);
 }
@@ -288,7 +318,8 @@ table tr:hover {
   height: 10%;
 }
 
-.team-logo, .conference-logo {
+.team-logo,
+.conference-logo {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -296,66 +327,87 @@ table tr:hover {
 
 .stats-header {
   text-align: center;
-  margin: 0; /* Remove default margin if any */
+  margin: 0;
+  /* Remove default margin if any */
 }
 
-.tab{
-  
+.tab {
+
   margin-top: 1%;
   margin-left: 5%;
   text-align: center;
   padding: 8px;
-  color:#ffffff;
+  color: #ffffff;
   font-size: 20px;
   border-radius: 10px;
   border: 1px solid #000000;
   background-color: #7b2121;
-    
+
 }
 
-.year-tab{
+.year-tab {
   background: linear-gradient(135deg, #7b2121, #4f4f4f);
-  color: #ffffff;
+  color: #ffffff; 
   padding: 10px;
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
-  width: 5%; /* Make buttons take 12% of the width */
+  width: 100px;
+  /* Make buttons take 12% of the width */
   font-size: 1em;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
-  min-height: 10%;
-  margin-left: 12%;
-  margin-top: -6.5%;
-    
+  height : 40px;
+  margin-left: 3%;
+  margin-top: -1%;
+}
+
+/* Change text color when the dropdown is clicked (focused) */
+.year-tab:focus {
+  color: black; /* Set text color to black when focused */
+  outline: none; /* Optional: removes the default blue outline */
+}
+
+/* Optional: Change color on hover as well */
+.year-tab:hover {
+  color: black; /* Set text color to black on hover */
 }
 
 .controls-container {
-  display: flex; /* Align children horizontally */
-  align-items: center; /* Center them vertically */
-  gap: 10px; /* Add space between the search and dropdown */
+  display: flex;
+  /* Align children horizontally */
+  align-items: center;
+  /* Center them vertically */
+  gap: 10px;
+  /* Add space between the search and dropdown */
 }
 
-.position-name-stats{
-
+.position-name-stats {
   font-size: 2em;
   margin-left: 30%;
 }
+
 .controls-container-roster-position {
-  display: flex; /* Align children horizontally */
-  align-items: center; /* Center them vertically */
-  gap: 10px; /* Add space between the search and dropdown */
+  display: flex;
+  /* Align children horizontally */
+  align-items: center;
+  /* Center them vertically */
+  gap: 10px;
+  /* Add space between the search and dropdown */
 }
 
 .controls-container-roster-team {
-  display: flex; /* Align children horizontally */
-  align-items: center; /* Center them vertically */
-  gap: 10px; /* Add space between the search and dropdown */
+  display: flex;
+  /* Align children horizontally */
+  align-items: center;
+  /* Center them vertically */
+  gap: 10px;
+  /* Add space between the search and dropdown */
   margin-left: 10%;
 }
 
-.position-name-stats-roster{
+.position-name-stats-roster {
 
   font-size: 2em;
   margin-left: 20%;
@@ -371,25 +423,31 @@ table tr:hover {
 .player-tabs-nav {
   display: flex;
   justify-content: center;
-  align-items: center; /* Optional: centers vertically if needed */
-  gap: 1rem; /* Optional: adds spacing between buttons */
-  padding: 1rem; /* Optional: adds some breathing room */
+  align-items: center;
+  /* Optional: centers vertically if needed */
+  gap: 1rem;
+  /* Optional: adds spacing between buttons */
+  padding: 1rem;
+  /* Optional: adds some breathing room */
   font-size: 2em;
   margin-top: -4.5%;
 }
 
 .headshot_position {
   position: absolute;
-  top: 0;            /* Adjust as needed */
+  top: 0;
+  /* Adjust as needed */
   margin-left: 61%;
   margin-top: -4%;
-  width: 270px;      /* Or auto */
+  width: 270px;
+  /* Or auto */
   height: auto;
   z-index: 10;
 }
 
 .headshot-container {
   position: relative;
-  width: 100%;  /* Optional: set a specific width if needed */
+  width: 100%;
+  /* Optional: set a specific width if needed */
   height: auto;
 }
