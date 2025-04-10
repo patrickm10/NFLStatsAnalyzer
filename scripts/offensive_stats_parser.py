@@ -15,7 +15,6 @@ import openai
 import time
 
 
-
 nfl_teams = [
     "Arizona Cardinals",
     "Atlanta Falcons",
@@ -470,6 +469,10 @@ def find_best_kickers():
         )
         
         # Sort kickers by the composite score in descending order
+        # Reset rank based on score
+        df["Rank"] = df["Score"].rank(ascending=False, method='min')
+        df["Rank"] = df["Rank"].astype(int)
+        
         best_kickers = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
         
         df["Score"] = df["Score"].astype(float)
@@ -483,8 +486,8 @@ def find_best_kickers():
         # print(best_kickers)
         
         # Save to CSV
-        best_kickers.to_csv("official_kicker_stats.csv", index=False)
-        print("Top kicker stats saved to 'official_kicker_stats.csv'.")
+        best_kickers.to_csv("data/official_rankings/official_kicker_stats.csv", index=False)
+        print("Top kicker stats saved to 'data/official_rankings/official_kicker_stats.csv'.")
         
         return best_kickers
     
@@ -600,11 +603,14 @@ def find_best_qbs():
         ) * 100
 
         # Sort and select top players
+        df["Rank"] = df["Score"].rank(ascending=False, method='min')
+        df["Rank"] = df["Rank"].astype(int)
+        
         best_qbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
 
         # Save to CSV
-        best_qbs.to_csv("official_qb_stats.csv", index=False)
-        print("Top QB stats saved to 'official_qb_stats.csv'.")
+        best_qbs.to_csv("data/official_rankings/official_qb_stats.csv", index=False)
+        print("Top QB stats saved to 'data/official_rankings/official_qb_stats.csv'.")
         print(best_qbs)
 
         return best_qbs
@@ -709,11 +715,15 @@ def find_best_rbs():
         ) * 100
 
         # Sort and select top players
+        # Reset rank based on score
+        df["Rank"] = df["Score"].rank(ascending=False, method='min')
+        df["Rank"] = df["Rank"].astype(int)
+        
         best_rbs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(32)
 
         # Save to CSV
-        best_rbs.to_csv("official_rb_stats.csv", index=False)
-        print("Top RB stats saved to 'official_rb_stats.csv'.")
+        best_rbs.to_csv("data/official_rankings/official_rb_stats.csv", index=False)
+        print("Top RB stats saved to 'data/official_rankings/official_rb_stats.csv'.")
 
         return best_rbs
 
@@ -792,11 +802,14 @@ def find_best_tes():
         ) * 100
 
         # Sort and select top players
+        # Reset rank based on score
+        df["Rank"] = df["Score"].rank(ascending=False, method='min')
+        df["Rank"] = df["Rank"].astype(int)
         best_tes = df.sort_values(by="Score", ascending=False, ignore_index=True).head(50)
 
         # Save to CSV
-        best_tes.to_csv("official_te_stats.csv", index=False)
-        print("Top TE stats saved to 'official_te_stats.csv'.")
+        best_tes.to_csv("data/official_rankings/official_te_stats.csv", index=False)
+        print("Top TE stats saved to 'data/official_rankings/official_te_stats.csv'.")
 
         return best_tes
 
@@ -875,11 +888,14 @@ def find_best_wrs():
         ) * 100
         
         # Sort and select top players
+        # Reset rank based on score
+        df["Rank"] = df["Score"].rank(ascending=False, method='min')
+        df["Rank"] = df["Rank"].astype(int)
         best_wrs = df.sort_values(by="Score", ascending=False, ignore_index=True).head(50)
         
         # Save to CSV
-        best_wrs.to_csv("official_wr_stats.csv", index=False)
-        print("Top WR stats saved to 'official_wr_stats.csv'.")
+        best_wrs.to_csv("data/official_rankings/official_wr_stats.csv", index=False)
+        print("Top WR stats saved to 'data/official_rankings/official_wr_stats.csv'.")
         
         return best_wrs
     
@@ -1127,31 +1143,6 @@ def call_openai_with_retries(prompt, max_retries=5):
             return "Error: OpenAI API request failed."
     return "Error: API limit reached."
 
-# Function to generate AI-powered NFL insights from CSV
-def analyze_nfl_stats(question: str, csv_data: str) -> str:
-    """Uses an LLM to analyze NFL stats based on a CSV dataset."""
-    prompt = PromptTemplate(
-        input_variables=["question", "data"],
-        template="""
-        Based on the NFL statistics provided below, answer the question:
-        {question}
-
-        Data:
-        {data}
-
-        Provide a structured response.
-        """
-    )
-
-    chain = prompt | llm  # Updated to use RunnableSequence
-
-    try:
-        response = chain.invoke({"question": question, "data": csv_data})  # Using invoke instead of run
-        return response
-    except Exception as e:
-        logger.error(f"Error generating insights from LLM: {e}")
-        return f"Error generating insights: {e}"
-
 # Function to filter and process NFL stats based on the question
 def query_nfl_stats(question: str, df: pd.DataFrame) -> str:
     """Filters the dataset using Pandas before passing it to LangChain."""
@@ -1196,7 +1187,6 @@ if __name__ == "__main__":
         if top_kickers is not None:
             top_kickers = remove_team_from_player_name(top_kickers)
             print(top_kickers)  # Print the top kickers
-            top_kickers.to_csv("official_kicker_stats.csv", index=False)
     except Exception as e:
         print(f"An error occurred while scraping kicking stats: {e}")
 
@@ -1207,7 +1197,6 @@ if __name__ == "__main__":
         if top_qbs is not None:
             top_qbs = remove_team_from_player_name(top_qbs)
             # print(top_qbs)  # Print the top quarterbacks
-            top_qbs.to_csv("official_qb_stats.csv", index=False)
     except Exception as e:
         print(f"An error occurred while scraping passing stats: {e}")
 
@@ -1218,7 +1207,6 @@ if __name__ == "__main__":
         if top_rbs is not None:
             top_rbs = remove_team_from_player_name(top_rbs)
             print(top_rbs)  # Print the top running backs
-            top_rbs.to_csv("official_rb_stats.csv", index=False)
     except Exception as e:
         print(f"An error occurred while scraping rushing stats: {e}")
 
@@ -1229,7 +1217,6 @@ if __name__ == "__main__":
         if top_tes is not None:
             top_tes = remove_team_from_player_name(top_tes)
             print(top_tes)  # Print the top tight ends
-            top_tes.to_csv("official_te_stats.csv", index=False)
     except Exception as e:
         print(f"An error occurred while scraping tight end stats: {e}")
 
@@ -1240,7 +1227,6 @@ if __name__ == "__main__":
         if top_wrs is not None:
             top_wrs = remove_team_from_player_name(top_wrs)
             print(top_wrs)  # Print the top wide receivers
-            top_wrs.to_csv("official_wr_stats.csv", index=False)
     except Exception as e:
         print(f"An error occurred while scraping receiving stats: {e}")
 
