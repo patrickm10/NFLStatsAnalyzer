@@ -65,16 +65,21 @@ def scrape_nfl_matchups(url: str):
             continue
 
         teams = []
-        for team_div in game_div.find_all("div", class_="nfl-c-matchup-strip__team"):
+        team_divs = game_div.find_all("div", class_="nfl-c-matchup-strip__team")
+        record_divs = game_div.find_all("div", class_="css-12hprx4-U7")  # <-- Added for team records
+
+        for i, team_div in enumerate(team_divs):
             abbr_elem = team_div.find("span", class_="nfl-c-matchup-strip__team-abbreviation")
             name_elem = team_div.find("span", class_="nfl-c-matchup-strip__team-fullname")
 
             abbr = abbr_elem.text.strip() if abbr_elem else None
             name = name_elem.text.strip() if name_elem else None
+            record = record_divs[i].text.strip() if i < len(record_divs) else None  # <-- Record assigned
 
             teams.append({
                 "abbreviation": abbr,
                 "fullname": name,
+                "record": record
             })
 
         game_info_div = matchup_link.find("div", class_="nfl-c-matchup-strip__game-info")
@@ -88,13 +93,11 @@ def scrape_nfl_matchups(url: str):
         game_href = matchup_link["href"]
         game_url = f"https://www.nfl.com{game_href}"
 
-        # Scrape location from game detail page using partial class matching
         location = scrape_game_location(driver, game_url)
 
         matchups.append({
             "teams": teams,
             "time": time_info,
-            "date"
             "location": location,
         })
 
@@ -117,12 +120,13 @@ if __name__ == "__main__":
                     "game_number": idx,
                     "team_abbreviation": team["abbreviation"],
                     "team_fullname": team["fullname"],
+                    "team_record": team["record"],  # <-- Added to output
                     "time": m["time"],
                     "location": m["location"]
                 })
             print(f"Game {idx}: Time - {m['time']} - Location - {m['location']}")
             for team in m["teams"]:
-                print(f"  {team['abbreviation']} - {team['fullname']}")
+                print(f"  {team['abbreviation']} - {team['fullname']} - Record: {team['record']}")
             print("-" * 40)
         print(f"Total games found for week {week}: {len(matchups)}\n")
     print("Total games found across all weeks:", len(all_games)//2)
