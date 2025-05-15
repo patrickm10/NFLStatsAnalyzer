@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import warnings
+import pandas as pd
 
 # Suppress all warnings (like ResourceWarnings or Selenium deprecation warnings)
 warnings.filterwarnings("ignore")
@@ -102,17 +103,30 @@ def scrape_nfl_matchups(url: str):
 
 if __name__ == "__main__":
     year = 2025
-    total_games = 0
+    all_games = []
     for week in range(1, 19):
         print(f"--- Week {week} ---")
         url = f"https://www.nfl.com/schedules/{year}/REG{week}/"
         matchups = scrape_nfl_matchups(url)
 
         for idx, m in enumerate(matchups, 1):
+            for team in m["teams"]:
+                all_games.append({
+                    "week": week,
+                    "game_number": idx,
+                    "team_abbreviation": team["abbreviation"],
+                    "team_fullname": team["fullname"],
+                    "time": m["time"],
+                    "location": m["location"]
+                })
             print(f"Game {idx}: Time - {m['time']} - Location - {m['location']}")
             for team in m["teams"]:
                 print(f"  {team['abbreviation']} - {team['fullname']}")
             print("-" * 40)
         print(f"Total games found for week {week}: {len(matchups)}\n")
-        total_games += len(matchups)
-    print("Total games found across all weeks:", total_games)
+    print("Total games found across all weeks:", len(all_games)//2)
+
+    # Save to CSV
+    df = pd.DataFrame(all_games)
+    df.to_csv("nfl_schedule_2025.csv", index=False)
+    print("Saved all games to nfl_schedule_2025.csv")
