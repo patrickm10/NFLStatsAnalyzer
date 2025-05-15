@@ -64,21 +64,30 @@ NFLStatsAnalyzer/
 
 # Data Pipelines
 get_schedule.py
+
 get_scores.py
+
 get_defensive_stats.py
+
 get_offensive_stats.py
 
 
 ## Per Season
 getRosterPerTeam.py
+
 getSkillPlayerData.py
+
 get_nfl_schedule.py
+
 get_career_data.py
+
 get_weekly_data.py
 
 ## Analytics
 offensive_stats_parser.py
+
 chatbot.py
+
 NLP model (In progress)
 
 
