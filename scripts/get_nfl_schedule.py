@@ -94,6 +94,7 @@ def scrape_nfl_matchups(url: str):
         matchups.append({
             "teams": teams,
             "time": time_info,
+            "date"
             "location": location,
         })
 
