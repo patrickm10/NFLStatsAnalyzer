@@ -6,19 +6,14 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-}
-
+} 
 /* Header Styles */
 header {
-  background-image: url('data/images/background1.webp');
-  /* Add your image path here */
-  background-size: cover;
-  /* Ensures the image covers the entire header */
-  background-position: center;
-  /* Centers the image */
-  background-repeat: no-repeat;
-  /* Prevents the image from repeating */
-  color: #7b2121;
+  background-image: url('data/images/background1.webp'); /* Add your image path here */
+  background-size: cover; /* Ensures the image covers the entire header */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  color: #ce3e3e;
   padding: 20px 0;
   text-align: center;
   font-size: 2.0em;
@@ -33,41 +28,35 @@ header {
 .menu {
   display: flex;
   font-size: 0.8em;
-  flex-direction: row;
-  /* Horizontal layout */
-  justify-content: space-between;
-  /* Space between the tabs */
-  padding: 20px 50px;
-  /* Adjust padding for spacing around */
+  flex-direction: row; /* Horizontal layout */
+  justify-content: space-between; /* Space between the tabs */
+  padding: 20px 50px; /* Adjust padding for spacing around */
   background-color: #585858;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  /* Add margin at the bottom */
+  box-shadow: 0 2px 5px rgba(85, 85, 85, 0.1);
+  margin-bottom: 30px; /* Add margin at the bottom */
 }
 
 /* Header and Tabs Button */
 button {
-  background: linear-gradient(135deg, #7b2121, #423c54);
-  color: rgb(0, 0, 0);
+  background: linear-gradient(135deg, #ce3e3e, #61597b);
+  color: rgb(255, 255, 255);
   padding: 20px;
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
-  width: 200px;
-  /* Make buttons take 12% of the width */
+  width: 12%; /* Make buttons take 12% of the width */
   font-size: .75em;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
   min-height: 10%;
-  margin: 0 15px;
-  /* Add space between buttons */
+  margin: 0 15px; /* Add space between buttons */
   margin-bottom: 25px;
 }
 
 /* Hover Effect for Buttons */
 button:hover {
-  background: linear-gradient(135deg, #df3737, #855bc9);
+  background: linear-gradient(135deg,  #df3737, #855bc9);
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -76,62 +65,83 @@ button:focus {
   outline: none;
 }
 
+.tabs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 1rem;
+}
+
+.tabs-nav button {
+  background: linear-gradient(135deg, #ce3e3e, #61597b);
+  color: white;
+  padding: 1rem 1.5rem;
+  border: 1px solid black;
+  cursor: pointer;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  flex: 1 1 150px; /* Grow/shrink, base width of 150px */
+  max-width: 200px;
+  min-height: 3rem;
+}
+
+/* Hover effect */
+.tabs-nav button:hover {
+  background: linear-gradient(135deg, #df3737, #855bc9);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+
 /*buttons for weekly and career stats*/
-button2 {
-  background: linear-gradient(135deg, #7b2121, #4f4f4f);
-  color: rgb(255, 255, 255);
-  padding: 10px;
+.button2 {
+  background: linear-gradient(135deg, #ce3e3e, #61597b);
+  color: white;
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
-  width: 8%;
-  /* Make buttons take 12% of the width */
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
-  min-height: 10%;
-  margin: 0 15px;
-  /* Add space between buttons */
-  margin-bottom: 25px;
-  font-size: 0.8em;
+  min-height: 3.4vw;
+  font-size: 1vw;
+  min-width: 1vw;
 }
 
-/* Hover Effect for Buttons */
-button2:hover {
-  background: linear-gradient(135deg, #df3737, #855bc9);
+.button2:hover {
+  background: linear-gradient(135deg, #df37b5, #855bc9);
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-button2:focus {
+.button2:focus {
   outline: none;
 }
 
-/* Back Button */
-button2.back {
+.button2.back {
   background-color: #ff6b6b;
-  padding: 7px;
-  font-size: 1em;
+  padding: 5px;
+  font-size: 1vw;
   border-radius: 5px;
   cursor: pointer;
   color: white;
-  width: 50px;
+  width: 5%;
   display: block;
-  height: 20px;
-  /* Required for margin auto to work */
 }
+
+
 
 /* Back Button Container */
 .back-button-container {
   display: flex;
-  justify-content: flex-start;
-  /* Keep on left side*/
-  align-items: center;
-  /* Center vertically if needed */
-  margin-top: 3%;
-  /* Add some spacing */
-  margin-bottom: 0%;
-  margin-left: 5%;
+  justify-content: flex-start; /* Keep on left side*/
+  align-items: center; /* Center vertically if needed */
+  margin-left: 3.8vw;
+  min-width: 50vw;
 }
 
 button2.back:hover {
@@ -148,16 +158,15 @@ table {
   width: calc(100% - 150px);
 }
 
-table th,
-table td {
+table th, table td {
   padding: 12px;
   text-align: left;
-  border: 1px solid #7b2121;
+  border: 1px solid #000000;
   color: black;
 }
 
 table th {
-  background-color: #7b2121;
+  background-color: #00000088;
   border: 1px solid #000000;
   color: white;
   cursor: pointer;
@@ -168,8 +177,8 @@ table tr:nth-child(even) {
 }
 
 table tr:hover {
-
-  background-color: #f1f1f1;
+  
+  background-color: #fe020223;
 }
 
 /* Search Input */
@@ -178,8 +187,8 @@ table tr:hover {
   font-size: 1.1em;
   border-radius: 4px;
   width: 250px;
-  margin-top: 7%;
-  margin-left: calc(100% + 300px);
+  margin-top: 2vw;
+  margin-left: 27vw;
 }
 
 /* Main Content */
@@ -194,25 +203,21 @@ table tr:hover {
 
 .player-images {
   display: flex;
-  justify-content: center;
-  /* Center the images horizontally */
-  align-items: center;
-  /* Center the images vertically */
+  justify-content: center; /* Center the images horizontally */
+  align-items: center; /* Center the images vertically */
 }
 
 .image-container {
-  position: relative;
-  /* Position the images relative to this container */
+  position: relative; /* Position the images relative to this container */
 }
 
 
 .player-details {
   position: absolute;
   margin-top: 10%;
-  top: 62%;
+  top:62%;
   left: 53%;
-  transform: translate(-50%, -50%);
-  /* Shifts the element back to center */
+  transform: translate(-50%, -50%); /* Shifts the element back to center */
   z-index: 10;
 }
 
@@ -236,8 +241,7 @@ table tr:hover {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 1;
-  /* Ensures it stays in the background */
+  z-index: 1; /* Ensures it stays in the background */
 }
 
 .player-card {
@@ -247,8 +251,7 @@ table tr:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
-  /* Ensures content stays above the background */
+  z-index: 2; /* Ensures content stays above the background */
 }
 
 
@@ -278,12 +281,9 @@ table tr:hover {
   border-radius: 5px;
   text-align: center;
 }
-
 .card-name p {
-  margin: 0;
-  /* Remove default margin */
-  line-height: 1.2;
-  /* Adjust line height to make them closer together */
+  margin: 0;  /* Remove default margin */
+  line-height: 1.2;  /* Adjust line height to make them closer together */
 }
 
 .position {
@@ -298,8 +298,7 @@ table tr:hover {
   text-align: center;
 }
 
-.team-logo-container,
-.conference-logo-container {
+.team-logo-container, .conference-logo-container {
   position: absolute;
   transform: translateX(-50%);
 }
@@ -318,136 +317,238 @@ table tr:hover {
   height: 10%;
 }
 
-.team-logo,
-.conference-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+
 
 .stats-header {
   text-align: center;
-  margin: 0;
-  /* Remove default margin if any */
+  margin: 0; /* Remove default margin if any */
 }
 
-.tab {
-
+.tab{
+  
   margin-top: 1%;
   margin-left: 5%;
   text-align: center;
   padding: 8px;
-  color: #ffffff;
+  color:#ffffff;
   font-size: 20px;
   border-radius: 10px;
   border: 1px solid #000000;
-  background-color: #7b2121;
-
+  background: linear-gradient(135deg, #ce3e3e, #61597b);
+  background-color: #4f4f4f;
 }
 
-.year-tab {
-  background: linear-gradient(135deg, #7b2121, #4f4f4f);
-  color: #ffffff; 
-  padding: 10px;
+.year-tab{
+  background: linear-gradient(135deg, #ce3e3e, #61597b);
+  color: #ffffff;
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid #000000;
   cursor: pointer;
-  width: 100px;
-  /* Make buttons take 12% of the width */
-  font-size: 1em;
+  width: 6vw; /* Make buttons take 12% of the width */
+  font-size: 1vw;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
-  height : 40px;
-  margin-left: 3%;
-  margin-top: -1%;
+  min-height: 3.4vw;
+  margin-left: -86vw;
+    
 }
 
-/* Change text color when the dropdown is clicked (focused) */
-.year-tab:focus {
-  color: black; /* Set text color to black when focused */
-  outline: none; /* Optional: removes the default blue outline */
-}
-
-/* Optional: Change color on hover as well */
-.year-tab:hover {
-  color: black; /* Set text color to black on hover */
+.year-tab option {
+  background-color: #4f4f4f;
 }
 
 .controls-container {
-  display: flex;
-  /* Align children horizontally */
-  align-items: center;
-  /* Center them vertically */
-  gap: 10px;
-  /* Add space between the search and dropdown */
+  margin-bottom: 25px;
+  font-size: 0.8em;
+  display: flex; /* Align children horizontally */
+  align-items: center; /* Center them vertically */
 }
 
-.position-name-stats {
-  font-size: 2em;
-  margin-left: 30%;
-}
+.position-name-stats{
 
+  font-size: 1.7vw;
+  margin-left: 30.3vw;
+  text-align: center;
+}
 .controls-container-roster-position {
-  display: flex;
-  /* Align children horizontally */
-  align-items: center;
-  /* Center them vertically */
-  gap: 10px;
-  /* Add space between the search and dropdown */
+  display: flex; /* Align children horizontally */
+  align-items: center; /* Center them vertically */
+  gap: 10px; /* Add space between the search and dropdown */
 }
 
 .controls-container-roster-team {
-  display: flex;
-  /* Align children horizontally */
-  align-items: center;
-  /* Center them vertically */
-  gap: 10px;
-  /* Add space between the search and dropdown */
+  display: flex; /* Align children horizontally */
+  align-items: center; /* Center them vertically */
+  gap: 10px; /* Add space between the search and dropdown */
   margin-left: 10%;
 }
 
-.position-name-stats-roster {
+.position-name-stats-roster{
 
   font-size: 2em;
   margin-left: 20%;
 }
 
+.schedule{
+  font-size: 2em;
+  text-align: center;
+
+}
+
 
 
 .text-outline {
-  color: #7b2121;
+  color: #ce3e3e;
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }
 
 .player-tabs-nav {
   display: flex;
-  justify-content: center;
   align-items: center;
-  /* Optional: centers vertically if needed */
-  gap: 1rem;
-  /* Optional: adds spacing between buttons */
-  padding: 1rem;
-  /* Optional: adds some breathing room */
-  font-size: 2em;
-  margin-top: -4.5%;
+  gap: 1rem;            /* Space between buttons */
+  flex-wrap: wrap;      /* Allows wrapping on small screens */
+  margin-left: -15.5vw;
 }
 
-.headshot_position {
-  position: absolute;
-  top: 0;
-  /* Adjust as needed */
-  margin-left: 61%;
-  margin-top: -4%;
-  width: 270px;
-  /* Or auto */
+/* Optional: make the nav take full width */
+.player-tabs-nav {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.player-profile-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px; /* spacing between headshot and text/logo */
+}
+
+.headshot-wrapper {
+  flex-shrink: 0;
+}
+
+.headshot-img {
+  width: 500px;
   height: auto;
-  z-index: 10;
+  object-fit: contain;
+}
+
+.team-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.team-logo-img {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.team-name-text,
+.player-position-text {
+  margin: 0.23;
+  font-size: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.player-position-text2 {
+  margin: 0.23;
+  font-size: 20px;
+  font-family: Arial, sans-serif;
+}
+.game-header {
+  text-align: center;
+  font-size: 1vw;
+  margin-bottom: 1vh;
+  margin-left: 18vw;
+}
+
+.game-overview {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrap on smaller screens */
+  align-items: center;
+  justify-content: center;
+  gap: 3vw;
+  padding: 1vh 2vw;
+  margin-top: -5vw;
+  margin-left: 55vw;
 }
 
 .headshot-container {
-  position: relative;
-  width: 100%;
-  /* Optional: set a specific width if needed */
-  height: auto;
+  flex-shrink: 0;
 }
+
+.game-headshot {
+  width: 25vw;
+  height: auto;
+  border-radius: 1vw;
+  margin-left: 70vw;
+  margin-top: -5vw;
+}
+
+.game-player-position{
+  font-size: 2vw;
+  font-weight: bold;
+  margin-left: 70vw;
+  margin-top: -15vw;
+}
+
+.teams-container {
+  display: flex;
+  align-items: center;
+  gap: 3vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: -50vw;
+}
+
+.team-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-logo {
+  width: 10vw;
+  height: auto;
+  margin-top: -3vw;
+}
+
+.team-score {
+  font-size: 4vw;
+  font-weight: bold;
+  margin-top: 0vw;
+}
+
+.team-record {
+  font-size: 2vw;
+  font-weight: bold;
+  margin-top: -1vw;
+}
+
+.at-symbol {
+  font-size: 2vw;
+  font-weight: bold;
+  margin-top: -5vw;
+}
+
+.weekly-tab-container{
+  margin-top: 1vw;
+  margin-left: 1vw;
+  display: flex;
+}
+.game-stats-container {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;     /* center horizontally if needed */
+  justify-content: center; /* center vertically if needed */
+}
+
+.game-stats {
+  margin: 2px 0; /* optional spacing between the lines */
+  margin-left: 72vw;
+}
+
