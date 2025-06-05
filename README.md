@@ -48,29 +48,32 @@ cd frontend
 npm install
 npm start
 
-# File Structure
+## File Structure
+
+```text
 NFLStatsAnalyzer/
 ├── README.md
 ├── requirements.txt
 ├── data/
-│ ├── qb_weekly_stats/
-│ ├── rb_weekly_stats/
-│ ├── wr_weekly_stats/
-│ ├── nfl_metadata/
+│   ├── qb_weekly_stats/
+│   ├── rb_weekly_stats/
+│   ├── wr_weekly_stats/
+│   ├── nfl_metadata/
 ├── Scripts/
-│ ├── 
-│
+│   ├── offensive_stats_parser.py
+│   ├── defensive_stats_parser.py
+│   ├── GUI.py
 ├── Pipelines/
-│ ├── get_nfl_schedule.py
-│ ├── get_weekly_stats.py
-│ ├── get_offensive_rankings.py
-│ ├── get_defensive_rankings.py
-│
+│   ├── get_nfl_schedule.py
+│   ├── get_weekly_stats.py
+│   ├── get_offensive_rankings.py
+│   ├── get_defensive_rankings.py
 ├── SeasonStats/
-│ ├── getRosterPerTeam.py
-│ ├── get_career_stats.py
-│
+│   ├── getRosterPerTeam.py
+│   ├── get_career_stats.py
 ├── Analytics/
-│ ├── offensive_stats_parser.py
-│ ├── chatbot.py
-│ ├── nlp_model.py (in progress)
+│   ├── offensive_stats_parser.py
+│   ├── chatbot.py
+│   ├── nlp_model.py (in progress)
+```
+
