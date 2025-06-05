@@ -77,6 +77,7 @@ NFLStatsAnalyzer/
 │   ├── qb_weekly_stats/
 │   ├── rb_weekly_stats/
 │   ├── wr_weekly_stats/
+│   ├── te_weekly_stats/
 │   ├── nfl_metadata/
 ├── pipelines/
 │   ├── get_nfl_schedule.py
