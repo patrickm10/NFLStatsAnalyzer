@@ -86,9 +86,12 @@ NFLStatsAnalyzer/
 │   ├── get_weekly_stats.py
 │   ├── get_offensive_rankings.py
 │   ├── get_defensive_rankings.py
-├── scripts/
-│   ├── App.jsx
-│   ├── App.css
+├── frontend/
+│   ├── src/
+│   |    ├── App.jsx
+│   |    ├── App.css
+│   ├── public/
+│   |    ├── package.json
 ├── season_scripts/
 │   ├── get_adp_stats.py
 │   ├── get_career_stats.py
