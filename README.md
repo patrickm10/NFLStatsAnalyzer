@@ -67,8 +67,6 @@ npm start
 
 ```text
 NFLStatsAnalyzer/
-├── README.md
-├── requirements.txt
 ├── analytics/
 │   ├── chatbot.py
 │   ├── draft_calculator.py
@@ -97,5 +95,7 @@ NFLStatsAnalyzer/
 │   ├── get_adp_stats.py
 │   ├── get_career_stats.py
 │   ├── get_roster_per_team.py
+├── README.md
+├── requirements.txt
 ```
 
