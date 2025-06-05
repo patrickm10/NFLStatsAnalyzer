@@ -26,8 +26,9 @@ This project emphasizes modular data engineering principles, making it easy to e
 - Weekly stats saved under folders like `qb_weekly_stats`, `rb_weekly_stats`, etc.
 
 ## Export and Storage
-- Saves cleaned and ranked data into CSV files.
-- Organized by position, year, and week for easy access.
+- Outputs cleaned and ranked player data as CSV files for easy integration with external tools.
+- Stores datasets in **Google Wrangler**, enabling seamless analysis and querying.
+- Files are systematically organized by position, season, and week for efficient retrieval and historical comparisons.
 
 ## Modular Data Pipeline
 - Designed for composability and reliability.
