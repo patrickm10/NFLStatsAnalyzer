@@ -30,7 +30,7 @@ This project emphasizes modular data engineering principles, making it easy to e
 - Stores datasets in **Google Wrangler**, enabling seamless analysis and querying.
 - Files are systematically organized by position, season, and week for efficient retrieval and historical comparisons.
 
-## Modular Data Pipeline
+## Modular Data Pipelines
 - Designed for composability and reliability.
 - Weekly and seasonal scraping functions separated by module.
 - Integrated with Google Composer to incorporate pipline orchestration
