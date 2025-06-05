@@ -36,22 +36,30 @@ This project emphasizes modular data engineering principles, making it easy to e
 
 # Prerequisites
 - Python 3.8 or higher
+
 - Node.js for React frontend
 
 # Required Libraries
-- requests  
-- beautifulsoup4  
-- polars  
-- react  
+- requests
+
+- beautifulsoup4
+
+- polars
+
+- react
+
 - npm  
 
 # Installation
 pip install -r requirements.txt
+
 python nfl_stats_analyzer.py
 
 # Launch React App
 cd frontend
+
 npm install
+
 npm start
 
 ## File Structure
