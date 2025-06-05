@@ -15,7 +15,7 @@ NFLStatsAnalyzer is a high-performance Python tool for scraping, analyzing, and 
 
 ## Comprehensive Scraping and Stats
 - Supports all major positions: QB, RB, WR, TE, K.
-- Scrapes weekly and seasonal data from FantasyPros.
+- Scrapes weekly and seasonal data from FantasyPros, NFL, and ESPN.
 - Tracks fantasy-relevant metrics like yards, touchdowns, INTs, FPTS/G, and more.
 - Weekly stats saved under folders like `qb_weekly_stats`, `rb_weekly_stats`, etc.
 
