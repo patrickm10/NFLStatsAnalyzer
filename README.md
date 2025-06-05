@@ -1,7 +1,13 @@
 # NFLStatsAnalyzer
 
-# Overview
-NFLStatsAnalyzer is a high-performance Python tool for scraping, analyzing, and ranking NFL player statistics for fantasy football insights or personal data analysis. It is currently being refactored to use **Polars** for faster processing and improved scalability. The backend connects to a React web application and will soon be deployed to a public website.
+## Overview
+
+**NFLStatsAnalyzer** is a high-performance NFL analytics platform built in Python that dynamically extracts player statistics from multiple NFL data sources, cleans and transforms them, and loads the results into a structured database for personal analysis or fantasy football insights.
+
+Currently being refactored to use **Polars** for faster processing and scalable performance, the platform supports automated weekly and seasonal data collection through robust pipelines. It connects to a **React** frontend and is being prepared for deployment to a public website.
+
+This project emphasizes modular data engineering principles, making it easy to extend, monitor, and maintain across seasons and data formats.
+
 
 # Features
 
