@@ -78,6 +78,12 @@ NFLStatsAnalyzer/
 │   ├── rb_weekly_stats/
 │   ├── wr_weekly_stats/
 │   ├── te_weekly_stats/
+│   ├── official_stats/
+│   |   ├── official_qb_stats.csv/
+│   |   ├── official_rb_stats.csv/
+│   |   ├── official_te_stats.csv/
+│   |   ├── official_wr_stats.csv/
+│   |   ├── official_k_stats.csv/
 │   ├── nfl_metadata/
 ├── pipelines/
 │   ├── get_nfl_schedule.py
