@@ -54,26 +54,26 @@ npm start
 NFLStatsAnalyzer/
 ├── README.md
 ├── requirements.txt
+├── analytics/
+│   ├── chatbot.py
+│   ├── draft_calculator.py
+│   ├── nlp_model.py (in progress)
 ├── data/
 │   ├── qb_weekly_stats/
 │   ├── rb_weekly_stats/
 │   ├── wr_weekly_stats/
 │   ├── nfl_metadata/
-├── Scripts/
-│   ├── offensive_stats_parser.py
-│   ├── defensive_stats_parser.py
-│   ├── GUI.py
-├── Pipelines/
+├── pipelines/
 │   ├── get_nfl_schedule.py
 │   ├── get_weekly_stats.py
 │   ├── get_offensive_rankings.py
 │   ├── get_defensive_rankings.py
-├── SeasonStats/
-│   ├── getRosterPerTeam.py
+├── scripts/
+│   ├── App.jsx
+│   ├── App.css
+├── season_scripts/
+│   ├── get_adp_stats.py
 │   ├── get_career_stats.py
-├── Analytics/
-│   ├── offensive_stats_parser.py
-│   ├── chatbot.py
-│   ├── nlp_model.py (in progress)
+│   ├── get_roster_per_team.py
 ```
 
