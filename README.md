@@ -20,7 +20,7 @@ This project emphasizes modular data engineering principles, making it easy to e
 - Handles data quality issues such as duplicate headers, malformed columns, and inconsistent rows.
 
 ## Comprehensive Scraping and Stats
-- Supports all major positions: QB, RB, WR, TE, K.
+- Supports all major positions: QB, RB, WR, TE, K, D/ST.
 - Scrapes weekly and seasonal data from FantasyPros, NFL, and ESPN.
 - Tracks fantasy-relevant metrics like yards, touchdowns, INTs, FPTS/G, and more.
 - Weekly stats saved under folders like `qb_weekly_stats`, `rb_weekly_stats`, etc.
@@ -32,7 +32,7 @@ This project emphasizes modular data engineering principles, making it easy to e
 ## Modular Data Pipeline
 - Designed for composability and reliability.
 - Weekly and seasonal scraping functions separated by module.
-- Plans to integrate with orchestration tools like Dagster.
+- Integrated with Google Composer to incorporate pipline orchestration
 
 # Prerequisites
 - Python 3.8 or higher
