@@ -1,562 +1,283 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-import "./App.css";
 
-const App = () => {
-    
-    const [activeTab, setActiveTab] = useState("stats");
-    const [columns, setColumns] = useState([]);
-    const [data, setData] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: "ascending" });
-    const [isCareerStats, setIsCareerStats] = useState(false);
-    const [isWeeklyStats, setIsWeeklyStats] = useState(false);
-    const [playerName, setPlayerName] = useState("");
-    const [careerStats, setCareerStats] = useState([]);
-    const [weeklyStats, setWeeklyStats] = useState([]);
-    const [matchNumbers, setMatchNumbers] = useState([]);
-    const [selectedMatchNumber, setSelectedMatchNumber] = useState("");
-    const [conferences, setConferences] = useState([]);
-    const [selectedConference, setSelectedConference] = useState("");
-    const [divisions, setDivisions] = useState([]);
-    const [selectedDivision, setSelectedDivision] = useState("");
-    const [teams, setTeams] = useState([]);
-    const [selectedTeam, setSelectedTeam] = useState("");
-    const [playerRosterData, setPlayerRosterData] = useState(null);
+const positions = [
+  {
+    label: "QB",
+    file: "/data/official_stats/official_qb_stats.csv",
+    weeklyFolder: "/data/qb_stats/qb_weekly_stats/",
+    careerFolder: "/data/qb_stats/qb_career_stats/",
+    careerSuffix: "_career_passing_stats.csv", // suffix for career stats filename
+  },
+  {
+    label: "RB",
+    file: "/data/official_stats/official_rb_stats.csv",
+    weeklyFolder: "/data/rb_weekly_stats/",
+    careerFolder: "/data/rb_career_stats/",
+    careerSuffix: "_career_stats.csv",
+  },
+  {
+    label: "WR",
+    file: "/data/official_stats/official_wr_stats.csv",
+    weeklyFolder: "/data/wr_weekly_stats/",
+    careerFolder: "/data/wr_career_stats/",
+    careerSuffix: "_career_stats.csv",
+  },
+  {
+    label: "TE",
+    file: "/data/official_stats/official_te_stats.csv",
+    weeklyFolder: "/data/te_weekly_stats/",
+    careerFolder: "/data/te_career_stats/",
+    careerSuffix: "_career_stats.csv",
+  },
+  {
+    label: "K",
+    file: "/data/official_stats/official_k_stats.csv",
+    weeklyFolder: "/data/k_weekly_stats/",
+    careerFolder: "/data/k_career_stats/",
+    careerSuffix: "_career_stats.csv",
+  },
+  {
+    label: "D/ST",
+    file: "/data/official_stats/official_defense_stats.csv",
+    weeklyFolder: "/data/defense_weekly_stats/",
+    careerFolder: "/data/defense_career_stats/",
+    careerSuffix: "_career_stats.csv",
+  },
+];
 
-    const fetchStats = (fileName) => {
-        console.log(`Fetching data for: ${fileName}`);
-        fetch(`/data/${fileName}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then((csvText) => {
-                const parsedData = Papa.parse(csvText, { header: true });
-                setColumns(parsedData.meta.fields || []);
-                let fetchedData = parsedData.data || [];
-    
-                if (fileName === "schedule.csv") {
-                    const uniqueMatchNumbers = [...new Set(fetchedData.map(row => row["Match Number"]))];
-                    setMatchNumbers(uniqueMatchNumbers);
-                }
-    
-                if (fileName === "nfl_official_team_roster.csv") {
-                    const uniqueConferences = [...new Set(fetchedData.map(row => row.Conference))];
-                    setConferences(uniqueConferences);
-    
-                    const uniqueDivisions = [...new Set(fetchedData.map(row => row.Division))];
-                    setDivisions(uniqueDivisions);
-    
-                    const uniqueTeams = [...new Set(fetchedData.map(row => row.Team))];
-                    setTeams(uniqueTeams);
-                }
-    
-                if (selectedMatchNumber && fileName === "schedule.csv") {
-                    fetchedData = fetchedData.filter(row => row["Match Number"] === selectedMatchNumber);
-                }
-    
-                if (selectedConference && fileName === "nfl_official_team_roster.csv") {
-                    fetchedData = fetchedData.filter(row => row.Conference === selectedConference);
-                }
-    
-                if (selectedDivision && fileName === "nfl_official_team_roster.csv") {
-                    fetchedData = fetchedData.filter(row => row.Division === selectedDivision);
-                }
-    
-                if (selectedTeam && fileName === "nfl_official_team_roster.csv") {
-                    fetchedData = fetchedData.filter(row => row.Team === selectedTeam);
-                }
-    
-                // Filter out empty rows (rows where all values are null, undefined, or "")
-                const columns = parsedData.meta.fields || [];
-                fetchedData = fetchedData.filter(row =>
-                    columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
-                );
-    
-                setData(fetchedData);
-            })
-            .catch((error) => {
-                console.error("Error loading CSV file:", error);
-            });
-    };
-    
+export default function App() {
+  const [selectedPosition, setSelectedPosition] = useState(positions[0]);
+  const [mainData, setMainData] = useState([]);
+  const [weeklyData, setWeeklyData] = useState(null);
+  const [careerData, setCareerData] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [activeTab, setActiveTab] = useState("position"); // 'position', 'weekly', 'career'
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const fetchCareerStats = (playerName, filePath) => {
-        console.log(`Fetching career stats for: ${playerName}`);
-        fetch(filePath)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then((csvText) => {
-                const parsedData = Papa.parse(csvText, { header: true });
-                setCareerStats(parsedData.data || []);
-            })
-            .catch((error) => {
-                console.error("Error loading career stats CSV file:", error);
-            });
-    };
+  // Load main position stats on position change
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    setMainData([]);
+    setWeeklyData(null);
+    setCareerData(null);
+    setSelectedPlayer(null);
+    setActiveTab("position");
 
-    const fetchWeeklyStats = (playerName, filePath) => {
-        console.log(`Fetching weekly stats for: ${playerName}`);
-        fetch(filePath)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then((csvText) => {
-                const parsedData = Papa.parse(csvText, { header: true });
-                setWeeklyStats(parsedData.data || []);
-            })
-            .catch((error) => {
-                console.error("Error loading weekly stats CSV file:", error);
-            });
-    };
+    fetch(selectedPosition.file)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load position stats");
+        return res.text();
+      })
+      .then((csvText) => {
+        const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+        setMainData(parsed.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [selectedPosition]);
 
-    useEffect(() => {
-        fetchStats(getFileNameForActiveTab());
-    }, [activeTab, selectedMatchNumber, selectedConference, selectedDivision, selectedTeam]);
+  // Load weekly stats
+  function loadWeeklyStats(playerName) {
+    const filename = playerName.replace(/\s+/g, "_") + "_weekly_stats.csv";
+    const url = selectedPosition.weeklyFolder + filename;
 
-    const handleSearchChange = (event) => {
-        const query = event.target.value;
-        setSearchQuery(query);
+    return fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error("Weekly stats not found");
+        return res.text();
+      })
+      .then((csvText) => Papa.parse(csvText, { header: true, skipEmptyLines: true }).data);
+  }
 
-        if (query) {
-            const filteredData = data.filter((row) =>
-                row.Player.toLowerCase().includes(query.toLowerCase())
-            );
-            setData(filteredData);
-        } else {
-            fetchStats(getFileNameForActiveTab());
-        }
-    };
+  // Load career stats
+  function loadCareerStats(playerName) {
+    const filename = playerName.replace(/\s+/g, "_") + selectedPosition.careerSuffix;
+    const url = selectedPosition.careerFolder + filename;
 
-    const getFileNameForActiveTab = () => {
-        switch (activeTab) {
-            case "stats":
-                return "official_qb_stats.csv";
-            case "rbStats":
-                return "official_rb_stats.csv";
-            case "wrStats":
-                return "official_wr_stats.csv";
-            case "teStats":
-                return "official_te_stats.csv";
-            case "kickerStats":
-                return "official_kicker_stats.csv";
-            case "defenseStats":
-                return "official_defense_stats.csv";
-            case "schedule":
-                return "schedule.csv";
-            case "roster":
-                return "nfl_official_team_roster.csv";
-            default:
-                return "";
-        }
-    };
+    return fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error("Career stats not found");
+        return res.text();
+      })
+      .then((csvText) => Papa.parse(csvText, { header: true, skipEmptyLines: true }).data);
+  }
 
-    const handleSort = (column) => {
-        let direction = "ascending";
-        if (sortConfig.key === column && sortConfig.direction === "ascending") {
-            direction = "descending";
-        }
+  // On player click, load both weekly and career stats
+  async function handlePlayerClick(playerName) {
+    setLoading(true);
+    setError(null);
+    setWeeklyData(null);
+    setCareerData(null);
+    setSelectedPlayer(playerName);
 
-        const sortedData = [...data].sort((a, b) => {
-            const aValue = a[column] ?? "";
-            const bValue = b[column] ?? "";
+    try {
+      const [weekly, career] = await Promise.all([
+        loadWeeklyStats(playerName),
+        loadCareerStats(playerName),
+      ]);
+      setWeeklyData(weekly);
+      setCareerData(career);
+      setActiveTab("weekly"); // default tab when player clicked
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  }
 
-            const aNumeric = isNaN(aValue) ? aValue : parseFloat(aValue);
-            const bNumeric = isNaN(bValue) ? bValue : parseFloat(bValue);
+  const mainHeaders = mainData.length > 0 ? Object.keys(mainData[0]) : [];
+  const weeklyHeaders = weeklyData && weeklyData.length > 0 ? Object.keys(weeklyData[0]) : [];
+  const careerHeaders = careerData && careerData.length > 0 ? Object.keys(careerData[0]) : [];
 
-            if (aNumeric < bNumeric) return direction === "ascending" ? -1 : 1;
-            if (aNumeric > bNumeric) return direction === "ascending" ? 1 : -1;
-            return 0;
-        });
+  return (
+    <div style={{ maxWidth: 900, margin: "auto", fontFamily: "Arial, sans-serif" }}>
+      <h1>{selectedPosition.label} Rankings</h1>
 
-        setData(sortedData);
-        setSortConfig({ key: column, direction });
-    };
+      {/* Position Selector */}
+      <select
+        value={selectedPosition.label}
+        onChange={(e) => {
+          const pos = positions.find((p) => p.label === e.target.value);
+          setSelectedPosition(pos);
+        }}
+        style={{
+          marginBottom: 20,
+          padding: "10px",
+          fontSize: "1em",
+          borderRadius: 6,
+          border: "1px solid #ccc",
+          cursor: "pointer",
+          width: 200,
+          background: "linear-gradient(135deg, #ce3e3e, #61597b)",
+          color: "white",
+        }}
+      >
+        {positions.map((pos) => (
+          <option key={pos.label} value={pos.label}>
+            {pos.label}
+          </option>
+        ))}
+      </select>
 
-    const handleMatchNumberChange = (event) => {
-        setSelectedMatchNumber(event.target.value);
-    };
+      {/* Tabs */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 20, gap: 10 }}>
+        <button
+          onClick={() => setActiveTab("position")}
+          style={{
+            padding: "10px 20px",
+            cursor: "pointer",
+            backgroundColor: activeTab === "position" ? "#007bff" : "#eee",
+            color: activeTab === "position" ? "white" : "black",
+            border: "none",
+            borderBottom: activeTab === "position" ? "3px solid #0056b3" : "3px solid transparent",
+            fontWeight: "bold",
+            borderRadius: "4px 4px 0 0",
+          }}
+        >
+          Position Stats
+        </button>
 
-    const handleConferenceChange = (event) => {
-        setSelectedConference(event.target.value);
-    };
+        {weeklyData && (
+          <button
+            onClick={() => setActiveTab("weekly")}
+            style={{
+              padding: "10px 20px",
+              cursor: "pointer",
+              backgroundColor: activeTab === "weekly" ? "#007bff" : "#eee",
+              color: activeTab === "weekly" ? "white" : "black",
+              border: "none",
+              borderBottom: activeTab === "weekly" ? "3px solid #0056b3" : "3px solid transparent",
+              fontWeight: "bold",
+              borderRadius: "4px 4px 0 0",
+            }}
+          >
+            Weekly Stats {selectedPlayer ? `(${selectedPlayer})` : ""}
+          </button>
+        )}
 
-    const handleDivisionChange = (event) => {
-        setSelectedDivision(event.target.value);
-    };
+        {careerData && (
+          <button
+            onClick={() => setActiveTab("career")}
+            style={{
+              padding: "10px 20px",
+              cursor: "pointer",
+              backgroundColor: activeTab === "career" ? "#007bff" : "#eee",
+              color: activeTab === "career" ? "white" : "black",
+              border: "none",
+              borderBottom: activeTab === "career" ? "3px solid #0056b3" : "3px solid transparent",
+              fontWeight: "bold",
+              borderRadius: "4px 4px 0 0",
+            }}
+          >
+            Career Stats {selectedPlayer ? `(${selectedPlayer})` : ""}
+          </button>
+        )}
+      </div>
 
-    const handleTeamChange = (event) => {
-        setSelectedTeam(event.target.value);
-    };
+      {error && <div style={{ color: "red", marginBottom: 10 }}>Error: {error}</div>}
+      {loading && <div style={{ marginBottom: 10 }}>Loading {activeTab} stats...</div>}
 
-   
-
-    const renderArmDetails = () => (
-        <div className="container">
-            {playerRosterData && (
-                <div className="arm-details">
-                    <p><strong>Arms:</strong> {playerRosterData.Arms}"</p>
-                    <p><strong>Hands:</strong> {playerRosterData.Hands}"</p>
-                </div>
-            )}
-        </div>
-    );
-
-    const renderPlayerCard = () => {
-        if (!playerRosterData || !playerRosterData.Name) {
-            console.error("playerRosterData is undefined or missing Name property.");
-            return null; // Prevent rendering if data is missing
-        }
-    
-        const nameParts = playerRosterData.Name?.split(" ") || ["Unknown"];
-        const firstName = nameParts[0];
-        const lastName = nameParts.slice(1).join(" ") || "";
-    
-        const playerName = playerRosterData.Name || "default_name"; // Ensure playerName exists
-        return (
-        <div className="player-card-container">
-            {/* Gold Card Background */}
-            <img 
-                src="/data/images/gold_card.png" 
-                alt="Gold Card" 
-                className="gold-card-bg" 
-            />
-
-            <div className="player-card">
-                {/* Headshot Image */}
-                <div 
-                    className="image-container" 
-                    style={{ top: `38.5%`, left: '54%' }}  
+      {/* Position Stats Table */}
+      {activeTab === "position" && !loading && !error && mainData.length > 0 && (
+        <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>{mainHeaders.map((h) => (<th key={h}>{h}</th>))}</tr>
+          </thead>
+          <tbody>
+            {mainData.map((row, i) => {
+              const playerName = row["Player"] || row[mainHeaders[0]];
+              return (
+                <tr
+                  key={i}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => playerName && handlePlayerClick(playerName)}
+                  title="Click to view weekly & career stats"
                 >
-                    <img 
-                        src={`/data/headshots/${playerName.replace(" ", "_").replace("'", "-")}_headshot.png`} 
-                        alt="Headshot Not Found" 
-                        className="player-headshot" 
-                    />
-                </div>
-
-                {/* Player Name */}
-                <div className="card-name">
-                    <p><strong>{firstName}</strong></p> 
-                    <p><strong>{lastName}</strong></p>  
-                </div>
-
-                {/* Player Position */}
-                <div className="position">
-                    <p><strong>{playerRosterData?.Position}</strong></p>
-                </div>
-
-                {/* Team Logo */}
-                <div className="team-logo-container">
-                    <img 
-                        src={`/data/logos/${playerRosterData.Team.replace(/ /g, "-").toLowerCase()}.png`} 
-                        alt="Team Logo Not Found" 
-                        className="team-logo" 
-                    />
-                </div>
-
-                {/* Conference Logo */}
-                <div className="conference-logo-container">
-                    <img 
-                        src={`/data/logos/${playerRosterData.Conference}.png`} 
-                        alt="Conference Logo Not Found" 
-                        className="conference-logo" 
-                    />
-                </div>
-                <div className="container">
-                    {/*Player Physical Details*/ }
-                    {playerRosterData && (
-                        <div className="player-details">
-                            <p><strong>Height:</strong> {playerRosterData.Height}</p>
-                            <p><strong>Weight:</strong> {playerRosterData.Weight}</p>
-                            <p><strong>Arms:</strong> {playerRosterData.Arms}</p>
-                            <p><strong>Hands:</strong> {playerRosterData.Hands}</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-        );
-};
-
-    
-    
-
-
-    const handlePlayerClick = (player) => {
-        let playerFileName = "";
-        let careerFilePath = "";
-        let weeklyFilePath = "";
-        
-        // Clean the player's name for file path consistency
-        playerFileName = `${player.Player.replace(/ /g, "_").replace("'", "-")}`;
-        
-        // Determine the file paths for the player's career and weekly stats based on the active tab
-        if (activeTab === "stats") {
-            careerFilePath = `/data/qb_stats/career_stats/${playerFileName}_career_passing_stats.csv`;
-            weeklyFilePath = `/data/qb_stats/qb_weekly_stats/${playerFileName}_weekly_stats.csv`;
-        } else if (activeTab === "rbStats") {
-            careerFilePath = `/data/rb_stats/career_stats/${playerFileName}_career_rushing_stats.csv`;
-            weeklyFilePath = `/data/rb_stats/rb_weekly_stats/${playerFileName}_weekly_stats.csv`;
-        } else if (activeTab === "wrStats") {
-            careerFilePath = `/data/wr_stats/career_stats/${playerFileName}_career_receiving_stats.csv`;
-            weeklyFilePath = `/data/wr_stats/wr_weekly_stats/${playerFileName}_weekly_stats.csv`;
-        } 
-        else if (activeTab === "teStats") {
-            careerFilePath = `/data/te_stats/career_stats/${playerFileName}_career_receiving_stats.csv`;
-            weeklyFilePath = `/data/te_stats/te_weekly_stats/${playerFileName}_weekly_stats.csv`;
-        } else if (activeTab === "kickerStats") {
-            careerFilePath = `/data/kicker_stats/career_stats/${playerFileName}_career_kicking_stats.csv`;
-            weeklyFilePath = `/data/kicker_stats/kicker_weekly_stats/${playerFileName}_kicking_stats.csv`;
-        }
-    
-        // Fetch the player data from the appropriate CSV files
-        console.log(`Fetching player data from: ${careerFilePath} and ${weeklyFilePath}`);
-        fetchCareerStats(player.Player, careerFilePath);
-        fetchWeeklyStats(player.Player, weeklyFilePath);
-    
-        // Set the player name and other states
-        setIsCareerStats(true);
-        setIsWeeklyStats(true);
-        setPlayerName(player.Player);
-    
-        // Fetch player data from the official team roster CSV
-        Papa.parse("/data/nfl_official_team_roster.csv", {
-            download: true,
-            header: true,
-            complete: (result) => {
-                const playerData = result.data.find(
-                    (row) => row.Name?.toLowerCase() === player.Player?.toLowerCase()
-                );
-                if (playerData) {
-                    // Here you can update your state with player data from the roster
-                    setPlayerRosterData(playerData); // Assuming you have a state for player roster data
-                }
-            },
-            error: (error) => {
-                console.error("Error loading player roster data:", error);
-            },
-        });
-
-        // Scroll to the top of the page
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    
-
-    const handleBackClick = () => {
-        setIsCareerStats(false);
-        setIsWeeklyStats(false);
-        setPlayerName("");
-        setSearchQuery("");
-        fetchStats(getFileNameForActiveTab());
-    };
-
-    const renderTable = () => (
-        <table>
-            <thead>
-                <tr>
-                    {columns.map((col, index) => (
-                        <th key={index} onClick={() => handleSort(col)}>
-                            {col}
-                            {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-                        </th>
-                    ))}
+                  {mainHeaders.map((h) => (<td key={h}>{row[h]}</td>))}
                 </tr>
-            </thead>
-            <tbody>
-                {data.map((row, rowIndex) => (
-                    <tr key={rowIndex} onClick={() => handlePlayerClick(row)}>
-                        {columns.map((col, colIndex) => (
-                            <td key={colIndex}>{row[col]}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
+              );
+            })}
+          </tbody>
         </table>
-    );
+      )}
 
-    const renderCareerStats = () => {
-        if (careerStats.length === 0) return <p>No career stats available.</p>;
-    
-        const columns = Object.keys(careerStats[0]); // Ensure consistent columns
-    
-        // Remove empty rows (rows where all values are undefined, null, or empty)
-        const filteredStats = careerStats.filter(row =>
-            columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
-        );
-    
-        if (filteredStats.length === 0) return <p>No career stats available.</p>;
-    
-        return (
-            <div>
-                <h2 className="stats-header">{playerName}'s Career Stats</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            {columns.map((col, index) => (
-                                <th key={index} onClick={() => handleSort(col)}>
-                                    {col}
-                                    {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredStats.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {columns.map((col, colIndex) => (
-                                    <td key={colIndex}>{row[col] !== undefined ? row[col] : ""}</td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
-    
+      {/* Weekly Stats Table */}
+      {activeTab === "weekly" && !loading && !error && weeklyData && weeklyData.length > 0 && (
+        <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>{weeklyHeaders.map((h) => (<th key={h}>{h}</th>))}</tr>
+          </thead>
+          <tbody>
+            {weeklyData.map((row, i) => (
+              <tr key={i}>
+                {weeklyHeaders.map((h) => (<td key={h}>{row[h]}</td>))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
-    const renderWeeklyStats = () => {
-        if (weeklyStats.length === 0) return <p>No weekly stats available.</p>;
-    
-        const columns = Object.keys(weeklyStats[0]); // Ensure consistent columns
-    
-        // Remove empty rows (rows where all values are undefined, null, or empty)
-        const filteredStats = weeklyStats.filter(row =>
-            columns.some(col => row[col] !== undefined && row[col] !== null && row[col] !== "")
-        );
-    
-        if (filteredStats.length === 0) return <p>No weekly stats available.</p>;
-    
-        return (
-            <div>
-                <div className="back-button-container">
-                    <button className="back" onClick={handleBackClick}>
-                        Back to stats
-                    </button>
-                </div>          
-                {renderPlayerCard()}
-                
-                <h2 className="stats-header">{playerName}'s Weekly Stats</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            {columns.map((col, index) => (
-                                <th key={index} onClick={() => handleSort(col)}>
-                                    {col}
-                                    {sortConfig.key === col ? (sortConfig.direction === "ascending" ? " ↑" : " ↓") : ""}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredStats.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {columns.map((col, colIndex) => (
-                                    <td key={colIndex}>{row[col] !== undefined ? row[col] : ""}</td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
-    
-
-
-
-
-    return (
-        <div>
-            <header> 
-                <h1 class ="text-outline">NFL Statistics Analyzer</h1> 
-               
-                <nav className="tabs-nav">
-                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Player Data</button>
-                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("stats"); setSearchQuery(""); }}>Draft Hub</button>
-                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("schedule"); setSearchQuery(""); }}>Schedule</button>
-                    <button onClick={() => { setIsCareerStats(false);setIsWeeklyStats(false);setActiveTab("roster"); setSearchQuery(""); }}>NFL Roster</button>
-                </nav>
-
-                
-                
-            </header>
-            
-            <div>
-            
-                {isWeeklyStats && (
-                    <div>
-                        {renderWeeklyStats()}
-                    </div>
-                )}
-                {isCareerStats && (
-                    <div>
-                        {renderCareerStats()}
-                    </div>
-                )}
-                {!isCareerStats && !isWeeklyStats && (
-                    <div>
-                        
-                    {/* Container for search bar and dropdown */}
-                    {activeTab !== "schedule" && activeTab !== "roster" && (
-                        <div className="controls-container">
-                            {/* Dropdown tab for selecting active tab */}
-                        <select
-                            value={activeTab}
-                            onChange={(e) => setActiveTab(e.target.value)}
-                            className="tab"
-                        >
-                            <option value="stats">QB Stats</option>
-                            <option value="rbStats">RB Stats</option>
-                            <option value="wrStats">WR Stats</option>
-                            <option value="teStats">TE Stats</option>
-                            <option value="kickerStats">Kicker Stats</option>
-                            <option value="defenseStats">Defense Stats</option>
-                        </select>
-                        <h3 className="position-name-stats">
-                            {activeTab === "stats" ? "Quarterback Stats" :
-                                activeTab === "rbStats" ? "Running Back Stats" :
-                                    activeTab === "wrStats" ? "Wide Receiver Stats" :
-                                        activeTab === "teStats" ? "Tight End Stats" :
-                                            activeTab === "kickerStats" ? "Kicker Stats" :
-                                                activeTab === "defenseStats" ? "Defense Stats" :
-                                                    activeTab === "schedule" ? "2024-2025 Schedule" :
-                                                        activeTab === "roster" ? "NFL Roster" :
-                                                            "Schedule"}
-                        </h3>
-                        {/* Search bar section */}
-                        
-                            <div className="search-container">
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                placeholder="Search Player Name ..."
-                            />
-                            </div>
-                        
-                    
-                        
-                        </div>
-                  )}
-                    {data.length > 0 ? renderTable() : <p>Loading data...</p>}
-                  </div>
-                )}
-                
-            </div>
-        </div>
-    );
-};
-
-export default App;
+      {/* Career Stats Table */}
+      {activeTab === "career" && !loading && !error && careerData && careerData.length > 0 && (
+        <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>{careerHeaders.map((h) => (<th key={h}>{h}</th>))}</tr>
+          </thead>
+          <tbody>
+            {careerData.map((row, i) => (
+              <tr key={i}>
+                {careerHeaders.map((h) => (<td key={h}>{row[h]}</td>))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
