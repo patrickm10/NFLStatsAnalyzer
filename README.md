@@ -69,6 +69,18 @@ npm start
 
 ```text
 NFLStatsAnalyzer/
+├── backend/
+│   ├── api/
+│   |    ├── routes.py/                   # Routing for dataframes
+│   ├── services/                         # Code for cleaning and loading data
+│   |    ├── k_service.py/
+│   |    ├── qb_service.py/
+│   |    ├── rb_service.py/
+│   |    ├── te_service.py/
+│   |    ├── wr_service.py/
+│   ├── utils/
+│   |    ├── file_loader.py/      
+│   ├── main.py                           # Main entry point for FastAPI
 ├── data/
 │   ├── qb_weekly_stats/
 │   ├── rb_weekly_stats/
